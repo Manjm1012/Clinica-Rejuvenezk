@@ -1,29 +1,17 @@
 <?php
 
-use App\Http\Controllers\Api\WhaticketWebhookController;
-use App\Http\Controllers\Api\MedicalHistoryController;
-use App\Http\Controllers\Api\PatientController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\LeadApiController;
+use App\Http\Controllers\Api\PublicContentController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+Route::get('/home', [PublicContentController::class, 'home']);
+Route::get('/services/{service:slug}', [PublicContentController::class, 'service']);
+Route::post('/leads', [LeadApiController::class, 'store']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/auth/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/patients', [PatientController::class, 'store']);
-    Route::post('/medical-histories', [MedicalHistoryController::class, 'store']);
+	Route::get('/auth/me', [AuthController::class, 'me']);
+	Route::post('/auth/logout', [AuthController::class, 'logout']);
 });
-
-Route::post('/integrations/whaticket/webhook', WhaticketWebhookController::class);

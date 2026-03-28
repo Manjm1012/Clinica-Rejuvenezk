@@ -2,49 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Concerns\BelongsToClinic;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Traits\HasTenant;
 
 class Doctor extends Model
 {
-    use HasFactory;
-    use HasTenant;
+    use BelongsToClinic;
 
     protected $fillable = [
-        'client_id',
-        'user_id',
-        'full_name',
-        'specialty',
-        'license_number',
-        'phone',
-        'email',
-        'is_active',
+        'clinic_id', 'name', 'specialty', 'subtitle', 'photo_path', 'bio', 'university',
+        'certifications', 'linkedin_url', 'instagram_url', 'is_active', 'sort_order',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
     ];
 
-    public function client(): BelongsTo
+    public function credentials(): HasMany
     {
-        return $this->belongsTo(Client::class);
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function medicalHistories(): HasMany
-    {
-        return $this->hasMany(MedicalHistory::class);
-    }
-
-    public function appointments(): HasMany
-    {
-        return $this->hasMany(Appointment::class);
+        return $this->hasMany(DoctorCredential::class)->orderBy('sort_order');
     }
 }

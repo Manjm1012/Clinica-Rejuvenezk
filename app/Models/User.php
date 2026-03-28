@@ -4,38 +4,36 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
-use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
-use Illuminate\Database\Eloquent\Collection;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements FilamentUser, HasTenants
+class User extends Authenticatable implements FilamentUser
 {
+    /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
-        'client_id',
+        'clinic_id',
         'name',
         'email',
         'password',
-        'role',
+        'is_super_admin',
     ];
 
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $hidden = [
         'password',
@@ -43,44 +41,26 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     ];
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array<string, string>
+     * @return array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-    public function client(): BelongsTo
+    protected function casts(): array
     {
-        return $this->belongsTo(Client::class);
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'is_super_admin' => 'boolean',
+        ];
     }
 
-    public function doctorProfile(): HasOne
+    public function clinic(): BelongsTo
     {
-        return $this->hasOne(Doctor::class);
+        return $this->belongsTo(Clinic::class);
     }
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
-    }
-
-    public function getTenants(Panel $panel): Collection
-    {
-        if ($this->role === 'superadmin') {
-            return Client::all();
-        }
-
-        return Client::where('id', $this->client_id)->get();
-    }
-
-    public function canAccessTenant(Model $tenant): bool
-    {
-        if ($this->role === 'superadmin') {
-            return true;
-        }
-
-        return $this->client_id === $tenant->id;
+        return $this->is_super_admin || $this->clinic_id !== null;
     }
 }

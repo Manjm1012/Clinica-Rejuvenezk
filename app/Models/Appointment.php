@@ -2,65 +2,38 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Concerns\BelongsToClinic;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Traits\HasTenant;
 
 class Appointment extends Model
 {
-    use HasFactory;
-    use HasTenant;
+    use BelongsToClinic;
 
     protected $fillable = [
-        'client_id',
-        'patient_id',
-        'doctor_id',
-        'whatsapp_conversation_id',
-        'scheduled_at',
-        'duration_minutes',
-        'status',
-        'notes',
+        'clinic_id', 'lead_id', 'service_id', 'patient_name', 'patient_phone', 'patient_email',
+        'appointment_at', 'status', 'notes', 'tayrai_appointment_id',
     ];
 
     protected $casts = [
-        'scheduled_at' => 'datetime',
-        'duration_minutes' => 'integer',
+        'appointment_at' => 'datetime',
     ];
 
-    public static array $statuses = [
-        'pending'     => 'Pendiente',
-        'confirmed'   => 'Confirmada',
-        'in_progress' => 'En progreso',
-        'completed'   => 'Completada',
-        'cancelled'   => 'Cancelada',
+    public const STATUSES = [
+        'pending'   => 'Pendiente',
+        'confirmed' => 'Confirmado',
+        'cancelled' => 'Cancelado',
+        'completed' => 'Completado',
+        'no_show'   => 'No asistió',
     ];
 
-    public static array $statusColors = [
-        'pending'     => 'warning',
-        'confirmed'   => 'success',
-        'in_progress' => 'info',
-        'completed'   => 'success',
-        'cancelled'   => 'danger',
-    ];
-
-    public function client(): BelongsTo
+    public function lead(): BelongsTo
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(Lead::class);
     }
 
-    public function patient(): BelongsTo
+    public function service(): BelongsTo
     {
-        return $this->belongsTo(Patient::class);
-    }
-
-    public function doctor(): BelongsTo
-    {
-        return $this->belongsTo(Doctor::class);
-    }
-
-    public function whatsappConversation(): BelongsTo
-    {
-        return $this->belongsTo(WhatsappConversation::class);
+        return $this->belongsTo(Service::class);
     }
 }
