@@ -1,7 +1,28 @@
 @php
     $clinicName = $settings['clinic_name'] ?? 'Clinica Rejuvenezk';
+    $heroKicker = $settings['hero_kicker'] ?? 'Medicina estetica avanzada';
     $heroTitle = $settings['hero_title'] ?? 'Tu mejor version, con criterio medico y resultados naturales.';
     $heroSubtitle = $settings['hero_subtitle'] ?? 'Protocolos personalizados para rejuvenecimiento facial, armonizacion y bienestar integral.';
+    $heroPrimaryCta = $settings['hero_primary_cta'] ?? 'Reservar valoracion';
+    $heroSecondaryCta = $settings['hero_secondary_cta'] ?? 'Ver tratamientos';
+    $heroCardKicker = $settings['hero_card_kicker'] ?? 'Primera cita';
+    $heroCardTitle = $settings['hero_card_title'] ?? ($doctor?->subtitle ?: 'Diagnostico inteligente de piel');
+    $heroCardText = $settings['hero_card_text'] ?? ($doctor?->bio ?: 'Analisis de calidad cutanea y plan estetico por etapas para resultados armonicos y progresivos.');
+    $heroStackPrimaryLabel = $settings['hero_stack_primary_label'] ?? 'Protocolo estrella';
+    $heroStackSecondaryLabel = $settings['hero_stack_secondary_label'] ?? 'Especialista';
+    $servicesKicker = $settings['services_kicker'] ?? 'Nuestros tratamientos';
+    $servicesTitle = $settings['services_title'] ?? 'Tecnologia, precision y naturalidad';
+    $testimonialsKicker = $settings['testimonials_kicker'] ?? 'Testimonios';
+    $testimonialsTitle = $settings['testimonials_title'] ?? 'Pacientes que ya viven su cambio';
+    $socialKicker = $settings['social_kicker'] ?? ('Comunidad ' . $clinicName);
+    $socialTitle = $settings['social_title'] ?? 'Conecta con nuestras redes y canales';
+    $socialLead = $settings['social_lead'] ?? 'Comparte resultados, conoce casos reales y recibe novedades de nuestros tratamientos en tiempo real.';
+    $ctaKicker = $settings['cta_kicker'] ?? 'Agenda tu cita';
+    $ctaTitle = $settings['cta_title'] ?? 'Empieza hoy tu protocolo personalizado.';
+    $ctaBody = $settings['cta_body'] ?? 'Atencion presencial y seguimiento digital para una experiencia comercial ordenada.';
+    $topbarCtaLabel = $settings['topbar_cta_label'] ?? 'Agenda ahora';
+    $ctaWhatsappLabel = $settings['cta_whatsapp_label'] ?? 'WhatsApp';
+    $ctaEmailLabel = $settings['cta_email_label'] ?? 'Solicitar informacion';
     $whatsappDigits = preg_replace('/[^0-9]/', '', $settings['whatsapp_number'] ?? '');
     $whatsappUrl = $whatsappDigits ? 'https://wa.me/' . $whatsappDigits : '#contacto';
     $bannerMedia = null;
@@ -29,6 +50,8 @@
 
     $socialCards = collect([
         ['label' => 'Instagram', 'handle' => '@clinicarejuvenezk', 'text' => 'Antes y despues, reels y tips de cuidado', 'url' => $settings['instagram_url'] ?? null],
+        ['label' => 'Facebook', 'handle' => 'Clinica Rejuvenezk', 'text' => 'Novedades, eventos y promociones especiales', 'url' => $settings['facebook_url'] ?? null],
+        ['label' => 'TikTok', 'handle' => '@rejuvenezk', 'text' => 'Videos de procedimientos y contenido educativo', 'url' => $settings['tiktok_url'] ?? null],
         ['label' => 'YouTube', 'handle' => 'Rejuvenezk TV', 'text' => 'Testimonios completos y explicacion medica', 'url' => $settings['youtube_url'] ?? null],
         ['label' => 'WhatsApp', 'handle' => $settings['phone'] ?: 'Agenda inmediata', 'text' => 'Atencion comercial y seguimiento de valoraciones', 'url' => $whatsappDigits ? $whatsappUrl : null],
         ['label' => 'Correo', 'handle' => $settings['email'] ?: 'contacto@rejuvenezk.com', 'text' => 'Solicita informacion detallada y propuestas personalizadas', 'url' => !empty($settings['email']) ? 'mailto:' . $settings['email'] : null],
@@ -64,7 +87,7 @@
                 <a href="#resultados">Resultados</a>
                 <a href="#contacto">Contacto</a>
             </nav>
-            <a href="{{ $whatsappUrl }}" class="btn btn-outline" @if($whatsappDigits) target="_blank" rel="noopener noreferrer" @endif>Agenda ahora</a>
+            <a href="{{ $whatsappUrl }}" class="btn btn-outline" @if($whatsappDigits) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
         </div>
     </header>
 
@@ -85,12 +108,12 @@
     <main id="inicio">
         <section class="hero section container">
             <div class="hero-copy reveal reveal-2">
-                <p class="kicker">Medicina estetica avanzada</p>
+                <p class="kicker">{{ $heroKicker }}</p>
                 <h1>{{ $heroTitle }}</h1>
                 <p class="lead">{{ $heroSubtitle }}</p>
                 <div class="hero-actions">
-                    <a href="#contacto" class="btn btn-primary">Reservar valoracion</a>
-                    <a href="#servicios" class="btn btn-ghost">Ver tratamientos</a>
+                    <a href="#contacto" class="btn btn-primary">{{ $heroPrimaryCta }}</a>
+                    <a href="#servicios" class="btn btn-ghost">{{ $heroSecondaryCta }}</a>
                 </div>
                 <div class="hero-metrics">
                     @foreach ($heroMetrics as $metric)
@@ -104,17 +127,17 @@
 
             <aside class="hero-panel reveal reveal-3" aria-label="Resumen de experiencia {{ $clinicName }}">
                 <div class="hero-card landing-hero-card">
-                    <p class="card-kicker">Primera cita</p>
-                    <h2>{{ $doctor?->subtitle ?: 'Diagnostico inteligente de piel' }}</h2>
-                    <p>{{ $doctor?->bio ?: 'Analisis de calidad cutanea y plan estetico por etapas para resultados armonicos y progresivos.' }}</p>
+                    <p class="card-kicker">{{ $heroCardKicker }}</p>
+                    <h2>{{ $heroCardTitle }}</h2>
+                    <p>{{ $heroCardText }}</p>
                 </div>
                 <div class="hero-stack">
                     <div class="mini-card">
-                        <span>Protocolo estrella</span>
+                        <span>{{ $heroStackPrimaryLabel }}</span>
                         <strong>{{ $featuredServices->first()?->name ?: 'Lift & Glow 360' }}</strong>
                     </div>
                     <div class="mini-card">
-                        <span>Especialista</span>
+                        <span>{{ $heroStackSecondaryLabel }}</span>
                         <strong>{{ $doctor?->name ?: 'Equipo medico premium' }}</strong>
                     </div>
                 </div>
@@ -138,8 +161,8 @@
 
         <section id="servicios" class="section section-soft">
             <div class="container reveal reveal-2">
-                <p class="kicker">Nuestros tratamientos</p>
-                <h2 class="section-title">Tecnologia, precision y naturalidad</h2>
+                <p class="kicker">{{ $servicesKicker }}</p>
+                <h2 class="section-title">{{ $servicesTitle }}</h2>
                 <div class="services-grid">
                     @foreach ($services->take(6) as $service)
                         <article class="service-card landing-service-card">
@@ -166,8 +189,8 @@
 
         <section id="resultados" class="section container">
             <div class="reveal reveal-2">
-                <p class="kicker">Testimonios</p>
-                <h2 class="section-title">Pacientes que ya viven su cambio</h2>
+                <p class="kicker">{{ $testimonialsKicker }}</p>
+                <h2 class="section-title">{{ $testimonialsTitle }}</h2>
             </div>
             <div class="testimonials-grid reveal reveal-3">
                 @forelse ($testimonialsToShow as $testimonial)
@@ -195,9 +218,9 @@
 
         <section id="redes" class="section section-soft social-section">
             <div class="container reveal reveal-2">
-                <p class="kicker">Comunidad {{ $clinicName }}</p>
-                <h2 class="section-title">Conecta con nuestras redes y canales</h2>
-                <p class="lead social-lead">Comparte resultados, conoce casos reales y recibe novedades de nuestros tratamientos en tiempo real.</p>
+                <p class="kicker">{{ $socialKicker }}</p>
+                <h2 class="section-title">{{ $socialTitle }}</h2>
+                <p class="lead social-lead">{{ $socialLead }}</p>
 
                 <div class="social-grid">
                     @foreach ($socialCards as $card)
@@ -216,13 +239,13 @@
             <div class="container contact-layout reveal reveal-2">
                 <div class="cta">
                     <div>
-                        <p class="kicker">Agenda tu cita</p>
-                        <h2>Empieza hoy tu protocolo personalizado.</h2>
-                        <p>{{ $settings['address'] ?: 'Atencion presencial y seguimiento digital para una experiencia comercial ordenada.' }}</p>
+                        <p class="kicker">{{ $ctaKicker }}</p>
+                        <h2>{{ $ctaTitle }}</h2>
+                        <p>{{ $settings['address'] ?: $ctaBody }}</p>
                     </div>
                     <div class="cta-actions">
-                        <a class="btn btn-primary" href="{{ $whatsappUrl }}" @if($whatsappDigits) target="_blank" rel="noopener noreferrer" @endif>WhatsApp</a>
-                        <a class="btn btn-ghost" href="{{ !empty($settings['email']) ? 'mailto:' . $settings['email'] : '#formulario' }}">{{ $settings['email'] ?: 'Solicitar informacion' }}</a>
+                        <a class="btn btn-primary" href="{{ $whatsappUrl }}" @if($whatsappDigits) target="_blank" rel="noopener noreferrer" @endif>{{ $ctaWhatsappLabel }}</a>
+                        <a class="btn btn-ghost" href="{{ !empty($settings['email']) ? 'mailto:' . $settings['email'] : '#formulario' }}">{{ $settings['email'] ?: $ctaEmailLabel }}</a>
                     </div>
                 </div>
 
