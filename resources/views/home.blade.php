@@ -362,30 +362,55 @@
                         id="cat-{{ $category->id }}"
                         role="tabpanel"
                     >
+                        @php
+                            $featuredCategoryServices = $category->services->take(3);
+                            $remainingCategoryServices = $category->services->skip(3)->take(6);
+                        @endphp
+
                         @if ($category->description)
                             <p class="services-panel-intro">{{ $category->description }}</p>
                         @endif
-                        <div class="services-grid">
-                            @foreach ($category->services as $service)
-                                <article class="landing-service-card">
-                                    @if ($service->image_path)
-                                        <figure class="media-placeholder media-placeholder-service service-media">
-                                            <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
-                                        </figure>
-                                    @endif
-                                    <div class="service-card-copy">
-                                        <h3>{{ $service->name }}</h3>
-                                        <p>{{ $service->short_description ?: 'Tratamiento personalizado con enfoque medico, seguridad y resultados naturales.' }}</p>
-                                        <div class="service-links">
-                                            <a href="{{ route('services.show', $service) }}">Ver detalle</a>
-                                            <a href="{{ $service->whatsapp_url }}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                        <div class="services-curated-layout">
+                            <aside class="services-category-card">
+                                <span class="services-category-count">{{ $category->services->count() }} tratamientos</span>
+                                <h3>{{ $category->name }}</h3>
+                                <p>{{ $category->description ?: 'Seleccionamos los procedimientos mas representativos de esta categoria para ayudarte a decidir con mas claridad.' }}</p>
+
+                                @if ($remainingCategoryServices->isNotEmpty())
+                                    <div class="services-more-wrap">
+                                        <span class="services-more-label">Tambien trabajamos</span>
+                                        <div class="services-more-list">
+                                            @foreach ($remainingCategoryServices as $service)
+                                                <span>{{ $service->name }}</span>
+                                            @endforeach
                                         </div>
                                     </div>
-                                </article>
-                            @endforeach
-                        </div>
-                        <div class="services-panel-cta">
-                            <a href="{{ $whatsappUrl }}" class="btn btn-primary" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>Quiero asesoria por WhatsApp</a>
+                                @endif
+
+                                <div class="services-panel-cta">
+                                    <a href="{{ $whatsappUrl }}" class="btn btn-primary" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>Quiero asesoria de esta categoria</a>
+                                </div>
+                            </aside>
+
+                            <div class="services-grid services-grid-curated">
+                                @foreach ($featuredCategoryServices as $service)
+                                    <article class="landing-service-card">
+                                        @if ($service->image_path)
+                                            <figure class="media-placeholder media-placeholder-service service-media">
+                                                <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
+                                            </figure>
+                                        @endif
+                                        <div class="service-card-copy">
+                                            <h3>{{ $service->name }}</h3>
+                                            <p>{{ $service->short_description ?: 'Tratamiento personalizado con enfoque medico, seguridad y resultados naturales.' }}</p>
+                                            <div class="service-links">
+                                                <a href="{{ route('services.show', $service) }}">Ver detalle</a>
+                                                <a href="{{ $service->whatsapp_url }}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                                            </div>
+                                        </div>
+                                    </article>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 @empty
