@@ -585,13 +585,15 @@ a {
 .mobile-nav-shell {
     display: grid;
     gap: 26px;
-    width: min(100%, 420px);
-    padding: 22px 22px calc(28px + env(safe-area-inset-bottom, 0px));
-    border-radius: 34px;
+    width: min(84vw, 320px);
+    min-width: 280px;
+    padding: calc(20px + env(safe-area-inset-top, 0px)) 20px calc(26px + env(safe-area-inset-bottom, 0px));
+    border-radius: 0 28px 28px 0;
     background: rgba(253, 251, 247, 0.98);
     border: 1px solid rgba(201, 169, 110, 0.14);
-    box-shadow: 0 30px 90px rgba(43, 43, 43, 0.14);
-    min-height: auto;
+    border-left: 0;
+    box-shadow: 18px 0 52px rgba(43, 43, 43, 0.12);
+    min-height: 100dvh;
     position: relative;
     z-index: 1;
 }
@@ -610,8 +612,8 @@ a {
 
 .mobile-nav-brand span {
     font-family: var(--font-serif);
-    font-size: 1.35rem;
-    line-height: 1;
+    font-size: 1.2rem;
+    line-height: 1.05;
 }
 
 .mobile-nav-brand small {
@@ -645,7 +647,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 72px;
+    min-height: 64px;
     padding: 0 2px;
     border-radius: 0;
     background: transparent;
@@ -653,7 +655,7 @@ a {
     border-bottom: 1px solid rgba(201, 169, 110, 0.16);
     color: var(--ink);
     font-family: var(--font-serif);
-    font-size: 2rem;
+    font-size: 1.7rem;
     font-weight: 600;
     line-height: 1;
     box-shadow: none;
@@ -2209,21 +2211,16 @@ button {
         left: 0;
         width: 100vw;
         display: flex;
-        align-items: flex-start;
-        justify-content: center;
-        padding: calc(72px + env(safe-area-inset-top, 0px)) 14px 20px;
-        transform: translateY(16px) scale(0.98);
+        align-items: stretch;
+        justify-content: flex-start;
+        padding: 0;
+        transform: translateX(-100%);
         opacity: 0;
-        transition: transform 0.26s ease, opacity 0.26s ease;
+        transition: transform 0.28s ease, opacity 0.22s ease;
         z-index: 29;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         background: transparent;
-    }
-
-    .mobile-nav-links a {
-        min-height: 64px;
-        font-size: 1.7rem;
     }
 
     .mobile-nav-overlay.is-open {
@@ -2232,7 +2229,7 @@ button {
     }
 
     .mobile-nav-drawer.is-open {
-        transform: translateY(0) scale(1);
+        transform: translateX(0);
         opacity: 1;
     }
 
