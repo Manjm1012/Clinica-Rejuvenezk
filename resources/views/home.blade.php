@@ -275,58 +275,81 @@
 
         <section id="servicios" class="section section-soft section-beige">
             <div class="container reveal reveal-2">
-                <p class="kicker">{{ $servicesKicker }}</p>
-                <h2 class="section-title">{{ $servicesTitle }}</h2>
-                <p class="section-intro service-intro">{{ $servicesLead }}</p>
-                @foreach ($serviceCategories as $category)
-                    @php
-                        $servicesBySubcategory = $category->services
-                            ->groupBy(fn ($service) => $service->meta['subcategory'] ?? 'Otros tratamientos');
-                    @endphp
+                <div class="services-head">
+                    <div>
+                        <p class="kicker">{{ $servicesKicker }}</p>
+                        <h2 class="section-title">{{ $servicesTitle }}</h2>
+                    </div>
+                    <p class="section-intro service-intro">{{ $servicesLead }}</p>
+                </div>
 
-                    <section class="service-category-block">
-                        <div class="service-category-head">
-                            <div>
-                                <p class="service-category-kicker">Categoría</p>
-                                <h3>{{ $category->name }}</h3>
-                            </div>
-                            @if ($category->description)
-                                <p>{{ $category->description }}</p>
-                            @endif
-                        </div>
-
-                        @foreach ($servicesBySubcategory as $subcategory => $subcategoryServices)
-                            <section class="service-subcategory-block">
-                                <div class="service-subcategory-head">
-                                    <h4>{{ $subcategory }}</h4>
-                                    <span>{{ $subcategoryServices->count() }} tratamientos</span>
-                                </div>
-
-                                <div class="services-grid">
-                                    @foreach ($subcategoryServices as $service)
-                                        <article class="service-card landing-service-card">
-                                            @if ($service->image_path)
-                                                <figure class="media-placeholder media-placeholder-service service-media">
-                                                    <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
-                                                </figure>
-                                            @else
-                                                <figure class="media-placeholder media-placeholder-service service-media service-fallback">
-                                                    <span>{{ $subcategory }}</span>
-                                                </figure>
-                                            @endif
-                                            <h3>{{ $service->name }}</h3>
-                                            <p>{{ $service->short_description ?: 'Tratamiento personalizado con enfoque medico, seguridad y resultados naturales.' }}</p>
-                                            <div class="service-links">
-                                                <a href="{{ route('services.show', $service) }}">Ver detalle</a>
-                                                <a href="{{ $service->whatsapp_url }}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-                                            </div>
-                                        </article>
-                                    @endforeach
-                                </div>
-                            </section>
+                @if ($serviceCategories->count() > 1)
+                    <div class="services-tabs" role="tablist" aria-label="Categorías de tratamientos">
+                        @foreach ($serviceCategories as $i => $category)
+                            <button
+                                class="services-tab {{ $i === 0 ? 'is-active' : '' }}"
+                                role="tab"
+                                aria-selected="{{ $i === 0 ? 'true' : 'false' }}"
+                                aria-controls="cat-{{ $category->id }}"
+                                data-tab="cat-{{ $category->id }}"
+                                type="button"
+                            >{{ $category->name }}</button>
                         @endforeach
-                    </section>
-                @endforeach
+                    </div>
+                @endif
+
+                @forelse ($serviceCategories as $i => $category)
+                    <div
+                        class="services-panel {{ $i === 0 ? 'is-active' : '' }}"
+                        id="cat-{{ $category->id }}"
+                        role="tabpanel"
+                    >
+                        @if ($category->description)
+                            <p class="services-panel-intro">{{ $category->description }}</p>
+                        @endif
+                        <div class="services-grid">
+                            @foreach ($category->services as $service)
+                                <article class="landing-service-card">
+                                    @if ($service->image_path)
+                                        <figure class="media-placeholder media-placeholder-service service-media">
+                                            <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
+                                        </figure>
+                                    @endif
+                                    <div class="service-card-copy">
+                                        <h3>{{ $service->name }}</h3>
+                                        <p>{{ $service->short_description ?: 'Tratamiento personalizado con enfoque medico, seguridad y resultados naturales.' }}</p>
+                                        <div class="service-links">
+                                            <a href="{{ route('services.show', $service) }}">Ver detalle</a>
+                                            <a href="{{ $service->whatsapp_url }}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                                        </div>
+                                    </div>
+                                </article>
+                            @endforeach
+                        </div>
+                    </div>
+                @empty
+                    <div class="services-panel is-active">
+                        <div class="services-grid">
+                            @foreach ($featuredServices as $service)
+                                <article class="landing-service-card">
+                                    @if ($service->image_path)
+                                        <figure class="media-placeholder media-placeholder-service service-media">
+                                            <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
+                                        </figure>
+                                    @endif
+                                    <div class="service-card-copy">
+                                        <h3>{{ $service->name }}</h3>
+                                        <p>{{ $service->short_description ?: 'Tratamiento personalizado con enfoque medico, seguridad y resultados naturales.' }}</p>
+                                        <div class="service-links">
+                                            <a href="{{ route('services.show', $service) }}">Ver detalle</a>
+                                            <a href="{{ $service->whatsapp_url }}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                                        </div>
+                                    </div>
+                                </article>
+                            @endforeach
+                        </div>
+                    </div>
+                @endforelse
             </div>
         </section>
 
