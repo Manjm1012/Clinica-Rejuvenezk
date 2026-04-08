@@ -528,6 +528,81 @@ a {
     color: var(--text-secondary);
 }
 
+.topbar-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    border: 1px solid rgba(201, 169, 110, 0.28);
+    background: rgba(255, 255, 255, 0.88);
+    color: var(--ink);
+    box-shadow: 0 10px 24px rgba(43, 43, 43, 0.06);
+    transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.nav-toggle span {
+    position: absolute;
+    width: 16px;
+    height: 1.5px;
+    border-radius: 999px;
+    background: currentColor;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-toggle span:first-child {
+    transform: translateY(-4px);
+}
+
+.nav-toggle span:last-child {
+    transform: translateY(4px);
+}
+
+.nav-toggle.is-open span:first-child {
+    transform: rotate(45deg);
+}
+
+.nav-toggle.is-open span:last-child {
+    transform: rotate(-45deg);
+}
+
+.mobile-nav-panel {
+    display: none;
+}
+
+.mobile-nav-links {
+    display: grid;
+    gap: 10px;
+}
+
+.mobile-nav-links a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 48px;
+    padding: 0 16px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(201, 169, 110, 0.22);
+    color: var(--ink);
+    font-size: 0.95rem;
+    font-weight: 500;
+    box-shadow: 0 12px 24px rgba(43, 43, 43, 0.05);
+}
+
+.mobile-nav-links a::after {
+    content: '\203A';
+    font-size: 1rem;
+    color: #aa8950;
+}
+
 .btn {
     display: inline-flex;
     align-items: center;
@@ -2026,12 +2101,44 @@ button {
         display: none;
     }
 
+    .topbar-actions {
+        margin-left: auto;
+        gap: 8px;
+    }
+
+    .nav-toggle {
+        position: relative;
+        display: inline-flex;
+        flex: 0 0 auto;
+    }
+
     .topbar .btn {
         min-height: 42px;
         padding: 0 14px;
         flex: 0 0 auto;
         white-space: nowrap;
         font-size: 0.88rem;
+    }
+
+    .topbar-cta {
+        padding: 0 12px;
+    }
+
+    .mobile-nav-panel {
+        display: block;
+        width: min(1180px, calc(100% - 20px));
+        margin: 8px auto 0;
+        padding: 0;
+        opacity: 0;
+        transform: translateY(-8px);
+        pointer-events: none;
+        transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+
+    .mobile-nav-panel.is-open {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
     }
 
     .hero-copy h1 {

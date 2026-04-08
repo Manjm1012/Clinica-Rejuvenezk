@@ -181,7 +181,21 @@
                 <a href="#resultados">Resultados</a>
                 <a href="#contacto">Contacto</a>
             </nav>
-            <a href="{{ $whatsappUrl }}" class="btn btn-outline" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
+            <div class="topbar-actions">
+                <a href="{{ $whatsappUrl }}" class="btn btn-outline topbar-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
+                <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav-panel" aria-label="Abrir menu de navegacion">
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+        <div class="mobile-nav-panel" id="mobile-nav-panel" hidden>
+            <nav class="mobile-nav-links" aria-label="Navegacion movil">
+                <a href="#servicios">Servicios</a>
+                <a href="#resultados">Resultados</a>
+                <a href="#contacto">Contacto</a>
+                <a href="{{ $whatsappUrl }}" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>WhatsApp</a>
+            </nav>
         </div>
     </header>
 
