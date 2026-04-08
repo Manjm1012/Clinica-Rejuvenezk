@@ -585,13 +585,13 @@ a {
 .mobile-nav-shell {
     display: grid;
     gap: 18px;
-    padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 24px;
+    padding: calc(20px + env(safe-area-inset-top, 0px)) 20px calc(28px + env(safe-area-inset-bottom, 0px));
     border-radius: 0;
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(249, 245, 239, 0.96)),
-        rgba(255, 255, 255, 0.98);
+    background: linear-gradient(180deg, #fdfbf7 0%, #f7f1e8 100%);
     box-shadow: none;
     min-height: 100dvh;
+    position: relative;
+    z-index: 1;
 }
 
 .mobile-nav-head {
@@ -646,6 +646,8 @@ a {
 .mobile-nav-links {
     display: grid;
     gap: 10px;
+    position: relative;
+    z-index: 1;
 }
 
 .mobile-nav-links a {
@@ -2216,6 +2218,9 @@ button {
         opacity: 0;
         transition: transform 0.26s ease, opacity 0.26s ease;
         z-index: 29;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        background: linear-gradient(180deg, #fdfbf7 0%, #f7f1e8 100%);
     }
 
     .mobile-nav-overlay.is-open {
