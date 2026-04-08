@@ -34,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         if (config('app.env') !== 'local') {
+            URL::forceRootUrl(rtrim((string) config('app.url'), '/'));
             URL::forceScheme('https');
         }
     }
