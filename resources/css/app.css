@@ -620,6 +620,10 @@ button {
     font-family: var(--font-serif);
 }
 
+.hero-copy {
+    max-width: 39rem;
+}
+
 .hero-brand-ribbon {
     display: inline-flex;
     align-items: center;
@@ -697,6 +701,21 @@ button {
     line-height: 1.8;
 }
 
+.hero-copy .lead {
+    max-width: 34rem;
+    font-size: 1.04rem;
+}
+
+.hero-editorial-note {
+    max-width: 32rem;
+    margin: 16px 0 0;
+    padding-left: 16px;
+    border-left: 1px solid rgba(201, 169, 110, 0.42);
+    color: #7a6a68;
+    font-size: 0.95rem;
+    line-height: 1.8;
+}
+
 .hero-actions,
 .cta-actions,
 .service-links {
@@ -708,9 +727,10 @@ button {
 
 .hero-metrics {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
     margin-top: 28px;
+    max-width: 32rem;
 }
 
 .hero-metrics article,
@@ -729,13 +749,15 @@ button {
 }
 
 .hero-metrics article {
-    border-radius: 24px;
-    padding: 18px;
+    border-radius: 20px;
+    padding: 16px 18px;
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 12px 28px rgba(43, 43, 43, 0.05);
 }
 
 .hero-metrics strong {
     display: block;
-    font-size: 1.75rem;
+    font-size: 1.55rem;
     margin-bottom: 6px;
 }
 
@@ -746,7 +768,7 @@ button {
 
 .hero-panel {
     display: grid;
-    gap: 16px;
+    gap: 12px;
 }
 
 .hero-portrait-card {
@@ -754,8 +776,8 @@ button {
     grid-template-columns: minmax(200px, 0.9fr) minmax(0, 1.1fr);
     gap: 18px;
     align-items: stretch;
-    min-height: 420px;
-    padding: 20px;
+    min-height: 440px;
+    padding: 18px;
 }
 
 .hero-portrait-media {
@@ -911,14 +933,32 @@ button {
     line-height: 0.96;
 }
 
+.hero-portrait-copy h2 {
+    max-width: 18rem;
+}
+
 .hero-stack {
     display: grid;
     gap: 14px;
 }
 
+.hero-stack-editorial {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .mini-card {
-    border-radius: 22px;
-    padding: 18px 20px;
+    border-radius: 18px;
+    padding: 16px 18px;
+}
+
+.hero-accent-card {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 244, 238, 0.96));
+    border-color: rgba(201, 169, 110, 0.24);
+}
+
+.hero-accent-card-muted {
+    background: rgba(255, 255, 255, 0.66);
+    box-shadow: 0 10px 24px rgba(43, 43, 43, 0.04);
 }
 
 .mini-card span,
@@ -1314,6 +1354,13 @@ button {
         padding-top: 30px;
     }
 
+    .hero-copy,
+    .hero-copy .lead,
+    .hero-editorial-note,
+    .hero-metrics {
+        max-width: none;
+    }
+
     .brand-copy strong {
         font-size: clamp(1.15rem, 2.8vw, 1.5rem);
     }
@@ -1337,6 +1384,10 @@ button {
     .hero-brand-ribbon {
         width: 100%;
         max-width: 420px;
+    }
+
+    .hero-stack-editorial {
+        grid-template-columns: 1fr;
     }
 
     .landing-hero-card,
@@ -1385,6 +1436,11 @@ button {
     .cta p {
         font-size: 0.98rem;
         line-height: 1.72;
+    }
+
+    .hero-editorial-note {
+        font-size: 0.92rem;
+        padding-left: 14px;
     }
 
     .kicker,

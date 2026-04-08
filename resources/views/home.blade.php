@@ -1,8 +1,8 @@
 @php
     $clinicName = $settings['clinic_name'] ?? 'Clinica Rejuvenezk';
     $heroKicker = $settings['hero_kicker'] ?? 'Medicina estetica avanzada';
-    $heroTitle = $settings['hero_title'] ?? 'Tu mejor version, con criterio medico y resultados naturales.';
-    $heroSubtitle = $settings['hero_subtitle'] ?? 'Protocolos personalizados para rejuvenecimiento facial, armonizacion y bienestar integral.';
+    $heroTitle = $settings['hero_title'] ?? 'Rejuvenecimiento facial con resultados naturales.';
+    $heroSubtitle = $settings['hero_subtitle'] ?? 'Tecnologia avanzada, criterio medico y protocolos personalizados para armonizar tu rostro sin perder expresion.';
     $heroPrimaryCta = $settings['hero_primary_cta'] ?? 'Reservar valoracion';
     $heroSecondaryCta = $settings['hero_secondary_cta'] ?? 'Ver tratamientos';
     $heroCardKicker = $settings['hero_card_kicker'] ?? 'Primera cita';
@@ -40,7 +40,7 @@
         $bannerMedia = asset('storage/' . $featuredServices->first()->image_path);
     }
 
-    $heroMetrics = $stats->take(3)->map(fn ($stat) => [
+    $heroMetrics = $stats->take(2)->map(fn ($stat) => [
         'value' => $stat->value,
         'label' => $stat->label,
     ]);
@@ -48,10 +48,13 @@
     if ($heroMetrics->isEmpty()) {
         $heroMetrics = collect([
             ['value' => '+4,800', 'label' => 'Pacientes atendidos'],
-            ['value' => '98%', 'label' => 'Satisfaccion global'],
             ['value' => '12 anos', 'label' => 'Experiencia clinica'],
         ]);
     }
+
+    $heroEditorialNote = $doctor?->name
+        ? 'Valoracion dirigida por ' . $doctor->name . ' con enfoque medico estetico y protocolos a medida.'
+        : 'Valoraciones personalizadas con criterio medico, tecnologia avanzada y resultados armonicos.';
 
     $instagramHandle = '@drkevin_rejuvenezk';
 
@@ -158,6 +161,7 @@
                 <p class="kicker">{{ $heroKicker }}</p>
                 <h1>{{ $heroTitle }}</h1>
                 <p class="lead">{{ $heroSubtitle }}</p>
+                <p class="hero-editorial-note">{{ $heroEditorialNote }}</p>
                 <div class="hero-actions">
                     <a href="#contacto" class="btn btn-primary">{{ $heroPrimaryCta }}</a>
                     <a href="#servicios" class="btn btn-ghost">{{ $heroSecondaryCta }}</a>
@@ -207,12 +211,12 @@
                         <p>{{ $heroCardText }}</p>
                     </div>
                 </div>
-                <div class="hero-stack">
-                    <div class="mini-card">
+                <div class="hero-stack hero-stack-editorial">
+                    <div class="mini-card hero-accent-card">
                         <span>{{ $heroStackPrimaryLabel }}</span>
                         <strong>{{ $featuredServices->first()?->name ?: 'Lift & Glow 360' }}</strong>
                     </div>
-                    <div class="mini-card">
+                    <div class="mini-card hero-accent-card-muted">
                         <span>{{ $heroStackSecondaryLabel }}</span>
                         <strong>{{ $doctor?->name ?: 'Equipo medico premium' }}</strong>
                     </div>
