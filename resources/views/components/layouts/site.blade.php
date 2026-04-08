@@ -12,7 +12,7 @@
         <header class="topbar">
             <a href="{{ route('home') }}" class="brand-mark">
                 @if (!empty($currentClinic?->logo_path))
-                    <img src="{{ asset('storage/' . $currentClinic->logo_path) }}" alt="Logo {{ $settings['clinic_name'] ?? 'Clínica' }}" class="brand-logo">
+                    <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($currentClinic->logo_path) }}" alt="Logo {{ $settings['clinic_name'] ?? 'Clínica' }}" class="brand-logo">
                 @else
                     {{ $settings['clinic_name'] ?? 'Clínica Rejuvenezk' }}
                 @endif

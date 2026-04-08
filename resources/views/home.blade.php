@@ -34,8 +34,8 @@
     $whatsappUrl = $whatsappRawUrl !== ''
         ? $whatsappRawUrl
         : ($whatsappDigits ? 'https://wa.me/' . $whatsappDigits : '#contacto');
-    $clinicLogoUrl = !empty($clinic?->logo_path) ? asset('storage/' . $clinic->logo_path) : null;
-    $doctorPhotoUrl = !empty($doctor?->photo_path) ? asset('storage/' . $doctor->photo_path) : null;
+    $clinicLogoUrl = !empty($clinic?->logo_path) ? \Illuminate\Support\Facades\Storage::disk('public')->url($clinic->logo_path) : null;
+    $doctorPhotoUrl = !empty($doctor?->photo_path) ? \Illuminate\Support\Facades\Storage::disk('public')->url($doctor->photo_path) : null;
     $brandInitials = collect(preg_split('/\s+/', trim($clinicName)))
         ->filter()
         ->take(2)
@@ -44,9 +44,9 @@
     $bannerMedia = null;
 
     if (!empty($featuredServices->first()?->banner_path)) {
-        $bannerMedia = asset('storage/' . $featuredServices->first()->banner_path);
+        $bannerMedia = \Illuminate\Support\Facades\Storage::disk('public')->url($featuredServices->first()->banner_path);
     } elseif (!empty($featuredServices->first()?->image_path)) {
-        $bannerMedia = asset('storage/' . $featuredServices->first()->image_path);
+        $bannerMedia = \Illuminate\Support\Facades\Storage::disk('public')->url($featuredServices->first()->image_path);
     }
 
     $heroMetrics = $stats->take(2)->map(fn ($stat) => [
@@ -386,7 +386,7 @@
                                     <article class="landing-service-card">
                                         @if ($service->image_path)
                                             <figure class="media-placeholder media-placeholder-service service-media">
-                                                <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
+                                                <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
                                             </figure>
                                         @endif
                                         <div class="service-card-copy">
@@ -409,7 +409,7 @@
                                 <article class="landing-service-card">
                                     @if ($service->image_path)
                                         <figure class="media-placeholder media-placeholder-service service-media">
-                                            <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
+                                            <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
                                         </figure>
                                     @endif
                                     <div class="service-card-copy">

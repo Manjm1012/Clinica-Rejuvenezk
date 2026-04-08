@@ -30,7 +30,7 @@
                         <article class="landing-service-card">
                             @if ($service->image_path)
                                 <figure class="media-placeholder media-placeholder-service service-media">
-                                    <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
+                                    <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
                                 </figure>
                             @endif
                             <div class="service-card-copy">

@@ -51,7 +51,14 @@ class ClinicResource extends Resource
                     ->disk('public')
                     ->visibility('public')
                     ->directory('branding/logos')
-                    ->imageEditor(),
+                    ->acceptedFileTypes([
+                        'image/jpeg',
+                        'image/png',
+                        'image/webp',
+                        'image/svg+xml',
+                    ])
+                    ->maxSize(5120)
+                    ->helperText('Formatos recomendados: SVG, PNG o WebP. El editor se desactiva para permitir logos vectoriales y transparentes.'),
                 Forms\Components\TextInput::make('slug')->required()->maxLength(200)->unique(Clinic::class, 'slug', ignoreRecord: true),
                 Forms\Components\TextInput::make('domain')->maxLength(255)->unique(Clinic::class, 'domain', ignoreRecord: true),
                 Forms\Components\TextInput::make('timezone')->required()->default('America/Bogota')->maxLength(80),
