@@ -240,7 +240,7 @@
             @endif
         </section>
 
-        <section id="servicios" class="section section-soft">
+        <section id="servicios" class="section section-soft section-beige">
             <div class="container reveal reveal-2">
                 <p class="kicker">{{ $servicesKicker }}</p>
                 <h2 class="section-title">{{ $servicesTitle }}</h2>
@@ -296,12 +296,12 @@
             </div>
         </section>
 
-        <section id="resultados" class="section container">
-            <div class="reveal reveal-2">
+        <section id="resultados" class="section section-white">
+            <div class="container reveal reveal-2">
                 <p class="kicker">{{ $testimonialsKicker }}</p>
                 <h2 class="section-title">{{ $testimonialsTitle }}</h2>
             </div>
-            <div class="testimonials-grid reveal reveal-3">
+            <div class="container testimonials-grid reveal reveal-3">
                 @forelse ($testimonialsToShow as $testimonial)
                     <blockquote class="quote-card">
                         <div class="testimonial-rating">{{ str_repeat('★', max(1, (int) $testimonial->rating)) }}</div>
@@ -325,7 +325,7 @@
             </div>
         </section>
 
-        <section id="redes" class="section section-soft social-section">
+        <section id="redes" class="section section-soft section-beige social-section">
             <div class="container reveal reveal-2">
                 <p class="kicker">{{ $socialKicker }}</p>
                 <h2 class="section-title">{{ $socialTitle }}</h2>
@@ -344,7 +344,7 @@
             </div>
         </section>
 
-        <section id="contacto" class="section cta-wrap">
+        <section id="contacto" class="section section-white cta-wrap">
             <div class="container contact-layout reveal reveal-2">
                 <div class="cta">
                     <div>
