@@ -16,7 +16,7 @@
                 <a href="#doctor">Especialista</a>
                 <a href="#testimonios">Testimonios</a>
                 <a href="#contacto">Contacto</a>
-                <a href="{{ 'https://wa.me/' . preg_replace('/[^0-9]/', '', $settings['whatsapp_number'] ?? '') }}" class="cta-nav" target="_blank" rel="noreferrer">WhatsApp</a>
+                <a href="{{ !empty($settings['whatsapp_url']) ? $settings['whatsapp_url'] : ('https://wa.me/' . preg_replace('/[^0-9]/', '', $settings['whatsapp_number'] ?? '')) }}" class="cta-nav" target="_blank" rel="noreferrer">WhatsApp</a>
             </nav>
         </header>
 

@@ -28,8 +28,11 @@
     $topbarCtaLabel = $settings['topbar_cta_label'] ?? 'Agenda ahora';
     $ctaWhatsappLabel = $settings['cta_whatsapp_label'] ?? 'WhatsApp';
     $ctaEmailLabel = $settings['cta_email_label'] ?? 'Solicitar informacion';
+    $whatsappRawUrl = trim((string) ($settings['whatsapp_url'] ?? ''));
     $whatsappDigits = preg_replace('/[^0-9]/', '', $settings['whatsapp_number'] ?? '');
-    $whatsappUrl = $whatsappDigits ? 'https://wa.me/' . $whatsappDigits : '#contacto';
+    $whatsappUrl = $whatsappRawUrl !== ''
+        ? $whatsappRawUrl
+        : ($whatsappDigits ? 'https://wa.me/' . $whatsappDigits : '#contacto');
     $clinicLogoUrl = !empty($clinic?->logo_path) ? asset('storage/' . $clinic->logo_path) : null;
     $doctorPhotoUrl = !empty($doctor?->photo_path) ? asset('storage/' . $doctor->photo_path) : null;
     $brandInitials = collect(preg_split('/\s+/', trim($clinicName)))

@@ -44,6 +44,7 @@ class HomeController extends Controller
         ], SiteSetting::group('branding'));
 
         $contact = array_merge([
+            'whatsapp_url' => '',
             'whatsapp_number' => '',
             'phone' => '',
             'email' => '',

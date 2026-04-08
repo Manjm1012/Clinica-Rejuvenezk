@@ -14,6 +14,7 @@ class ServiceController extends Controller
             'service' => $service->load(['category', 'faqs', 'galleryItems']),
             'settings' => [
                 'clinic_name' => SiteSetting::get('branding', 'clinic_name', 'Clínica Rejuvenezk'),
+                'whatsapp_url' => SiteSetting::get('contact', 'whatsapp_url', ''),
                 'whatsapp_number' => SiteSetting::get('contact', 'whatsapp_number', ''),
                 'phone' => SiteSetting::get('contact', 'phone', ''),
                 'email' => SiteSetting::get('contact', 'email', ''),
