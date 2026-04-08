@@ -10,6 +10,9 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class ClinicResource extends Resource
 {
@@ -60,6 +63,25 @@ class ClinicResource extends Resource
                     ->previewable(false)
                     ->downloadable()
                     ->openable()
+                    ->saveUploadedFileUsing(function (Forms\Components\BaseFileUpload $component, TemporaryUploadedFile $file): ?string {
+                        $extension = $file->getClientOriginalExtension() ?: $file->guessExtension() ?: 'bin';
+                        $path = trim('branding/logos/' . Str::ulid() . '.' . $extension, '/');
+                        $stream = fopen($file->getRealPath(), 'r');
+
+                        if ($stream === false) {
+                            return null;
+                        }
+
+                        try {
+                            Storage::disk('public')->put($path, $stream, [
+                                'visibility' => 'public',
+                            ]);
+                        } finally {
+                            fclose($stream);
+                        }
+
+                        return Storage::disk('public')->exists($path) ? $path : null;
+                    })
                     ->helperText('Formatos recomendados: SVG, PNG o WebP. El editor se desactiva para permitir logos vectoriales y transparentes.'),
                 Forms\Components\TextInput::make('slug')->required()->maxLength(200)->unique(Clinic::class, 'slug', ignoreRecord: true),
                 Forms\Components\TextInput::make('domain')->maxLength(255)->unique(Clinic::class, 'domain', ignoreRecord: true),
