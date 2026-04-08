@@ -1,0 +1,357 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Fraunces', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+    --bg: #f6efe7;
+    --paper: rgba(255, 248, 243, 0.75);
+    --ink: #25161a;
+    --muted: #6f565f;
+    --accent: #a33b54;
+    --accent-soft: #e4b8b6;
+    --line: rgba(37, 22, 26, 0.08);
+    --shadow: 0 20px 70px rgba(101, 47, 61, 0.12);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body.site-body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--ink);
+    background:
+        radial-gradient(circle at top left, rgba(222, 176, 172, 0.65), transparent 28%),
+        radial-gradient(circle at right 20%, rgba(163, 59, 84, 0.15), transparent 20%),
+        linear-gradient(180deg, #fff8f3 0%, #f4e6de 100%);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.site-shell {
+    width: min(1200px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 24px 0 48px;
+}
+
+.topbar,
+.hero-card-panel,
+.stat-card,
+.service-card,
+.doctor-box,
+.testimonial-card,
+.contact-form,
+.detail-card,
+.flash-success,
+.site-footer,
+.rich-copy,
+.faq-list details {
+    backdrop-filter: blur(20px);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 18px 22px;
+    border-radius: 22px;
+    position: sticky;
+    top: 14px;
+    z-index: 10;
+}
+
+.brand-mark {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    display: inline-flex;
+    align-items: center;
+}
+
+.brand-logo {
+    height: 42px;
+    width: auto;
+    max-width: 190px;
+    object-fit: contain;
+    display: block;
+}
+
+.topnav {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-size: 0.95rem;
+}
+
+.cta-nav,
+.btn-primary,
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 14px 22px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.cta-nav,
+.btn-primary {
+    background: var(--accent);
+    color: #fff9f6;
+}
+
+.btn-secondary {
+    border: 1px solid rgba(163, 59, 84, 0.25);
+    background: rgba(255, 255, 255, 0.55);
+}
+
+.cta-nav:hover,
+.btn-primary:hover,
+.btn-secondary:hover {
+    transform: translateY(-2px);
+}
+
+.hero-grid,
+.split-section,
+.contact-section,
+.detail-hero {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+    align-items: stretch;
+}
+
+.hero-grid {
+    padding: 54px 0 36px;
+}
+
+.hero-copy h1,
+.detail-hero h1 {
+    margin: 12px 0 18px;
+    font-size: clamp(2.7rem, 6vw, 5.2rem);
+    line-height: 0.95;
+}
+
+.hero-copy p,
+.lead-text,
+.detail-hero p,
+.service-card p,
+.testimonial-card p,
+.rich-copy,
+.contact-section p {
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.eyebrow,
+.mini-label,
+.service-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(163, 59, 84, 0.08);
+    color: var(--accent);
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.hero-actions,
+.service-links,
+.doctor-meta,
+.contact-data {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.hero-card {
+    min-height: 420px;
+    display: grid;
+    align-items: end;
+    border-radius: 36px;
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.22)),
+        linear-gradient(135deg, #b24f65 0%, #7f243c 50%, #3b1723 100%);
+    padding: 24px;
+}
+
+.hero-card-panel,
+.detail-card {
+    border-radius: 28px;
+    padding: 26px;
+    color: #fff7f5;
+    background: rgba(52, 17, 27, 0.42);
+}
+
+.stats-grid,
+.card-grid,
+.testimonial-grid {
+    display: grid;
+    gap: 18px;
+}
+
+.stats-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.testimonial-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.section-block {
+    padding: 54px 0 0;
+}
+
+.section-head {
+    margin-bottom: 22px;
+}
+
+.section-head h2 {
+    margin: 10px 0 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.stat-card,
+.service-card,
+.doctor-box,
+.testimonial-card,
+.contact-form,
+.rich-copy,
+.faq-list details,
+.site-footer {
+    border-radius: 24px;
+    padding: 22px;
+}
+
+.stat-card strong {
+    display: block;
+    font-size: 2.4rem;
+}
+
+.service-card h3,
+.testimonial-card strong,
+.doctor-box h3 {
+    margin: 14px 0 10px;
+}
+
+.doctor-profile {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+}
+
+.doctor-photo {
+    width: 100%;
+    max-width: 220px;
+    aspect-ratio: 4 / 5;
+    border-radius: 24px;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+}
+
+.tech-list,
+.faq-list {
+    display: grid;
+    gap: 14px;
+}
+
+.tech-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tech-list li {
+    display: grid;
+    gap: 4px;
+}
+
+.testimonial-rating {
+    color: #c6803a;
+    letter-spacing: 0.12em;
+}
+
+.contact-form {
+    display: grid;
+    gap: 12px;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+    width: 100%;
+    border-radius: 16px;
+    border: 1px solid rgba(37, 22, 26, 0.12);
+    background: rgba(255, 255, 255, 0.72);
+    padding: 14px 16px;
+    color: var(--ink);
+}
+
+.flash-success {
+    margin-top: 14px;
+    padding: 14px 18px;
+    border-radius: 18px;
+    color: #1f5d3f;
+}
+
+.site-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 48px;
+}
+
+@media (max-width: 980px) {
+    .hero-grid,
+    .split-section,
+    .contact-section,
+    .detail-hero,
+    .stats-grid,
+    .card-grid,
+    .testimonial-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar,
+    .site-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .topnav {
+        gap: 12px;
+    }
+
+    .doctor-profile {
+        grid-template-columns: 1fr;
+    }
+
+    .doctor-photo {
+        max-width: 100%;
+        width: min(300px, 100%);
+    }
+}
