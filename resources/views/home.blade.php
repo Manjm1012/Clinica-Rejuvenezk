@@ -11,15 +11,17 @@
     $heroStackPrimaryLabel = $settings['hero_stack_primary_label'] ?? 'Protocolo estrella';
     $heroStackSecondaryLabel = $settings['hero_stack_secondary_label'] ?? 'Especialista';
     $servicesKicker = $settings['services_kicker'] ?? 'Nuestros tratamientos';
-    $servicesTitle = $settings['services_title'] ?? 'Tecnologia, precision y naturalidad';
+    $servicesTitle = $settings['services_title'] ?? 'Tratamientos seleccionados con enfoque medico estetico';
+    $servicesLead = $settings['services_lead'] ?? 'Cada protocolo combina diagnostico, tecnica y naturalidad para construir resultados elegantes, progresivos y coherentes con tu rostro.';
     $testimonialsKicker = $settings['testimonials_kicker'] ?? 'Testimonios';
     $testimonialsTitle = $settings['testimonials_title'] ?? 'Pacientes que ya viven su cambio';
     $socialKicker = $settings['social_kicker'] ?? ('Comunidad ' . $clinicName);
     $socialTitle = $settings['social_title'] ?? 'Conecta con nuestras redes y canales';
     $socialLead = $settings['social_lead'] ?? 'Comparte resultados, conoce casos reales y recibe novedades de nuestros tratamientos en tiempo real.';
     $ctaKicker = $settings['cta_kicker'] ?? 'Agenda tu cita';
-    $ctaTitle = $settings['cta_title'] ?? 'Empieza hoy tu protocolo personalizado.';
-    $ctaBody = $settings['cta_body'] ?? 'Atencion presencial y seguimiento digital para una experiencia comercial ordenada.';
+    $ctaTitle = $settings['cta_title'] ?? 'Empieza tu valoracion con una experiencia clara y personalizada.';
+    $ctaBody = $settings['cta_body'] ?? 'Atencion medica estetica, seguimiento ordenado y una propuesta pensada para tus objetivos reales.';
+    $ctaNote = $settings['cta_note'] ?? 'Respuesta comercial por WhatsApp o correo con orientacion inicial y siguientes pasos.';
     $topbarCtaLabel = $settings['topbar_cta_label'] ?? 'Agenda ahora';
     $ctaWhatsappLabel = $settings['cta_whatsapp_label'] ?? 'WhatsApp';
     $ctaEmailLabel = $settings['cta_email_label'] ?? 'Solicitar informacion';
@@ -248,6 +250,7 @@
             <div class="container reveal reveal-2">
                 <p class="kicker">{{ $servicesKicker }}</p>
                 <h2 class="section-title">{{ $servicesTitle }}</h2>
+                <p class="section-intro service-intro">{{ $servicesLead }}</p>
                 @foreach ($serviceCategories as $category)
                     @php
                         $servicesBySubcategory = $category->services
@@ -355,6 +358,7 @@
                         <p class="kicker">{{ $ctaKicker }}</p>
                         <h2>{{ $ctaTitle }}</h2>
                         <p>{{ $settings['address'] ?: $ctaBody }}</p>
+                        <p class="cta-note">{{ $ctaNote }}</p>
                     </div>
                     <div class="cta-actions">
                         <a class="btn btn-primary" href="{{ $whatsappUrl }}" @if($whatsappDigits) target="_blank" rel="noopener noreferrer" @endif>{{ $ctaWhatsappLabel }}</a>
