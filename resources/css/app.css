@@ -820,7 +820,7 @@ button {
 
 .hero-panel {
     display: grid;
-    gap: 12px;
+    gap: 14px;
 }
 
 .hero-portrait-card {
@@ -829,16 +829,30 @@ button {
     gap: 18px;
     align-items: stretch;
     min-height: 440px;
-    padding: 18px;
-    box-shadow: 0 26px 68px rgba(43, 43, 43, 0.1);
+    padding: 20px;
+    border-radius: 38px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(245, 240, 233, 0.94)),
+        linear-gradient(135deg, rgba(201, 169, 110, 0.08), rgba(168, 191, 163, 0.12));
+    box-shadow: 0 32px 80px rgba(43, 43, 43, 0.12);
 }
 
 .hero-portrait-media {
     position: relative;
     overflow: hidden;
-    border-radius: 26px;
+    border-radius: 30px;
     min-height: 100%;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(237, 230, 223, 0.92));
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(231, 223, 214, 0.94));
+}
+
+.hero-portrait-media::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 12% 12%, rgba(255, 255, 255, 0.25), transparent 46%);
+    pointer-events: none;
+    z-index: 1;
 }
 
 .hero-portrait-media::after {
@@ -868,16 +882,16 @@ button {
     left: 18px;
     right: 18px;
     bottom: 18px;
-    z-index: 1;
+    z-index: 2;
     display: grid;
     gap: 4px;
     padding: 14px 16px;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.18);
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    background: rgba(42, 36, 36, 0.38);
+    border: 1px solid rgba(255, 255, 255, 0.24);
     backdrop-filter: blur(14px);
     color: #fffaf7;
-    box-shadow: 0 12px 28px rgba(43, 43, 43, 0.12);
+    box-shadow: 0 14px 32px rgba(43, 43, 43, 0.2);
 }
 
 .hero-portrait-note strong {
@@ -921,8 +935,9 @@ button {
 
 .hero-portrait-copy {
     display: grid;
-    align-content: center;
+    align-content: start;
     gap: 16px;
+    padding: 4px 2px 2px;
 }
 
 .hero-brand-chip {
@@ -930,10 +945,11 @@ button {
     align-items: center;
     gap: 12px;
     width: fit-content;
-    padding: 10px 14px;
+    padding: 9px 13px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.88);
-    border: 1px solid rgba(201, 169, 110, 0.22);
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(201, 169, 110, 0.28);
+    box-shadow: 0 10px 26px rgba(43, 43, 43, 0.08);
 }
 
 .hero-brand-chip-logo {
@@ -1000,12 +1016,14 @@ button {
     line-height: 1.15;
     letter-spacing: -0.01em;
     color: #2f2c2c;
+    margin: 2px 0 0;
 }
 
 .hero-portrait-copy p {
     font-size: 0.98rem;
     line-height: 1.78;
     color: #685c5e;
+    margin: 0;
 }
 
 .hero-stack {
@@ -1015,12 +1033,19 @@ button {
 
 .hero-stack-editorial {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 2px;
 }
 
 .mini-card {
     border-radius: 18px;
     padding: 16px 18px;
     border-left: 2px solid rgba(201, 169, 110, 0.32);
+}
+
+.hero-accent-card strong,
+.hero-accent-card-muted strong {
+    font-size: 1.04rem;
+    letter-spacing: -0.01em;
 }
 
 .hero-accent-card {
