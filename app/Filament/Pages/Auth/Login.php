@@ -20,7 +20,7 @@ class Login extends BaseLogin
 
     public function getSubheading(): string | Htmlable | null
     {
-        return 'Ingresa para administrar contenidos, servicios, redes sociales y solicitudes de pacientes.';
+        return 'Ingresa al panel editorial para gestionar contenidos, tratamientos y solicitudes con una experiencia clara y ordenada.';
     }
 
     protected function getClinicName(): string
