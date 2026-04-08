@@ -48,7 +48,10 @@ class ClinicResource extends Resource
                 Forms\Components\FileUpload::make('logo_path')
                     ->label('Logo de la clínica')
                     ->image()
-                    ->directory('branding/logos'),
+                    ->disk('public')
+                    ->visibility('public')
+                    ->directory('branding/logos')
+                    ->imageEditor(),
                 Forms\Components\TextInput::make('slug')->required()->maxLength(200)->unique(Clinic::class, 'slug', ignoreRecord: true),
                 Forms\Components\TextInput::make('domain')->maxLength(255)->unique(Clinic::class, 'domain', ignoreRecord: true),
                 Forms\Components\TextInput::make('timezone')->required()->default('America/Bogota')->maxLength(80),
@@ -61,7 +64,7 @@ class ClinicResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('logo_path')->label('Logo')->square(),
+                Tables\Columns\ImageColumn::make('logo_path')->label('Logo')->disk('public')->square(),
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('slug')->searchable(),
                 Tables\Columns\TextColumn::make('domain')->searchable()->placeholder('-'),

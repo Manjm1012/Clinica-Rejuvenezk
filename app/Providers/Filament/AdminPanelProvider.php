@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\Login as AdminLogin;
+use App\Models\Clinic;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -26,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(AdminLogin::class)
             ->colors([
                 'primary' => Color::Rose,
                 'gray'    => Color::Slate,
@@ -42,6 +44,9 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\FilamentInfoWidget::class,
             ])
             ->brandName('Rejuvenezk Admin')
+            ->brandLogo(fn (): ?string => $this->getBrandLogo())
+            ->darkModeBrandLogo(fn (): ?string => $this->getBrandLogo())
+            ->brandLogoHeight('2.5rem')
             ->favicon(asset('favicon.ico'))
             ->sidebarCollapsibleOnDesktop()
             ->navigationGroups([
@@ -64,5 +69,15 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ]);
+    }
+
+    protected function getBrandLogo(): ?string
+    {
+        $logoPath = Clinic::query()
+            ->where('is_active', true)
+            ->orderBy('id')
+            ->value('logo_path');
+
+        return $logoPath ? asset('storage/' . ltrim($logoPath, '/')) : null;
     }
 }

@@ -396,6 +396,69 @@ a {
     letter-spacing: 0.02em;
 }
 
+.brand-lockup {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.brand-logo-shell,
+.footer-logo-shell {
+    width: 58px;
+    height: 58px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(37, 22, 26, 0.08);
+    box-shadow: 0 16px 36px rgba(98, 57, 65, 0.12);
+}
+
+.brand-logo-mark,
+.footer-logo-mark,
+.banner-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.brand-monogram {
+    width: 58px;
+    height: 58px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 18px;
+    background: linear-gradient(145deg, #c89856 0%, #8b5e26 100%);
+    color: #fff8f3;
+    font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.brand-copy {
+    display: grid;
+    gap: 2px;
+}
+
+.brand-copy strong {
+    font-size: clamp(1.3rem, 1.7vw, 1.9rem);
+    line-height: 1;
+}
+
+.brand-copy small {
+    color: #7f6c6f;
+    font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
 .nav-links {
     display: flex;
     align-items: center;
@@ -485,6 +548,55 @@ a {
     font-family: 'Cormorant Garamond', serif;
 }
 
+.hero-brand-ribbon {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    border-radius: 24px;
+    background: rgba(255, 250, 247, 0.8);
+    border: 1px solid rgba(37, 22, 26, 0.08);
+    box-shadow: 0 18px 48px rgba(98, 57, 65, 0.12);
+    backdrop-filter: blur(16px);
+}
+
+.hero-brand-ribbon-logo {
+    width: 64px;
+    height: 64px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: inset 0 0 0 1px rgba(37, 22, 26, 0.06);
+}
+
+.hero-brand-ribbon-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.hero-brand-ribbon-copy {
+    display: grid;
+    gap: 4px;
+}
+
+.hero-brand-ribbon-copy strong {
+    font-size: 1.1rem;
+    color: #382226;
+}
+
+.hero-brand-ribbon-copy span {
+    color: #7d6668;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
 .hero-copy h1 {
     margin: 12px 0 16px;
     font-size: clamp(3rem, 6vw, 5.8rem);
@@ -564,6 +676,151 @@ a {
     gap: 16px;
 }
 
+.hero-portrait-card {
+    display: grid;
+    grid-template-columns: minmax(200px, 0.9fr) minmax(0, 1.1fr);
+    gap: 18px;
+    align-items: stretch;
+    min-height: 420px;
+    padding: 20px;
+}
+
+.hero-portrait-media {
+    position: relative;
+    overflow: hidden;
+    border-radius: 26px;
+    min-height: 100%;
+    background: linear-gradient(180deg, rgba(255, 252, 249, 0.85), rgba(224, 196, 188, 0.85));
+}
+
+.hero-portrait-media::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 42%;
+    background: linear-gradient(180deg, rgba(50, 25, 31, 0), rgba(50, 25, 31, 0.48));
+    pointer-events: none;
+}
+
+.hero-portrait-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+}
+
+.hero-portrait-image {
+    object-position: center 18%;
+    transform: scale(1.03);
+}
+
+.hero-portrait-note {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+    z-index: 1;
+    display: grid;
+    gap: 4px;
+    padding: 14px 16px;
+    border-radius: 20px;
+    background: rgba(255, 249, 245, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    backdrop-filter: blur(14px);
+    color: #fffaf7;
+    box-shadow: 0 16px 36px rgba(41, 18, 23, 0.18);
+}
+
+.hero-portrait-note strong {
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+.hero-portrait-note span {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 247, 242, 0.88);
+}
+
+.hero-portrait-fallback {
+    width: 100%;
+    height: 100%;
+    min-height: 280px;
+    display: grid;
+    place-items: center;
+    color: #fff8f3;
+    background: linear-gradient(145deg, #bf8a62 0%, #8d5a39 100%);
+}
+
+.hero-portrait-fallback span {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+}
+
+.hero-logo-fallback {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(243, 229, 222, 0.96));
+}
+
+.hero-logo-fallback img {
+    width: min(220px, 72%);
+    height: auto;
+    object-fit: contain;
+}
+
+.hero-portrait-copy {
+    display: grid;
+    align-content: center;
+    gap: 16px;
+}
+
+.hero-brand-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    width: fit-content;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(255, 251, 248, 0.82);
+    border: 1px solid rgba(37, 22, 26, 0.08);
+}
+
+.hero-brand-chip-logo {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.hero-brand-chip-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.hero-brand-chip span {
+    display: block;
+    color: #8f4f5f;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.hero-brand-chip strong {
+    display: block;
+    margin-top: 4px;
+    color: #372025;
+    font-size: 0.98rem;
+}
+
 .landing-hero-card {
     border-radius: 34px;
     padding: 28px;
@@ -638,6 +895,19 @@ a {
 
 .media-banner-fallback figcaption {
     text-align: center;
+}
+
+.banner-logo-wrap {
+    width: min(200px, 54vw);
+    height: 120px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    padding: 16px;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(37, 22, 26, 0.08);
 }
 
 .media-banner-fallback strong {
@@ -835,9 +1105,30 @@ a {
 .footer-inner {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 24px;
     padding: 18px 0 0;
     color: #6d5f61;
+}
+
+.footer-brand-lockup {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.footer-brand-lockup p,
+.footer-brand-lockup small {
+    margin: 0;
+}
+
+.footer-brand-lockup p {
+    color: #3a272b;
+    font-weight: 700;
+}
+
+.footer-brand-lockup small {
+    color: #7f6c6f;
 }
 
 .reveal {
@@ -893,6 +1184,20 @@ a {
         width: min(300px, 100%);
     }
 
+    .hero-portrait-card {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-portrait-media {
+        min-height: 320px;
+    }
+
+    .hero-portrait-note {
+        left: 14px;
+        right: 14px;
+        bottom: 14px;
+    }
+
     .social-dock {
         display: none;
     }
@@ -920,8 +1225,18 @@ a {
         align-items: flex-start;
     }
 
+    .brand-lockup,
+    .footer-brand-lockup {
+        align-items: flex-start;
+    }
+
     .hero {
         padding-top: 30px;
+    }
+
+    .hero-brand-ribbon {
+        width: 100%;
+        max-width: 420px;
     }
 
     .landing-hero-card,
@@ -956,5 +1271,28 @@ a {
     .section-title,
     .cta h2 {
         font-size: clamp(1.8rem, 9vw, 2.6rem);
+    }
+
+    .hero-brand-ribbon {
+        padding: 10px 12px;
+        gap: 10px;
+    }
+
+    .hero-brand-ribbon-logo {
+        width: 54px;
+        height: 54px;
+        border-radius: 14px;
+    }
+
+    .brand-copy small {
+        letter-spacing: 0.08em;
+    }
+
+    .brand-logo-shell,
+    .brand-monogram,
+    .footer-logo-shell {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
     }
 }

@@ -27,7 +27,12 @@ class ServiceCategoryResource extends Resource
                 Forms\Components\TextInput::make('slug')->required()->unique(ServiceCategory::class, 'slug', ignoreRecord: true)->maxLength(160),
                 Forms\Components\TextInput::make('icon')->maxLength(100),
                 Forms\Components\Textarea::make('description')->columnSpanFull(),
-                Forms\Components\FileUpload::make('image_path')->image()->directory('service-categories'),
+                Forms\Components\FileUpload::make('image_path')
+                    ->image()
+                    ->disk('public')
+                    ->visibility('public')
+                    ->directory('service-categories')
+                    ->imageEditor(),
                 Forms\Components\Toggle::make('is_active')->default(true),
                 Forms\Components\TextInput::make('sort_order')->numeric()->default(0),
             ]);
@@ -37,7 +42,7 @@ class ServiceCategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image_path')->label('')->square(),
+                Tables\Columns\ImageColumn::make('image_path')->label('')->disk('public')->square(),
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('slug')->searchable(),
                 Tables\Columns\IconColumn::make('is_active')->boolean(),

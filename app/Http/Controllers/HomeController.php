@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Clinic;
 use App\Models\Doctor;
 use App\Models\Service;
 use App\Models\ServiceCategory;
@@ -58,6 +59,7 @@ class HomeController extends Controller
 
         return view('home', [
             'settings' => array_merge($branding, $contact, $social),
+            'clinic' => Clinic::query()->where('is_active', true)->orderBy('id')->first(),
             'services' => Service::query()->where('is_active', true)->orderBy('sort_order')->get(),
             'serviceCategories' => ServiceCategory::query()
                 ->where('is_active', true)

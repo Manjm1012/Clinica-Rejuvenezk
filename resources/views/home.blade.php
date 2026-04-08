@@ -25,11 +25,16 @@
     $ctaEmailLabel = $settings['cta_email_label'] ?? 'Solicitar informacion';
     $whatsappDigits = preg_replace('/[^0-9]/', '', $settings['whatsapp_number'] ?? '');
     $whatsappUrl = $whatsappDigits ? 'https://wa.me/' . $whatsappDigits : '#contacto';
+    $clinicLogoUrl = !empty($clinic?->logo_path) ? asset('storage/' . $clinic->logo_path) : null;
+    $doctorPhotoUrl = !empty($doctor?->photo_path) ? asset('storage/' . $doctor->photo_path) : null;
+    $brandInitials = collect(preg_split('/\s+/', trim($clinicName)))
+        ->filter()
+        ->take(2)
+        ->map(fn ($segment) => strtoupper(substr($segment, 0, 1)))
+        ->implode('');
     $bannerMedia = null;
 
-    if (!empty($doctor?->photo_path)) {
-        $bannerMedia = asset('storage/' . $doctor->photo_path);
-    } elseif (!empty($featuredServices->first()?->banner_path)) {
+    if (!empty($featuredServices->first()?->banner_path)) {
         $bannerMedia = asset('storage/' . $featuredServices->first()->banner_path);
     } elseif (!empty($featuredServices->first()?->image_path)) {
         $bannerMedia = asset('storage/' . $featuredServices->first()->image_path);
@@ -48,9 +53,19 @@
         ]);
     }
 
+    $instagramHandle = '@drkevin_rejuvenezk';
+
+    if (!empty($settings['instagram_url'])) {
+        $instagramPath = trim((string) parse_url($settings['instagram_url'], PHP_URL_PATH), '/');
+
+        if ($instagramPath !== '') {
+            $instagramHandle = '@' . $instagramPath;
+        }
+    }
+
     $socialCards = collect([
-        ['label' => 'Instagram', 'icon' => 'instagram', 'handle' => '@clinicarejuvenezk', 'text' => 'Antes y despues, reels y tips de cuidado', 'url' => $settings['instagram_url'] ?? null],
-        ['label' => 'Facebook', 'icon' => 'facebook', 'handle' => 'Clinica Rejuvenezk', 'text' => 'Novedades, eventos y promociones especiales', 'url' => $settings['facebook_url'] ?? null],
+        ['label' => 'Instagram', 'icon' => 'instagram', 'handle' => $instagramHandle, 'text' => 'Antes y despues, reels y tips de cuidado', 'url' => $settings['instagram_url'] ?? null],
+        ['label' => 'Facebook', 'icon' => 'facebook', 'handle' => 'Perfil oficial', 'text' => 'Novedades, eventos y promociones especiales', 'url' => $settings['facebook_url'] ?? null],
         ['label' => 'TikTok', 'icon' => 'tiktok', 'handle' => '@rejuvenezk', 'text' => 'Videos de procedimientos y contenido educativo', 'url' => $settings['tiktok_url'] ?? null],
         ['label' => 'YouTube', 'icon' => 'youtube', 'handle' => 'Rejuvenezk TV', 'text' => 'Testimonios completos y explicacion medica', 'url' => $settings['youtube_url'] ?? null],
         ['label' => 'WhatsApp', 'icon' => 'whatsapp', 'handle' => $settings['phone'] ?: 'Agenda inmediata', 'text' => 'Atencion comercial y seguimiento de valoraciones', 'url' => $whatsappDigits ? $whatsappUrl : null],
@@ -90,7 +105,19 @@
 
     <header class="topbar reveal reveal-1">
         <div class="container topbar-inner">
-            <a href="#inicio" class="brand" aria-label="Ir al inicio de {{ $clinicName }}">{{ $clinicName }}</a>
+            <a href="#inicio" class="brand brand-lockup" aria-label="Ir al inicio de {{ $clinicName }}">
+                @if ($clinicLogoUrl)
+                    <span class="brand-logo-shell">
+                        <img src="{{ $clinicLogoUrl }}" alt="Logo de {{ $clinicName }}" class="brand-logo-mark">
+                    </span>
+                @else
+                    <span class="brand-monogram">{{ $brandInitials ?: 'CR' }}</span>
+                @endif
+                <span class="brand-copy">
+                    <strong>{{ $clinicName }}</strong>
+                    <small>{{ $doctor?->name ?: 'Medicina estetica facial y corporal' }}</small>
+                </span>
+            </a>
             <nav class="nav-links" aria-label="Navegacion principal">
                 <a href="#servicios">Servicios</a>
                 <a href="#resultados">Resultados</a>
@@ -117,6 +144,17 @@
     <main id="inicio">
         <section class="hero section container">
             <div class="hero-copy reveal reveal-2">
+                @if ($clinicLogoUrl)
+                    <div class="hero-brand-ribbon" aria-label="Marca de {{ $clinicName }}">
+                        <span class="hero-brand-ribbon-logo">
+                            <img src="{{ $clinicLogoUrl }}" alt="Logo de {{ $clinicName }}">
+                        </span>
+                        <div class="hero-brand-ribbon-copy">
+                            <strong>{{ $clinicName }}</strong>
+                            <span>{{ $doctor?->specialty ?: 'Medicina estetica facial y corporal' }}</span>
+                        </div>
+                    </div>
+                @endif
                 <p class="kicker">{{ $heroKicker }}</p>
                 <h1>{{ $heroTitle }}</h1>
                 <p class="lead">{{ $heroSubtitle }}</p>
@@ -135,10 +173,39 @@
             </div>
 
             <aside class="hero-panel reveal reveal-3" aria-label="Resumen de experiencia {{ $clinicName }}">
-                <div class="hero-card landing-hero-card">
-                    <p class="card-kicker">{{ $heroCardKicker }}</p>
-                    <h2>{{ $heroCardTitle }}</h2>
-                    <p>{{ $heroCardText }}</p>
+                <div class="hero-card landing-hero-card hero-portrait-card">
+                    <div class="hero-portrait-media">
+                        @if ($doctorPhotoUrl)
+                            <img src="{{ $doctorPhotoUrl }}" alt="Foto del doctor {{ $doctor?->name ?: $clinicName }}" loading="lazy" class="hero-portrait-image">
+                            <div class="hero-portrait-note">
+                                <strong>{{ $doctor?->name ?: $clinicName }}</strong>
+                                <span>{{ $doctor?->specialty ?: 'Medicina estetica facial y corporal' }}</span>
+                            </div>
+                        @elseif ($clinicLogoUrl)
+                            <div class="hero-portrait-fallback hero-logo-fallback">
+                                <img src="{{ $clinicLogoUrl }}" alt="Logo de {{ $clinicName }}">
+                            </div>
+                        @else
+                            <div class="hero-portrait-fallback">
+                                <span>{{ $brandInitials ?: 'CR' }}</span>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="hero-portrait-copy">
+                        <div class="hero-brand-chip">
+                            @if ($clinicLogoUrl)
+                                <span class="hero-brand-chip-logo">
+                                    <img src="{{ $clinicLogoUrl }}" alt="Logo de {{ $clinicName }}">
+                                </span>
+                            @endif
+                            <div>
+                                <span>{{ $heroCardKicker }}</span>
+                                <strong>{{ $doctor?->name ?: $clinicName }}</strong>
+                            </div>
+                        </div>
+                        <h2>{{ $doctor?->subtitle ?: $heroCardTitle }}</h2>
+                        <p>{{ $heroCardText }}</p>
+                    </div>
                 </div>
                 <div class="hero-stack">
                     <div class="mini-card">
@@ -161,6 +228,11 @@
             @else
                 <figure class="media-placeholder media-placeholder-lg media-banner media-banner-fallback">
                     <figcaption>
+                        @if ($clinicLogoUrl)
+                            <span class="banner-logo-wrap">
+                                <img src="{{ $clinicLogoUrl }}" alt="Logo de {{ $clinicName }}" class="banner-logo">
+                            </span>
+                        @endif
                         <span class="kicker">Experiencia premium</span>
                         <strong>{{ $clinicName }}</strong>
                     </figcaption>
@@ -307,7 +379,17 @@
 
     <footer class="footer">
         <div class="container footer-inner">
-            <p>{{ $clinicName }}</p>
+            <div class="footer-brand-lockup">
+                @if ($clinicLogoUrl)
+                    <span class="footer-logo-shell">
+                        <img src="{{ $clinicLogoUrl }}" alt="Logo de {{ $clinicName }}" class="footer-logo-mark">
+                    </span>
+                @endif
+                <div>
+                    <p>{{ $clinicName }}</p>
+                    <small>{{ $doctor?->name ?: 'Direccion medica estetica' }}</small>
+                </div>
+            </div>
             <p>{{ $settings['phone'] ?: 'Atencion comercial premium' }}</p>
         </div>
     </footer>

@@ -28,10 +28,16 @@ class TechnologyResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('image_path')
                     ->image()
-                    ->directory('technologies/images'),
+                    ->disk('public')
+                    ->visibility('public')
+                    ->directory('technologies/images')
+                    ->imageEditor(),
                 Forms\Components\FileUpload::make('logo_path')
                     ->image()
-                    ->directory('technologies/logos'),
+                    ->disk('public')
+                    ->visibility('public')
+                    ->directory('technologies/logos')
+                    ->imageEditor(),
                 Forms\Components\Toggle::make('is_active')
                     ->required(),
                 Forms\Components\TextInput::make('sort_order')
@@ -47,9 +53,8 @@ class TechnologyResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image_path'),
-                Tables\Columns\TextColumn::make('logo_path')
-                    ->searchable(),
+                Tables\Columns\ImageColumn::make('image_path')->disk('public'),
+                Tables\Columns\ImageColumn::make('logo_path')->label('Logo')->disk('public'),
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('sort_order')

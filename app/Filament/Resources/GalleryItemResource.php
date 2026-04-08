@@ -31,13 +31,22 @@ class GalleryItemResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('before_image_path')
                     ->image()
-                    ->directory('gallery/before'),
+                    ->disk('public')
+                    ->visibility('public')
+                    ->directory('gallery/before')
+                    ->imageEditor(),
                 Forms\Components\FileUpload::make('after_image_path')
                     ->image()
-                    ->directory('gallery/after'),
+                    ->disk('public')
+                    ->visibility('public')
+                    ->directory('gallery/after')
+                    ->imageEditor(),
                 Forms\Components\FileUpload::make('image_path')
                     ->image()
-                    ->directory('gallery/single'),
+                    ->disk('public')
+                    ->visibility('public')
+                    ->directory('gallery/single')
+                    ->imageEditor(),
                 Forms\Components\Select::make('type')
                     ->required()
                     ->options([
@@ -66,9 +75,9 @@ class GalleryItemResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('before_image_path')->label('Antes'),
-                Tables\Columns\ImageColumn::make('after_image_path')->label('Después'),
-                Tables\Columns\ImageColumn::make('image_path')->label('Imagen'),
+                Tables\Columns\ImageColumn::make('before_image_path')->label('Antes')->disk('public'),
+                Tables\Columns\ImageColumn::make('after_image_path')->label('Después')->disk('public'),
+                Tables\Columns\ImageColumn::make('image_path')->label('Imagen')->disk('public'),
                 Tables\Columns\TextColumn::make('type')
                     ->badge(),
                 Tables\Columns\IconColumn::make('is_featured')

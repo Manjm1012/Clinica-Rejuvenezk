@@ -100,11 +100,15 @@ class ServiceResource extends Resource
                     Forms\Components\FileUpload::make('image_path')
                         ->label('Imagen principal (card)')
                         ->image()
+                        ->disk('public')
+                        ->visibility('public')
                         ->directory('services/images')
                         ->imageEditor(),
                     Forms\Components\FileUpload::make('banner_path')
                         ->label('Banner de página')
                         ->image()
+                        ->disk('public')
+                        ->visibility('public')
                         ->directory('services/banners')
                         ->imageEditor(),
                 ])->columns(2),
@@ -136,6 +140,7 @@ class ServiceResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('image_path')
                     ->label('')
+                    ->disk('public')
                     ->circular()
                     ->size(48),
                 Tables\Columns\TextColumn::make('name')

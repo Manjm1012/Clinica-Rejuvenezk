@@ -25,7 +25,13 @@ class DoctorResource extends Resource
                 Forms\Components\TextInput::make('name')->required()->maxLength(200),
                 Forms\Components\TextInput::make('specialty')->maxLength(200),
                 Forms\Components\TextInput::make('subtitle')->maxLength(300),
-                Forms\Components\FileUpload::make('photo_path')->image()->directory('doctors'),
+                Forms\Components\FileUpload::make('photo_path')
+                    ->label('Foto del médico')
+                    ->image()
+                    ->disk('public')
+                    ->visibility('public')
+                    ->directory('doctors')
+                    ->imageEditor(),
                 Forms\Components\Textarea::make('bio')->columnSpanFull(),
                 Forms\Components\TextInput::make('university')->maxLength(200),
                 Forms\Components\TextInput::make('certifications')->maxLength(255),
@@ -40,7 +46,7 @@ class DoctorResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('photo_path')->label('')->circular(),
+                Tables\Columns\ImageColumn::make('photo_path')->label('')->disk('public')->circular(),
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('specialty')->wrap(),
                 Tables\Columns\IconColumn::make('is_active')->boolean(),
