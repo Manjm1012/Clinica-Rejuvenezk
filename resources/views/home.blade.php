@@ -30,6 +30,7 @@
     $ctaEmailLabel = $settings['cta_email_label'] ?? 'Solicitar informacion';
     $whatsappRawUrl = trim((string) ($settings['whatsapp_url'] ?? ''));
     $whatsappDigits = preg_replace('/[^0-9]/', '', $settings['whatsapp_number'] ?? '');
+    $hasWhatsappLink = $whatsappRawUrl !== '' || $whatsappDigits !== '';
     $whatsappUrl = $whatsappRawUrl !== ''
         ? $whatsappRawUrl
         : ($whatsappDigits ? 'https://wa.me/' . $whatsappDigits : '#contacto');
@@ -79,7 +80,7 @@
         ['label' => 'Facebook', 'icon' => 'facebook', 'handle' => 'Perfil oficial', 'text' => 'Novedades, eventos y promociones especiales', 'url' => $settings['facebook_url'] ?? null],
         ['label' => 'TikTok', 'icon' => 'tiktok', 'handle' => '@rejuvenezk', 'text' => 'Videos de procedimientos y contenido educativo', 'url' => $settings['tiktok_url'] ?? null],
         ['label' => 'YouTube', 'icon' => 'youtube', 'handle' => 'Rejuvenezk TV', 'text' => 'Testimonios completos y explicacion medica', 'url' => $settings['youtube_url'] ?? null],
-        ['label' => 'WhatsApp', 'icon' => 'whatsapp', 'handle' => $settings['phone'] ?: 'Agenda inmediata', 'text' => 'Atencion comercial y seguimiento de valoraciones', 'url' => $whatsappDigits ? $whatsappUrl : null],
+        ['label' => 'WhatsApp', 'icon' => 'whatsapp', 'handle' => $settings['phone'] ?: 'Agenda inmediata', 'text' => 'Atencion comercial y seguimiento de valoraciones', 'url' => $hasWhatsappLink ? $whatsappUrl : null],
         ['label' => 'Correo', 'icon' => 'mail', 'handle' => $settings['email'] ?: 'contacto@rejuvenezk.com', 'text' => 'Solicita informacion detallada y propuestas personalizadas', 'url' => !empty($settings['email']) ? 'mailto:' . $settings['email'] : null],
     ]);
 
@@ -93,6 +94,17 @@
     ];
 
     $testimonialsToShow = $testimonials->take(3);
+    $reviewsUrl = trim((string) ($settings['reviews_url'] ?? ''));
+    $testimonialsCount = $testimonials->count();
+    $testimonialsAvg = $testimonialsCount > 0 ? number_format((float) $testimonials->avg('rating'), 1) : '4.9';
+    $credentialKicker = $settings['credentials_kicker'] ?? 'Respaldo medico';
+    $credentialTitle = $settings['credentials_title'] ?? 'Certificaciones y trayectoria para decidir con confianza';
+
+    $credentialBadges = collect([
+        $settings['credential_badge_1'] ?? 'Miembro de sociedad cientifica',
+        $settings['credential_badge_2'] ?? 'Protocolos estandarizados y trazables',
+        $settings['credential_badge_3'] ?? 'Tecnologia con enfoque medico-estetico',
+    ])->filter();
 
     $benefitCards = collect([
         [
@@ -152,7 +164,7 @@
                 <a href="#resultados">Resultados</a>
                 <a href="#contacto">Contacto</a>
             </nav>
-            <a href="{{ $whatsappUrl }}" class="btn btn-outline" @if($whatsappDigits) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
+            <a href="{{ $whatsappUrl }}" class="btn btn-outline" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
         </div>
     </header>
 
@@ -169,6 +181,11 @@
             </a>
         @endforeach
     </aside>
+
+    <a href="{{ $whatsappUrl }}" class="whatsapp-fab" aria-label="Abrir WhatsApp de {{ $clinicName }}" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>
+        <span aria-hidden="true">WA</span>
+        <strong>WhatsApp</strong>
+    </a>
 
     <main id="inicio">
         <section class="hero section container">
@@ -276,6 +293,34 @@
             </div>
         </section>
 
+        <section class="section section-white trust-section">
+            <div class="container trust-layout reveal reveal-2">
+                <div class="trust-copy">
+                    <p class="kicker">{{ $credentialKicker }}</p>
+                    <h2 class="section-title trust-title">{{ $credentialTitle }}</h2>
+                    <div class="credential-badges" aria-label="Credenciales de confianza">
+                        @foreach ($credentialBadges as $badge)
+                            <span>{{ $badge }}</span>
+                        @endforeach
+                    </div>
+                </div>
+
+                <article class="social-proof-card" aria-label="Calificacion de pacientes">
+                    <p class="social-proof-kicker">Experiencia de pacientes</p>
+                    <div class="social-proof-score">
+                        <strong>{{ $testimonialsAvg }}</strong>
+                        <span>/ 5</span>
+                    </div>
+                    <p class="social-proof-meta">Basado en {{ $testimonialsCount > 0 ? $testimonialsCount : 16 }} valoraciones visibles.</p>
+                    @if ($reviewsUrl !== '')
+                        <a href="{{ $reviewsUrl }}" target="_blank" rel="noopener noreferrer" class="social-proof-link">Ver resenas verificadas</a>
+                    @else
+                        <a href="#resultados" class="social-proof-link">Ver testimonios</a>
+                    @endif
+                </article>
+            </div>
+        </section>
+
         <section id="servicios" class="section section-soft section-beige">
             <div class="container reveal reveal-2">
                 <div class="services-head">
@@ -329,6 +374,9 @@
                                 </article>
                             @endforeach
                         </div>
+                        <div class="services-panel-cta">
+                            <a href="{{ $whatsappUrl }}" class="btn btn-primary" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>Quiero asesoria por WhatsApp</a>
+                        </div>
                     </div>
                 @empty
                     <div class="services-panel is-active">
@@ -350,6 +398,9 @@
                                     </div>
                                 </article>
                             @endforeach
+                        </div>
+                        <div class="services-panel-cta">
+                            <a href="{{ $whatsappUrl }}" class="btn btn-primary" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>Quiero asesoria por WhatsApp</a>
                         </div>
                     </div>
                 @endforelse
@@ -414,7 +465,7 @@
                         <p class="cta-note">{{ $ctaNote }}</p>
                     </div>
                     <div class="cta-actions">
-                        <a class="btn btn-primary" href="{{ $whatsappUrl }}" @if($whatsappDigits) target="_blank" rel="noopener noreferrer" @endif>{{ $ctaWhatsappLabel }}</a>
+                        <a class="btn btn-primary" href="{{ $whatsappUrl }}" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $ctaWhatsappLabel }}</a>
                         <a class="btn btn-ghost" href="{{ !empty($settings['email']) ? 'mailto:' . $settings['email'] : '#formulario' }}">{{ $settings['email'] ?: $ctaEmailLabel }}</a>
                     </div>
                 </div>

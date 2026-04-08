@@ -595,6 +595,32 @@ button {
     fill: currentColor;
 }
 
+.whatsapp-fab {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 45;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 16px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #1fa855 0%, #1b8e4a 100%);
+    color: #f7fff9;
+    box-shadow: 0 16px 36px rgba(19, 79, 43, 0.34);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.whatsapp-fab span {
+    font-size: 0.95rem;
+    line-height: 1;
+}
+
+.whatsapp-fab strong {
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+}
+
 .landing-flash-wrap {
     position: relative;
     z-index: 2;
@@ -1018,6 +1044,91 @@ button {
     margin-top: 24px;
 }
 
+.trust-section {
+    padding-top: 30px;
+}
+
+.trust-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+    gap: 22px;
+    align-items: stretch;
+}
+
+.trust-title {
+    max-width: 20ch;
+}
+
+.credential-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.credential-badges span {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(201, 169, 110, 0.24);
+    background: rgba(255, 255, 255, 0.86);
+    color: #5d5052;
+    font-size: 0.84rem;
+    font-weight: 600;
+}
+
+.social-proof-card {
+    border-radius: 28px;
+    padding: 24px;
+    border: 1px solid rgba(37, 22, 26, 0.08);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(247, 243, 237, 0.95));
+    box-shadow: 0 16px 44px rgba(43, 43, 43, 0.06);
+}
+
+.social-proof-kicker {
+    margin: 0;
+    color: #9f7f44;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.social-proof-score {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.social-proof-score strong {
+    font-family: var(--font-serif);
+    font-size: 3rem;
+    line-height: 1;
+    color: var(--text-primary);
+}
+
+.social-proof-score span {
+    color: #7d6d6b;
+    font-size: 1.05rem;
+}
+
+.social-proof-meta {
+    margin: 12px 0 0;
+    color: #6d5f5f;
+    font-size: 0.95rem;
+    line-height: 1.75;
+}
+
+.social-proof-link {
+    display: inline-flex;
+    margin-top: 16px;
+    color: #9f7f44;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
 .benefit-card {
     position: relative;
     min-height: 220px;
@@ -1261,6 +1372,10 @@ button {
     font-size: 0.97rem;
     line-height: 1.8;
     max-width: 52rem;
+}
+
+.services-panel-cta {
+    margin-top: 20px;
 }
 
 /* ── Service grid ── */
@@ -1558,6 +1673,7 @@ button {
     .contact-layout,
     .hero,
     .benefits-head,
+    .trust-layout,
     .service-category-head,
     .services-grid,
     .benefits-grid,
@@ -1617,6 +1733,10 @@ button {
     .testimonials-grid,
     .contact-layout {
         gap: 16px;
+    }
+
+    .services-panel-cta .btn {
+        width: 100%;
     }
 
     .services-head {
@@ -1874,6 +1994,10 @@ button {
     .hero-brand-ribbon {
         padding: 10px 12px;
         gap: 10px;
+    }
+
+    .whatsapp-fab {
+        display: inline-flex;
     }
 
     .hero-brand-ribbon-logo {
