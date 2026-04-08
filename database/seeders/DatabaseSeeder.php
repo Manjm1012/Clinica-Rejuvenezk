@@ -126,6 +126,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'Ácido Hialurónico',
+                'subcategory' => 'Rellenos faciales',
                 'short' => 'Rellenos faciales para restaurar volumen, hidratación y definición del rostro.',
                 'description' => '<p>Tratamiento de rellenos faciales con ácido hialurónico para soporte, proyección y armonización de distintas zonas faciales.</p>',
                 'featured' => true,
@@ -135,6 +136,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'Radiesse',
+                'subcategory' => 'Rellenos faciales',
                 'short' => 'Relleno facial con hidroxiapatita de calcio para soporte estructural y bioestimulación.',
                 'description' => '<p>Procedimiento de relleno facial con hidroxiapatita de calcio orientado a soporte y mejora progresiva de la calidad de la piel.</p>',
                 'featured' => true,
@@ -144,6 +146,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'Grasa Autóloga',
+                'subcategory' => 'Rellenos faciales',
                 'short' => 'Reposición de grasa facial para restaurar volumen de forma biológica.',
                 'description' => '<p>Reposición de grasa facial con enfoque en recuperación de volúmenes y contornos de manera natural.</p>',
                 'featured' => false,
@@ -153,6 +156,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'Sculptra',
+                'subcategory' => 'Bioestimuladores de colageno',
                 'short' => 'Bioestimulador de colágeno con ácido poliláctico para firmeza y soporte.',
                 'description' => '<p>Bioestimulador de colágeno con ácido poliláctico para estimular firmeza, estructura y calidad cutánea.</p>',
                 'featured' => true,
@@ -162,6 +166,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'Harmonyca',
+                'subcategory' => 'Bioestimuladores de colageno',
                 'short' => 'Combinación de Radiesse y ácido hialurónico para lifting y definición.',
                 'description' => '<p>Tratamiento combinado con soporte estructural y efecto de armonización facial avanzada.</p>',
                 'featured' => true,
@@ -171,6 +176,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'Ellansé',
+                'subcategory' => 'Bioestimuladores de colageno',
                 'short' => 'Bioestimulador con policaprolactona para volumen progresivo y longevidad.',
                 'description' => '<p>Bioestimulador diseñado para estimular colágeno y mejorar la estructura del rostro con resultados progresivos.</p>',
                 'featured' => false,
@@ -180,6 +186,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'Rinomodelación',
+                'subcategory' => 'Armonizacion facial AC. Hialuronico',
                 'short' => 'Armonización facial con ácido hialurónico para perfilar la nariz sin cirugía.',
                 'description' => '<p>Procedimiento mínimamente invasivo para mejorar el perfil nasal y la proporción facial.</p>',
                 'featured' => true,
@@ -189,6 +196,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'Hidratación de Labios',
+                'subcategory' => 'Armonizacion facial AC. Hialuronico',
                 'short' => 'Mejora de hidratación, textura y frescura labial con ácido hialurónico.',
                 'description' => '<p>Protocolo enfocado en revitalizar labios, mejorar definición y conservar naturalidad.</p>',
                 'featured' => false,
@@ -198,6 +206,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'Mentón Proyección',
+                'subcategory' => 'Armonizacion facial AC. Hialuronico',
                 'short' => 'Proyección de mentón para balancear el perfil y la armonización facial.',
                 'description' => '<p>Tratamiento con ácido hialurónico para mejorar soporte y proporción del tercio inferior.</p>',
                 'featured' => false,
@@ -207,6 +216,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'Relleno de Pómulos',
+                'subcategory' => 'Armonizacion facial AC. Hialuronico',
                 'short' => 'Reposición de volumen malar para rejuvenecimiento y soporte medio facial.',
                 'description' => '<p>Procedimiento para recuperar estructura, proyección y transición armónica del rostro.</p>',
                 'featured' => false,
@@ -216,6 +226,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'Peptonas',
+                'subcategory' => 'Revitalizacion facial',
                 'short' => 'Revitalización facial con complejos bioactivos para luminosidad y textura.',
                 'description' => '<p>Tratamiento de revitalización facial orientado a piel opaca, hidratación y calidad cutánea.</p>',
                 'featured' => false,
@@ -225,6 +236,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'PDNR de Salmón',
+                'subcategory' => 'Revitalizacion facial',
                 'short' => 'Revitalización con polinucleótidos para reparación, hidratación y regeneración.',
                 'description' => '<p>Protocolo regenerativo para recuperación de calidad de piel y soporte tisular.</p>',
                 'featured' => false,
@@ -234,6 +246,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'NCTF',
+                'subcategory' => 'Revitalizacion facial',
                 'short' => 'Complejo revitalizante facial para hidratación profunda y efecto glow.',
                 'description' => '<p>Revitalización facial orientada a textura, hidratación y luminosidad sostenida.</p>',
                 'featured' => false,
@@ -243,6 +256,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'Perfilamiento Mandibular',
+                'subcategory' => 'Procedimiento minimamente invasivo',
                 'short' => 'Definición mandibular mínimamente invasiva para contorno y estructura.',
                 'description' => '<p>Tratamiento orientado a mejorar el borde mandibular y reforzar la armonización del perfil.</p>',
                 'featured' => true,
@@ -252,6 +266,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'Lipopapada',
+                'subcategory' => 'Procedimiento minimamente invasivo',
                 'short' => 'Procedimiento mínimamente invasivo para mejorar el contorno submentoniano.',
                 'description' => '<p>Tratamiento diseñado para reducir acúmulo graso localizado y definir el ángulo cervicomentoniano.</p>',
                 'featured' => true,
@@ -261,6 +276,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'Blefaroplastia',
+                'subcategory' => 'Procedimiento minimamente invasivo',
                 'short' => 'Corrección mínimamente invasiva de párpados para mirada más fresca y funcional.',
                 'description' => '<p>Procedimiento para rejuvenecimiento periocular con enfoque funcional y estético.</p>',
                 'featured' => true,
@@ -270,6 +286,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'Lifting de Cejas',
+                'subcategory' => 'Procedimiento minimamente invasivo',
                 'short' => 'Elevación sutil de cejas para una mirada más abierta y armónica.',
                 'description' => '<p>Procedimiento orientado a reposicionar tejidos y mejorar expresión del tercio superior.</p>',
                 'featured' => false,
@@ -279,6 +296,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'Lifting Labio Superior',
+                'subcategory' => 'Procedimiento minimamente invasivo',
                 'short' => 'Mejora de proporción del labio superior con enfoque funcional y estético.',
                 'description' => '<p>Procedimiento para optimizar la exposición del bermellón y la armonía perioral.</p>',
                 'featured' => false,
@@ -288,6 +306,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'Alectomía',
+                'subcategory' => 'Procedimiento minimamente invasivo',
                 'short' => 'Corrección de base alar para refinamiento y proporción nasal.',
                 'description' => '<p>Procedimiento mínimamente invasivo orientado a mejorar la proporción de la base nasal.</p>',
                 'featured' => false,
@@ -297,6 +316,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $facial->id,
                 'name' => 'Lobuloplastia',
+                'subcategory' => 'Procedimiento minimamente invasivo',
                 'short' => 'Corrección de lóbulo auricular para restaurar forma y funcionalidad.',
                 'description' => '<p>Procedimiento para reparar o remodelar el lóbulo de la oreja con cierre estético.</p>',
                 'featured' => false,
@@ -306,6 +326,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => $corporal->id,
                 'name' => 'Sueroterapia',
+                'subcategory' => 'Sueroterapia',
                 'short' => 'Terapia corporal complementaria para soporte metabólico, energía y bienestar integral.',
                 'description' => '<p>Protocolo corporal de soporte con sueroterapia orientado a recuperación, energía y acompañamiento de tratamientos integrales.</p>',
                 'featured' => true,
@@ -322,6 +343,7 @@ class DatabaseSeeder extends Seeder
                     'slug' => Str::slug($service['name']),
                     'short_description' => $service['short'],
                     'description' => $service['description'],
+                    'meta' => ['subcategory' => $service['subcategory']],
                     'is_featured' => $service['featured'],
                     'is_premium' => $service['premium'],
                     'is_active' => true,

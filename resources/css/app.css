@@ -672,6 +672,10 @@ a {
     margin-top: 34px;
 }
 
+.service-subcategory-block + .service-subcategory-block {
+    margin-top: 24px;
+}
+
 .service-category-head {
     display: grid;
     grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1.3fr);
@@ -699,6 +703,25 @@ a {
     letter-spacing: 0.14em;
     font-size: 0.76rem;
     font-weight: 700;
+}
+
+.service-subcategory-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 20px 0 0;
+}
+
+.service-subcategory-head h4 {
+    margin: 0;
+    font-size: 1.08rem;
+    letter-spacing: 0.01em;
+}
+
+.service-subcategory-head span {
+    color: #826b6d;
+    font-size: 0.9rem;
 }
 
 .landing-service-card {

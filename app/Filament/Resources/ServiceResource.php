@@ -7,6 +7,7 @@ use App\Models\Service;
 use App\Models\ServiceCategory;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -44,7 +45,37 @@ class ServiceResource extends Resource
                         ->label('Categoría')
                         ->options(ServiceCategory::pluck('name', 'id'))
                         ->searchable()
-                        ->preload(),
+                        ->preload()
+                        ->live(),
+                    Forms\Components\Select::make('meta.subcategory')
+                        ->label('Subcategoría')
+                        ->options(function (Get $get): array {
+                            $categoryId = $get('service_category_id');
+                            $category = $categoryId ? ServiceCategory::find($categoryId) : null;
+
+                            return match ($category?->slug) {
+                                'facial' => [
+                                    'Rellenos faciales' => 'Rellenos faciales',
+                                    'Bioestimuladores de colageno' => 'Bioestimuladores de colageno',
+                                    'Armonizacion facial AC. Hialuronico' => 'Armonizacion facial AC. Hialuronico',
+                                    'Revitalizacion facial' => 'Revitalizacion facial',
+                                    'Procedimiento minimamente invasivo' => 'Procedimiento minimamente invasivo',
+                                ],
+                                'corporal' => [
+                                    'Sueroterapia' => 'Sueroterapia',
+                                ],
+                                default => [],
+                            };
+                        })
+                        ->searchable()
+                        ->preload()
+                        ->createOptionForm([
+                            Forms\Components\TextInput::make('value')
+                                ->label('Nueva subcategoría')
+                                ->required(),
+                        ])
+                        ->createOptionUsing(fn (array $data): string => $data['value'])
+                        ->columnSpan(1),
                     Forms\Components\Textarea::make('short_description')
                         ->label('Descripción corta')
                         ->rows(3)
@@ -114,6 +145,10 @@ class ServiceResource extends Resource
                 Tables\Columns\TextColumn::make('category.name')
                     ->label('Categoría')
                     ->badge(),
+                Tables\Columns\TextColumn::make('meta.subcategory')
+                    ->label('Subcategoría')
+                    ->searchable()
+                    ->toggleable(),
                 Tables\Columns\IconColumn::make('is_featured')
                     ->label('Destacado')
                     ->boolean(),
