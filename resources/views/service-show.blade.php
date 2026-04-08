@@ -3,6 +3,9 @@
         <section class="detail-hero">
             <div>
                 <span class="eyebrow">{{ $service->category?->name }}</span>
+                @if (!empty($service->meta['subcategory']))
+                    <span class="detail-subcategory">{{ $service->meta['subcategory'] }}</span>
+                @endif
                 <h1>{{ $service->name }}</h1>
                 <p>{{ $service->short_description }}</p>
                 <div class="hero-actions">

@@ -49,13 +49,22 @@
     }
 
     $socialCards = collect([
-        ['label' => 'Instagram', 'handle' => '@clinicarejuvenezk', 'text' => 'Antes y despues, reels y tips de cuidado', 'url' => $settings['instagram_url'] ?? null],
-        ['label' => 'Facebook', 'handle' => 'Clinica Rejuvenezk', 'text' => 'Novedades, eventos y promociones especiales', 'url' => $settings['facebook_url'] ?? null],
-        ['label' => 'TikTok', 'handle' => '@rejuvenezk', 'text' => 'Videos de procedimientos y contenido educativo', 'url' => $settings['tiktok_url'] ?? null],
-        ['label' => 'YouTube', 'handle' => 'Rejuvenezk TV', 'text' => 'Testimonios completos y explicacion medica', 'url' => $settings['youtube_url'] ?? null],
-        ['label' => 'WhatsApp', 'handle' => $settings['phone'] ?: 'Agenda inmediata', 'text' => 'Atencion comercial y seguimiento de valoraciones', 'url' => $whatsappDigits ? $whatsappUrl : null],
-        ['label' => 'Correo', 'handle' => $settings['email'] ?: 'contacto@rejuvenezk.com', 'text' => 'Solicita informacion detallada y propuestas personalizadas', 'url' => !empty($settings['email']) ? 'mailto:' . $settings['email'] : null],
+        ['label' => 'Instagram', 'icon' => 'instagram', 'handle' => '@clinicarejuvenezk', 'text' => 'Antes y despues, reels y tips de cuidado', 'url' => $settings['instagram_url'] ?? null],
+        ['label' => 'Facebook', 'icon' => 'facebook', 'handle' => 'Clinica Rejuvenezk', 'text' => 'Novedades, eventos y promociones especiales', 'url' => $settings['facebook_url'] ?? null],
+        ['label' => 'TikTok', 'icon' => 'tiktok', 'handle' => '@rejuvenezk', 'text' => 'Videos de procedimientos y contenido educativo', 'url' => $settings['tiktok_url'] ?? null],
+        ['label' => 'YouTube', 'icon' => 'youtube', 'handle' => 'Rejuvenezk TV', 'text' => 'Testimonios completos y explicacion medica', 'url' => $settings['youtube_url'] ?? null],
+        ['label' => 'WhatsApp', 'icon' => 'whatsapp', 'handle' => $settings['phone'] ?: 'Agenda inmediata', 'text' => 'Atencion comercial y seguimiento de valoraciones', 'url' => $whatsappDigits ? $whatsappUrl : null],
+        ['label' => 'Correo', 'icon' => 'mail', 'handle' => $settings['email'] ?: 'contacto@rejuvenezk.com', 'text' => 'Solicita informacion detallada y propuestas personalizadas', 'url' => !empty($settings['email']) ? 'mailto:' . $settings['email'] : null],
     ]);
+
+    $socialIcons = [
+        'instagram' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.9A3.85 3.85 0 0 0 3.9 7.75v8.5a3.85 3.85 0 0 0 3.85 3.85h8.5a3.85 3.85 0 0 0 3.85-3.85v-8.5a3.85 3.85 0 0 0-3.85-3.85h-8.5Zm8.9 1.5a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.9A3.1 3.1 0 1 0 12 15.1 3.1 3.1 0 0 0 12 8.9Z"/></svg>',
+        'facebook' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.5-3h-3.2V9.1c0-.9.3-1.5 1.7-1.5h1.6V5c-.8-.1-1.7-.2-2.6-.2-2.6 0-4.2 1.6-4.2 4.4V11H8v3h2.5v8h3Z"/></svg>',
+        'tiktok' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.9 3c.2 1.8 1.2 3.4 2.8 4.3 1 .6 2.1.9 3.3.9v3.1c-1.4 0-2.7-.3-3.9-.9-.8-.4-1.5-.9-2.2-1.5v6.1c0 3.4-2.7 6-6.1 6a6 6 0 0 1-6-6c0-3.4 2.7-6.1 6-6.1.3 0 .6 0 .9.1v3.1a3 3 0 1 0 2.2 2.9V3h3Z"/></svg>',
+        'youtube' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12s0-3-.4-4.4a3.1 3.1 0 0 0-2.2-2.2C18 5 12 5 12 5s-6 0-7.4.4a3.1 3.1 0 0 0-2.2 2.2C2 9 2 12 2 12s0 3 .4 4.4a3.1 3.1 0 0 0 2.2 2.2C6 19 12 19 12 19s6 0 7.4-.4a3.1 3.1 0 0 0 2.2-2.2C22 15 22 12 22 12Zm-12.3 3.5V8.5l5.8 3.5-5.8 3.5Z"/></svg>',
+        'whatsapp' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2a9.8 9.8 0 0 0-8.4 14.9L2 22l5-1.6A9.8 9.8 0 1 0 12 2.2Zm0 17.8c-1.5 0-3-.4-4.2-1.2l-.3-.2-2.9.9.9-2.8-.2-.3A7.8 7.8 0 1 1 12 20Zm4.3-5.9c-.2-.1-1.3-.6-1.5-.7s-.4-.1-.6.1-.7.7-.8.8-.3.2-.5.1a6.4 6.4 0 0 1-1.9-1.2 7.2 7.2 0 0 1-1.3-1.6c-.1-.2 0-.4.1-.5l.4-.4c.1-.1.2-.2.2-.4l.1-.3c0-.1-.6-1.6-.8-2.1-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.3c.1.2 1.6 2.5 3.9 3.5.5.2 1 .4 1.4.5.6.2 1.1.2 1.5.1.5-.1 1.3-.5 1.5-1 .2-.5.2-.9.1-1 0-.1-.2-.2-.4-.3Z"/></svg>',
+        'mail' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5h18A1.5 1.5 0 0 1 22.5 7v10A1.5 1.5 0 0 1 21 18.5H3A1.5 1.5 0 0 1 1.5 17V7A1.5 1.5 0 0 1 3 5.5Zm0 1.7a.3.3 0 0 0-.3.3v.2l9.3 6.3 9.3-6.3v-.2a.3.3 0 0 0-.3-.3H3Zm18 9.6a.3.3 0 0 0 .3-.3V9.8l-8.8 6a.9.9 0 0 1-1 0l-8.8-6v6.7c0 .2.1.3.3.3H21Z"/></svg>',
+    ];
 
     $testimonialsToShow = $testimonials->take(3);
 @endphp
@@ -100,7 +109,7 @@
     <aside class="social-dock" aria-label="Redes sociales de {{ $clinicName }}">
         @foreach ($socialCards->take(4) as $card)
             <a href="{{ $card['url'] ?: '#redes' }}" @if($card['url']) target="_blank" rel="noopener noreferrer" @endif aria-label="{{ $card['label'] }}">
-                <span>{{ strtoupper(substr($card['label'], 0, 2)) }}</span>
+                {!! $socialIcons[$card['icon']] ?? '' !!}
             </a>
         @endforeach
     </aside>
@@ -253,7 +262,7 @@
                 <div class="social-grid">
                     @foreach ($socialCards as $card)
                         <a class="social-card" href="{{ $card['url'] ?: '#contacto' }}" @if($card['url']) target="_blank" rel="noopener noreferrer" @endif aria-label="Ir a {{ $card['label'] }}">
-                            <span class="social-card-icon" aria-hidden="true">{{ strtoupper(substr($card['label'], 0, 1)) }}</span>
+                            <span class="social-card-icon" aria-hidden="true">{!! $socialIcons[$card['icon']] ?? '' !!}</span>
                             <strong>{{ $card['label'] }}</strong>
                             <span>{{ $card['handle'] }}</span>
                             <small>{{ $card['text'] }}</small>

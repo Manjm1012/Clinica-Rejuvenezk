@@ -56,10 +56,10 @@ class ServiceResource extends Resource
                             return match ($category?->slug) {
                                 'facial' => [
                                     'Rellenos faciales' => 'Rellenos faciales',
-                                    'Bioestimuladores de colageno' => 'Bioestimuladores de colageno',
-                                    'Armonizacion facial AC. Hialuronico' => 'Armonizacion facial AC. Hialuronico',
-                                    'Revitalizacion facial' => 'Revitalizacion facial',
-                                    'Procedimiento minimamente invasivo' => 'Procedimiento minimamente invasivo',
+                                    'Bioestimuladores de colágeno' => 'Bioestimuladores de colágeno',
+                                    'Armonización facial con ácido hialurónico' => 'Armonización facial con ácido hialurónico',
+                                    'Revitalización facial' => 'Revitalización facial',
+                                    'Procedimientos mínimamente invasivos' => 'Procedimientos mínimamente invasivos',
                                 ],
                                 'corporal' => [
                                     'Sueroterapia' => 'Sueroterapia',
