@@ -61,9 +61,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
 	const toggle = document.querySelector('.nav-toggle');
-	const panel = document.querySelector('.mobile-nav-panel');
+	const panel = document.querySelector('.mobile-nav-drawer');
+	const overlay = document.querySelector('.mobile-nav-overlay');
+	const closeButton = document.querySelector('.mobile-nav-close');
 
-	if (!toggle || !panel) {
+	if (!toggle || !panel || !overlay || !closeButton) {
 		return;
 	}
 
@@ -71,14 +73,22 @@ document.addEventListener('DOMContentLoaded', () => {
 		toggle.classList.remove('is-open');
 		toggle.setAttribute('aria-expanded', 'false');
 		panel.classList.remove('is-open');
+		overlay.classList.remove('is-open');
+		document.body.style.overflow = '';
 		panel.hidden = true;
+		overlay.hidden = true;
 	};
 
 	const openMenu = () => {
 		toggle.classList.add('is-open');
 		toggle.setAttribute('aria-expanded', 'true');
 		panel.hidden = false;
-		requestAnimationFrame(() => panel.classList.add('is-open'));
+		overlay.hidden = false;
+		document.body.style.overflow = 'hidden';
+		requestAnimationFrame(() => {
+			panel.classList.add('is-open');
+			overlay.classList.add('is-open');
+		});
 	};
 
 	toggle.addEventListener('click', () => {
@@ -92,6 +102,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	panel.querySelectorAll('a').forEach((link) => {
 		link.addEventListener('click', () => closeMenu());
+	});
+
+	overlay.addEventListener('click', () => closeMenu());
+	closeButton.addEventListener('click', () => closeMenu());
+	document.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape' && toggle.classList.contains('is-open')) {
+			closeMenu();
+		}
 	});
 
 	window.addEventListener('resize', () => {

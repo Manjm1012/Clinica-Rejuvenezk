@@ -577,6 +577,72 @@ a {
     display: none;
 }
 
+.mobile-nav-overlay,
+.mobile-nav-drawer {
+    display: none;
+}
+
+.mobile-nav-shell {
+    display: grid;
+    gap: 16px;
+    padding: 18px;
+    border-radius: 28px 0 0 28px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(249, 245, 239, 0.96)),
+        rgba(255, 255, 255, 0.98);
+    border-left: 1px solid rgba(201, 169, 110, 0.2);
+    box-shadow: -24px 0 60px rgba(43, 43, 43, 0.16);
+    min-height: 100dvh;
+}
+
+.mobile-nav-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.mobile-nav-head p {
+    margin: 0;
+    color: #9f7f44;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.mobile-nav-close {
+    min-height: 38px;
+    padding: 0 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(201, 169, 110, 0.24);
+    background: rgba(255, 255, 255, 0.82);
+    color: var(--ink);
+    font-size: 0.85rem;
+}
+
+.mobile-nav-summary {
+    display: grid;
+    gap: 4px;
+    padding: 18px;
+    border-radius: 22px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(243, 237, 228, 0.92));
+    border: 1px solid rgba(201, 169, 110, 0.18);
+}
+
+.mobile-nav-summary strong {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.mobile-nav-summary span {
+    color: var(--text-secondary);
+    font-size: 0.84rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
 .mobile-nav-links {
     display: grid;
     gap: 10px;
@@ -2124,21 +2190,37 @@ button {
         padding: 0 12px;
     }
 
-    .mobile-nav-panel {
+    .mobile-nav-overlay {
+        position: fixed;
+        inset: 0;
         display: block;
-        width: min(1180px, calc(100% - 20px));
-        margin: 8px auto 0;
-        padding: 0;
+        background: rgba(34, 28, 21, 0.28);
+        backdrop-filter: blur(8px);
         opacity: 0;
-        transform: translateY(-8px);
         pointer-events: none;
-        transition: opacity 0.22s ease, transform 0.22s ease;
+        transition: opacity 0.24s ease;
+        z-index: 28;
     }
 
-    .mobile-nav-panel.is-open {
+    .mobile-nav-drawer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: min(360px, calc(100vw - 18px));
+        display: block;
+        transform: translateX(100%);
+        transition: transform 0.28s ease;
+        z-index: 29;
+    }
+
+    .mobile-nav-overlay.is-open {
         opacity: 1;
-        transform: translateY(0);
         pointer-events: auto;
+    }
+
+    .mobile-nav-drawer.is-open {
+        transform: translateX(0);
     }
 
     .hero-copy h1 {
