@@ -204,8 +204,8 @@
                     <a href="#servicios">Servicios</a>
                     <a href="#resultados">Resultados</a>
                     <a href="#contacto">Contacto</a>
-                    <a href="{{ $whatsappUrl }}" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>WhatsApp</a>
                 </nav>
+                <a href="{{ $whatsappUrl }}" class="btn btn-primary mobile-nav-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
             </div>
         </div>
     </header>

@@ -584,14 +584,13 @@ a {
 
 .mobile-nav-shell {
     display: grid;
-    gap: 16px;
-    padding: 18px;
-    border-radius: 28px 0 0 28px;
+    gap: 18px;
+    padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 24px;
+    border-radius: 0;
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(249, 245, 239, 0.96)),
         rgba(255, 255, 255, 0.98);
-    border-left: 1px solid rgba(201, 169, 110, 0.2);
-    box-shadow: -24px 0 60px rgba(43, 43, 43, 0.16);
+    box-shadow: none;
     min-height: 100dvh;
 }
 
@@ -623,11 +622,12 @@ a {
 
 .mobile-nav-summary {
     display: grid;
-    gap: 4px;
-    padding: 18px;
-    border-radius: 22px;
+    gap: 6px;
+    padding: 20px;
+    border-radius: 24px;
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(243, 237, 228, 0.92));
     border: 1px solid rgba(201, 169, 110, 0.18);
+    box-shadow: 0 18px 44px rgba(43, 43, 43, 0.08);
 }
 
 .mobile-nav-summary strong {
@@ -652,21 +652,27 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 48px;
-    padding: 0 16px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.88);
+    min-height: 56px;
+    padding: 0 18px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.92);
     border: 1px solid rgba(201, 169, 110, 0.22);
     color: var(--ink);
-    font-size: 0.95rem;
-    font-weight: 500;
-    box-shadow: 0 12px 24px rgba(43, 43, 43, 0.05);
+    font-size: 1rem;
+    font-weight: 600;
+    box-shadow: 0 16px 30px rgba(43, 43, 43, 0.06);
 }
 
 .mobile-nav-links a::after {
     content: '\203A';
-    font-size: 1rem;
+    font-size: 1.15rem;
     color: #aa8950;
+}
+
+.mobile-nav-cta {
+    min-height: 54px;
+    margin-top: 6px;
+    font-size: 0.96rem;
 }
 
 .btn {
@@ -2151,16 +2157,12 @@ button {
     }
 
     .brand-copy strong {
-        font-size: 1rem;
-        line-height: 1.05;
+        font-size: 0.95rem;
+        line-height: 1.02;
     }
 
     .brand-copy small {
-        font-size: 0.62rem;
-        letter-spacing: 0.1em;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        display: none;
     }
 
     .nav-links {
@@ -2187,15 +2189,15 @@ button {
     }
 
     .topbar-cta {
-        padding: 0 12px;
+        display: none;
     }
 
     .mobile-nav-overlay {
         position: fixed;
         inset: 0;
         display: block;
-        background: rgba(34, 28, 21, 0.28);
-        backdrop-filter: blur(8px);
+        background: rgba(34, 28, 21, 0.34);
+        backdrop-filter: blur(10px);
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.24s ease;
@@ -2207,10 +2209,12 @@ button {
         top: 0;
         right: 0;
         bottom: 0;
-        width: min(360px, calc(100vw - 18px));
+        left: 0;
+        width: 100vw;
         display: block;
-        transform: translateX(100%);
-        transition: transform 0.28s ease;
+        transform: translateY(12px);
+        opacity: 0;
+        transition: transform 0.26s ease, opacity 0.26s ease;
         z-index: 29;
     }
 
@@ -2220,7 +2224,8 @@ button {
     }
 
     .mobile-nav-drawer.is-open {
-        transform: translateX(0);
+        transform: translateY(0);
+        opacity: 1;
     }
 
     .hero-copy h1 {
