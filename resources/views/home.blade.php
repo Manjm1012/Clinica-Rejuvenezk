@@ -65,6 +65,16 @@
         ? 'Valoracion dirigida por ' . $doctor->name . ' con enfoque medico estetico y protocolos a medida.'
         : 'Valoraciones personalizadas con criterio medico, tecnologia avanzada y resultados armonicos.';
 
+    $heroSubtitle = trim((string) $heroSubtitle);
+    if (mb_strlen($heroSubtitle) > 210) {
+        $heroSubtitle = \Illuminate\Support\Str::limit($heroSubtitle, 210, '...');
+    }
+
+    $heroEditorialNote = trim((string) $heroEditorialNote);
+    if (mb_strlen($heroEditorialNote) > 150) {
+        $heroEditorialNote = \Illuminate\Support\Str::limit($heroEditorialNote, 150, '...');
+    }
+
     $instagramHandle = '@drkevin_rejuvenezk';
 
     if (!empty($settings['instagram_url'])) {
