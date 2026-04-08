@@ -2,9 +2,14 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LeadController;
+use App\Http\Controllers\PublicMediaController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\TayraiWebhookController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/media/{path}', PublicMediaController::class)
+	->where('path', '.*')
+	->name('media.public');
 
 Route::get('/', HomeController::class)->name('home');
 Route::get('/servicios', [ServiceController::class, 'index'])->name('services.index');

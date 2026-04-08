@@ -80,6 +80,6 @@ class AdminPanelProvider extends PanelProvider
             ->orderBy('id')
             ->value('logo_path');
 
-        return $logoPath ? asset('storage/' . ltrim($logoPath, '/')) : null;
+        return $logoPath ? route('media.public', ['path' => ltrim($logoPath, '/')]) : null;
     }
 }
