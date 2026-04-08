@@ -34,8 +34,13 @@
     $whatsappUrl = $whatsappRawUrl !== ''
         ? $whatsappRawUrl
         : ($whatsappDigits ? 'https://wa.me/' . $whatsappDigits : '#contacto');
-    $clinicLogoUrl = !empty($clinic?->logo_path) ? \Illuminate\Support\Facades\Storage::disk('public')->url($clinic->logo_path) : null;
-    $doctorPhotoUrl = !empty($doctor?->photo_path) ? \Illuminate\Support\Facades\Storage::disk('public')->url($doctor->photo_path) : null;
+    $publicDisk = \Illuminate\Support\Facades\Storage::disk('public');
+    $clinicLogoUrl = !empty($clinic?->logo_path) && $publicDisk->exists($clinic->logo_path)
+        ? $publicDisk->url($clinic->logo_path)
+        : null;
+    $doctorPhotoUrl = !empty($doctor?->photo_path) && $publicDisk->exists($doctor->photo_path)
+        ? $publicDisk->url($doctor->photo_path)
+        : null;
     $brandInitials = collect(preg_split('/\s+/', trim($clinicName)))
         ->filter()
         ->take(2)
@@ -44,9 +49,11 @@
     $bannerMedia = null;
 
     if (!empty($featuredServices->first()?->banner_path)) {
-        $bannerMedia = \Illuminate\Support\Facades\Storage::disk('public')->url($featuredServices->first()->banner_path);
-    } elseif (!empty($featuredServices->first()?->image_path)) {
-        $bannerMedia = \Illuminate\Support\Facades\Storage::disk('public')->url($featuredServices->first()->image_path);
+        $bannerMedia = $publicDisk->exists($featuredServices->first()->banner_path)
+            ? $publicDisk->url($featuredServices->first()->banner_path)
+            : null;
+    } elseif (!empty($featuredServices->first()?->image_path) && $publicDisk->exists($featuredServices->first()->image_path)) {
+        $bannerMedia = $publicDisk->url($featuredServices->first()->image_path);
     }
 
     $heroMetrics = $stats->take(2)->map(fn ($stat) => [
@@ -384,9 +391,9 @@
                             <div class="services-grid services-grid-curated">
                                 @foreach ($featuredCategoryServices as $service)
                                     <article class="landing-service-card">
-                                        @if ($service->image_path)
+                                        @if ($service->image_path && $publicDisk->exists($service->image_path))
                                             <figure class="media-placeholder media-placeholder-service service-media">
-                                                <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
+                                                    <img src="{{ $publicDisk->url($service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
                                             </figure>
                                         @endif
                                         <div class="service-card-copy">
@@ -407,9 +414,9 @@
                         <div class="services-grid">
                             @foreach ($featuredServices as $service)
                                 <article class="landing-service-card">
-                                    @if ($service->image_path)
+                                    @if ($service->image_path && $publicDisk->exists($service->image_path))
                                         <figure class="media-placeholder media-placeholder-service service-media">
-                                            <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
+                                            <img src="{{ $publicDisk->url($service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
                                         </figure>
                                     @endif
                                     <div class="service-card-copy">

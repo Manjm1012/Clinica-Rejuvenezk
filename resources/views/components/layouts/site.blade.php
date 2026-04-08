@@ -11,7 +11,7 @@
     <div class="site-shell">
         <header class="topbar">
             <a href="{{ route('home') }}" class="brand-mark">
-                @if (!empty($currentClinic?->logo_path))
+                @if (!empty($currentClinic?->logo_path) && \Illuminate\Support\Facades\Storage::disk('public')->exists($currentClinic->logo_path))
                     <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($currentClinic->logo_path) }}" alt="Logo {{ $settings['clinic_name'] ?? 'Clínica' }}" class="brand-logo">
                 @else
                     {{ $settings['clinic_name'] ?? 'Clínica Rejuvenezk' }}

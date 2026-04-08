@@ -1,5 +1,6 @@
 @php
     $clinicName = $settings['clinic_name'] ?? 'Clínica Rejuvenezk';
+    $publicDisk = \Illuminate\Support\Facades\Storage::disk('public');
 @endphp
 
 <x-layouts.site :settings="$settings" :title="'Tratamientos | ' . $clinicName">
@@ -28,9 +29,9 @@
                 <div class="services-grid services-grid-catalog">
                     @foreach ($category->services as $service)
                         <article class="landing-service-card">
-                            @if ($service->image_path)
+                            @if ($service->image_path && $publicDisk->exists($service->image_path))
                                 <figure class="media-placeholder media-placeholder-service service-media">
-                                    <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
+                                    <img src="{{ $publicDisk->url($service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
                                 </figure>
                             @endif
                             <div class="service-card-copy">
