@@ -1768,12 +1768,6 @@ button {
         grid-template-columns: 1fr;
     }
 
-    .topbar,
-    .site-footer {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
     .topnav {
         gap: 12px;
     }
@@ -1824,8 +1818,6 @@ button {
         grid-template-columns: 1fr;
     }
 
-    .topbar-inner,
-    .nav-links,
     .footer-inner {
         flex-direction: column;
         align-items: flex-start;
@@ -1985,12 +1977,61 @@ button {
     }
 
     .topbar {
-        top: 8px;
-        margin-top: 10px;
+        position: static;
+        top: auto;
+        margin-top: 8px;
+        width: min(1180px, calc(100% - 20px));
+        border-radius: 20px;
     }
 
     .topbar-inner {
-        padding: 14px 16px;
+        padding: 12px 14px;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: nowrap;
+    }
+
+    .brand-lockup {
+        min-width: 0;
+        gap: 10px;
+        flex: 1 1 auto;
+        align-items: center;
+    }
+
+    .brand-logo-shell,
+    .brand-monogram {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+    }
+
+    .brand-copy {
+        min-width: 0;
+    }
+
+    .brand-copy strong {
+        font-size: 1rem;
+        line-height: 1.05;
+    }
+
+    .brand-copy small {
+        font-size: 0.62rem;
+        letter-spacing: 0.1em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .topbar .btn {
+        min-height: 42px;
+        padding: 0 14px;
+        flex: 0 0 auto;
+        white-space: nowrap;
+        font-size: 0.88rem;
     }
 
     .hero-copy h1 {
