@@ -6,7 +6,8 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Fraunces', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-serif: 'Cormorant Garamond', serif;
 }
 
 :root {
@@ -31,6 +32,25 @@
 
 html {
     scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+h1,
+h2 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+p {
+    font-family: var(--font-sans);
+    font-weight: 300;
 }
 
 body.site-body {
@@ -86,7 +106,7 @@ a {
 
 .brand-mark {
     font-size: 1.1rem;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: 0.04em;
     display: inline-flex;
     align-items: center;
@@ -114,8 +134,9 @@ a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 999px;
+    border-radius: 8px;
     padding: 14px 22px;
+    font-weight: 500;
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
@@ -335,7 +356,7 @@ a {
 }
 
 .landing-body {
-    font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-sans);
     background:
     radial-gradient(circle at 10% 10%, rgba(201, 169, 110, 0.12), transparent 22%),
     radial-gradient(circle at 88% 18%, rgba(168, 191, 163, 0.16), transparent 20%),
@@ -426,7 +447,7 @@ a {
 }
 
 .brand {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-serif);
     font-size: clamp(1.6rem, 2vw, 2.2rem);
     font-weight: 600;
     letter-spacing: 0.02em;
@@ -470,7 +491,7 @@ a {
     border-radius: 18px;
     background: linear-gradient(145deg, #d6bc8b 0%, #b99654 100%);
     color: #fffdfa;
-    font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-sans);
     font-size: 1rem;
     font-weight: 800;
     letter-spacing: 0.12em;
@@ -488,10 +509,10 @@ a {
 
 .brand-copy small {
     color: var(--text-secondary);
-    font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-sans);
     font-size: 0.74rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
+    font-weight: 600;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
 }
 
@@ -500,6 +521,10 @@ a {
     align-items: center;
     gap: 18px;
     flex-wrap: wrap;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
     color: var(--text-secondary);
 }
 
@@ -509,9 +534,14 @@ a {
     justify-content: center;
     min-height: 50px;
     padding: 0 22px;
-    border-radius: 999px;
-    font-weight: 700;
+    border-radius: 8px;
+    font-weight: 500;
     transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+button {
+    font-weight: 500;
+    border-radius: 8px;
 }
 
 .btn:hover {
@@ -587,7 +617,7 @@ a {
 .hero-copy h1,
 .cta h2,
 .section-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-serif);
 }
 
 .hero-brand-ribbon {
@@ -662,6 +692,7 @@ a {
 .landing-service-card p,
 .landing-hero-card p,
 .cta p {
+    font-family: var(--font-sans);
     color: #685a5b;
     line-height: 1.8;
 }
@@ -1283,6 +1314,26 @@ a {
         padding-top: 30px;
     }
 
+    .brand-copy strong {
+        font-size: clamp(1.15rem, 2.8vw, 1.5rem);
+    }
+
+    .nav-links {
+        gap: 12px;
+        font-size: 0.92rem;
+        letter-spacing: 0.01em;
+    }
+
+    .lead,
+    .social-lead,
+    .quote-card p,
+    .landing-service-card p,
+    .landing-hero-card p,
+    .cta p {
+        font-size: 1rem;
+        line-height: 1.75;
+    }
+
     .hero-brand-ribbon {
         width: 100%;
         max-width: 420px;
@@ -1313,13 +1364,43 @@ a {
     }
 
     .hero-copy h1 {
-        font-size: clamp(2.4rem, 14vw, 3.8rem);
+        font-size: clamp(2.25rem, 13vw, 3.35rem);
+        line-height: 0.98;
+        letter-spacing: 0.2px;
     }
 
     .landing-hero-card h2,
     .section-title,
     .cta h2 {
-        font-size: clamp(1.8rem, 9vw, 2.6rem);
+        font-size: clamp(1.7rem, 8vw, 2.35rem);
+        line-height: 1.02;
+        letter-spacing: 0.3px;
+    }
+
+    .lead,
+    .social-lead,
+    .quote-card p,
+    .landing-service-card p,
+    .landing-hero-card p,
+    .cta p {
+        font-size: 0.98rem;
+        line-height: 1.72;
+    }
+
+    .kicker,
+    .card-kicker,
+    .hero-brand-ribbon-copy span,
+    .brand-copy small {
+        letter-spacing: 0.12em;
+    }
+
+    .brand-copy strong {
+        font-size: 1.08rem;
+    }
+
+    .nav-links {
+        gap: 10px;
+        font-size: 0.9rem;
     }
 
     .hero-brand-ribbon {
