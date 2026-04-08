@@ -13,6 +13,9 @@
     $servicesKicker = $settings['services_kicker'] ?? 'Nuestros tratamientos';
     $servicesTitle = $settings['services_title'] ?? 'Tratamientos seleccionados con enfoque medico estetico';
     $servicesLead = $settings['services_lead'] ?? 'Cada protocolo combina diagnostico, tecnica y naturalidad para construir resultados elegantes, progresivos y coherentes con tu rostro.';
+    $benefitsKicker = $settings['benefits_kicker'] ?? 'Nuestra promesa';
+    $benefitsTitle = $settings['benefits_title'] ?? 'Una experiencia estetica pensada para verse bien y sentirse correcta.';
+    $benefitsLead = $settings['benefits_lead'] ?? 'Combinamos precision medica, criterio facial y acompanamiento cercano para que cada decision se tome con confianza.';
     $testimonialsKicker = $settings['testimonials_kicker'] ?? 'Testimonios';
     $testimonialsTitle = $settings['testimonials_title'] ?? 'Pacientes que ya viven su cambio';
     $socialKicker = $settings['social_kicker'] ?? ('Comunidad ' . $clinicName);
@@ -87,6 +90,24 @@
     ];
 
     $testimonialsToShow = $testimonials->take(3);
+
+    $benefitCards = collect([
+        [
+            'title' => 'Resultados armoniosos',
+            'text' => 'Realzamos tus facciones con una mirada natural, sin exageraciones ni cambios ajenos a tu rostro.',
+            'label' => 'Naturalidad',
+        ],
+        [
+            'title' => 'Seguridad clinica',
+            'text' => 'Protocolos medicos, tecnologia confiable y decisiones guiadas por evaluacion profesional.',
+            'label' => 'Confianza',
+        ],
+        [
+            'title' => 'Criterio personalizado',
+            'text' => 'Cada tratamiento se diseña segun tu anatomia, tus objetivos y el ritmo adecuado para ti.',
+            'label' => 'Precision',
+        ],
+    ]);
 @endphp
 
 <!DOCTYPE html>
@@ -244,6 +265,28 @@
                     </figcaption>
                 </figure>
             @endif
+        </section>
+
+        <section class="section benefits-section">
+            <div class="container reveal reveal-2">
+                <div class="benefits-head">
+                    <div>
+                        <p class="kicker">{{ $benefitsKicker }}</p>
+                        <h2 class="section-title">{{ $benefitsTitle }}</h2>
+                    </div>
+                    <p class="section-intro benefits-intro">{{ $benefitsLead }}</p>
+                </div>
+
+                <div class="benefits-grid">
+                    @foreach ($benefitCards as $benefit)
+                        <article class="benefit-card">
+                            <span class="benefit-card-label">{{ $benefit['label'] }}</span>
+                            <h3>{{ $benefit['title'] }}</h3>
+                            <p>{{ $benefit['text'] }}</p>
+                        </article>
+                    @endforeach
+                </div>
+            </div>
         </section>
 
         <section id="servicios" class="section section-soft section-beige">
