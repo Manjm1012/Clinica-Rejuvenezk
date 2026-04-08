@@ -193,12 +193,11 @@
         <div class="mobile-nav-drawer" id="mobile-nav-drawer" hidden>
             <div class="mobile-nav-shell">
                 <div class="mobile-nav-head">
-                    <p>Explora Rejuvenezk</p>
-                    <button type="button" class="mobile-nav-close" aria-label="Cerrar menu de navegacion">Cerrar</button>
-                </div>
-                <div class="mobile-nav-summary">
-                    <strong>{{ $clinicName }}</strong>
-                    <span>{{ $doctor?->specialty ?: 'Medicina estetica facial y corporal' }}</span>
+                    <div class="mobile-nav-brand">
+                        <span>{{ $clinicName }}</span>
+                        <small>Menu</small>
+                    </div>
+                    <button type="button" class="mobile-nav-close" aria-label="Cerrar menu de navegacion">×</button>
                 </div>
                 <nav class="mobile-nav-links" aria-label="Navegacion movil">
                     <a href="#servicios">Servicios</a>

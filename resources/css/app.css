@@ -584,13 +584,13 @@ a {
 
 .mobile-nav-shell {
     display: grid;
-    gap: 18px;
+    gap: 26px;
     width: min(100%, 420px);
-    padding: 22px 20px calc(26px + env(safe-area-inset-bottom, 0px));
-    border-radius: 32px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(248, 243, 235, 0.98) 100%);
-    border: 1px solid rgba(201, 169, 110, 0.2);
-    box-shadow: 0 28px 80px rgba(43, 43, 43, 0.16);
+    padding: 22px 22px calc(28px + env(safe-area-inset-bottom, 0px));
+    border-radius: 34px;
+    background: rgba(253, 251, 247, 0.98);
+    border: 1px solid rgba(201, 169, 110, 0.14);
+    box-shadow: 0 30px 90px rgba(43, 43, 43, 0.14);
     min-height: auto;
     position: relative;
     z-index: 1;
@@ -603,51 +603,40 @@ a {
     gap: 12px;
 }
 
-.mobile-nav-head p {
-    margin: 0;
+.mobile-nav-brand {
+    display: grid;
+    gap: 2px;
+}
+
+.mobile-nav-brand span {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    line-height: 1;
+}
+
+.mobile-nav-brand small {
     color: #9f7f44;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.16em;
     text-transform: uppercase;
 }
 
 .mobile-nav-close {
-    min-height: 38px;
-    padding: 0 14px;
+    width: 42px;
+    height: 42px;
+    padding: 0;
     border-radius: 999px;
-    border: 1px solid rgba(201, 169, 110, 0.24);
-    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(201, 169, 110, 0.2);
+    background: rgba(255, 255, 255, 0.86);
     color: var(--ink);
-    font-size: 0.85rem;
-}
-
-.mobile-nav-summary {
-    display: grid;
-    gap: 6px;
-    padding: 20px;
-    border-radius: 24px;
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(246, 240, 230, 0.94));
-    border: 1px solid rgba(201, 169, 110, 0.16);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
-}
-
-.mobile-nav-summary strong {
-    font-family: var(--font-serif);
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     line-height: 1;
-}
-
-.mobile-nav-summary span {
-    color: var(--text-secondary);
-    font-size: 0.84rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
 }
 
 .mobile-nav-links {
     display: grid;
-    gap: 10px;
+    gap: 2px;
     position: relative;
     z-index: 1;
 }
@@ -656,26 +645,30 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 56px;
-    padding: 0 18px;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid rgba(201, 169, 110, 0.22);
+    min-height: 72px;
+    padding: 0 2px;
+    border-radius: 0;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(201, 169, 110, 0.16);
     color: var(--ink);
-    font-size: 1rem;
+    font-family: var(--font-serif);
+    font-size: 2rem;
     font-weight: 600;
-    box-shadow: 0 10px 24px rgba(43, 43, 43, 0.05);
+    line-height: 1;
+    box-shadow: none;
 }
 
 .mobile-nav-links a::after {
     content: '\203A';
-    font-size: 1.15rem;
-    color: #aa8950;
+    font-family: var(--font-sans);
+    font-size: 1.2rem;
+    color: rgba(170, 137, 80, 0.82);
 }
 
 .mobile-nav-cta {
     min-height: 54px;
-    margin-top: 6px;
+    margin-top: 4px;
     font-size: 0.96rem;
 }
 
@@ -2200,8 +2193,8 @@ button {
         position: fixed;
         inset: 0;
         display: block;
-        background: rgba(28, 23, 18, 0.44);
-        backdrop-filter: blur(14px);
+        background: rgba(24, 19, 15, 0.48);
+        backdrop-filter: blur(16px);
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.24s ease;
@@ -2218,7 +2211,7 @@ button {
         display: flex;
         align-items: flex-start;
         justify-content: center;
-        padding: calc(74px + env(safe-area-inset-top, 0px)) 12px 20px;
+        padding: calc(72px + env(safe-area-inset-top, 0px)) 14px 20px;
         transform: translateY(16px) scale(0.98);
         opacity: 0;
         transition: transform 0.26s ease, opacity 0.26s ease;
@@ -2226,6 +2219,11 @@ button {
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         background: transparent;
+    }
+
+    .mobile-nav-links a {
+        min-height: 64px;
+        font-size: 1.7rem;
     }
 
     .mobile-nav-overlay.is-open {
