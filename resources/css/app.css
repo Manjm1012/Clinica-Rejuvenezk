@@ -2114,6 +2114,10 @@ button {
 }
 
 @media (max-width: 640px) {
+    :root {
+        --mobile-topbar-height: 64px;
+    }
+
     .container {
         width: min(1180px, calc(100% - 20px));
     }
@@ -2123,16 +2127,20 @@ button {
     }
 
     .topbar {
-        position: static;
-        top: auto;
-        margin-top: 8px;
-        width: min(1180px, calc(100% - 20px));
-        border-radius: 20px;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        margin-top: 0;
+        width: auto;
+        border-radius: 18px;
+        z-index: 35;
     }
 
     .topbar-inner {
-        padding: 12px 14px;
-        gap: 12px;
+        min-height: var(--mobile-topbar-height);
+        padding: 10px 14px;
+        gap: 10px;
         align-items: center;
         flex-wrap: nowrap;
     }
@@ -2146,9 +2154,9 @@ button {
 
     .brand-logo-shell,
     .brand-monogram {
-        width: 42px;
-        height: 42px;
-        border-radius: 14px;
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
     }
 
     .brand-copy {
@@ -2156,8 +2164,11 @@ button {
     }
 
     .brand-copy strong {
-        font-size: 0.95rem;
+        font-size: 0.98rem;
         line-height: 1.02;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .brand-copy small {
@@ -2170,13 +2181,15 @@ button {
 
     .topbar-actions {
         margin-left: auto;
-        gap: 8px;
+        gap: 6px;
     }
 
     .nav-toggle {
         position: relative;
         display: inline-flex;
         flex: 0 0 auto;
+        width: 42px;
+        height: 42px;
     }
 
     .topbar .btn {
@@ -2189,6 +2202,10 @@ button {
 
     .topbar-cta {
         display: none;
+    }
+
+    .landing-body main#inicio {
+        padding-top: 92px;
     }
 
     .mobile-nav-overlay {
@@ -2205,15 +2222,15 @@ button {
 
     .mobile-nav-drawer {
         position: fixed;
-        top: 0;
+        top: calc(10px + var(--mobile-topbar-height) + 8px);
         right: 0;
-        bottom: 0;
+        bottom: 10px;
         left: 0;
         width: 100vw;
         display: flex;
-        align-items: stretch;
+        align-items: flex-start;
         justify-content: flex-start;
-        padding: 0;
+        padding: 0 0 0 10px;
         transform: translateX(-100%);
         opacity: 0;
         transition: transform 0.28s ease, opacity 0.22s ease;
@@ -2231,6 +2248,51 @@ button {
     .mobile-nav-drawer.is-open {
         transform: translateX(0);
         opacity: 1;
+    }
+
+    .mobile-nav-shell {
+        width: min(82vw, 320px);
+        min-width: 272px;
+        min-height: calc(100dvh - var(--mobile-topbar-height) - 28px);
+        padding: 18px 18px calc(22px + env(safe-area-inset-bottom, 0px));
+        border-radius: 0 22px 22px 0;
+        background: rgba(252, 249, 243, 0.99);
+        box-shadow: 18px 0 44px rgba(43, 43, 43, 0.12);
+        gap: 18px;
+    }
+
+    .mobile-nav-brand span {
+        font-size: 1.02rem;
+    }
+
+    .mobile-nav-close {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+
+    .mobile-nav-links {
+        gap: 0;
+        margin-top: 6px;
+    }
+
+    .mobile-nav-links a {
+        min-height: 54px;
+        padding: 0 4px;
+        font-family: var(--font-sans);
+        font-size: 1.08rem;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+    }
+
+    .mobile-nav-links a::after {
+        font-size: 1rem;
+    }
+
+    .mobile-nav-cta {
+        margin-top: auto;
+        min-height: 48px;
+        font-size: 0.9rem;
     }
 
     .hero-copy h1 {
