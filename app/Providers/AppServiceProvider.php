@@ -20,8 +20,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        config([
+            'livewire.temporary_file_upload.disk' => 'public',
+            'livewire.temporary_file_upload.directory' => 'livewire-tmp',
+        ]);
+
+        if (! $this->app->runningInConsole() && config('app.env') === 'local') {
+            config([
+                'app.url' => request()->root(),
+            ]);
+
+            URL::forceRootUrl(request()->root());
+        }
+
         if (config('app.env') !== 'local') {
-        URL::forceScheme('https');
-    }
+            URL::forceScheme('https');
+        }
     }
 }
