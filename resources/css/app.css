@@ -1478,41 +1478,11 @@ button {
     line-height: 1.78;
 }
 
-.services-more-wrap {
-    margin-top: 18px;
-    padding-top: 18px;
-    border-top: 1px solid rgba(201, 169, 110, 0.18);
-}
-
-.services-more-label {
-    display: inline-block;
-    margin-bottom: 10px;
-    color: #9f7f44;
-    font-size: 0.74rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-}
-
-.services-more-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.services-more-list span {
-    display: inline-flex;
-    align-items: center;
-    padding: 8px 12px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(37, 22, 26, 0.08);
-    color: #66595a;
-    font-size: 0.83rem;
-}
-
 .services-panel-cta {
     margin-top: 20px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 /* ── Service grid ── */
@@ -1522,6 +1492,36 @@ button {
 
 .services-grid-curated {
     margin-top: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.services-catalog-page {
+    padding-top: 18px;
+}
+
+.services-catalog-hero {
+    margin-bottom: 12px;
+}
+
+.services-catalog-block + .services-catalog-block {
+    margin-top: 16px;
+}
+
+.services-catalog-head {
+    display: grid;
+    grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.2fr);
+    gap: 18px;
+    align-items: end;
+}
+
+.services-catalog-head p {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.75;
+}
+
+.services-grid-catalog {
+    margin-top: 22px;
 }
 
 .landing-service-card {
@@ -1895,6 +1895,12 @@ button {
         position: static;
     }
 
+    .services-grid-curated,
+    .services-grid-catalog,
+    .services-catalog-head {
+        grid-template-columns: 1fr;
+    }
+
     .services-panel-cta .btn {
         width: 100%;
     }
@@ -2079,10 +2085,6 @@ button {
         .services-category-card {
             padding: 20px;
             border-radius: 22px;
-        }
-
-        .services-more-list span {
-            font-size: 0.8rem;
         }
 
         .services-tab {

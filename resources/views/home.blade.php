@@ -363,8 +363,7 @@
                         role="tabpanel"
                     >
                         @php
-                            $featuredCategoryServices = $category->services->take(3);
-                            $remainingCategoryServices = $category->services->skip(3)->take(6);
+                            $featuredCategoryServices = $category->services->take(2);
                         @endphp
 
                         @if ($category->description)
@@ -376,19 +375,9 @@
                                 <h3>{{ $category->name }}</h3>
                                 <p>{{ $category->description ?: 'Seleccionamos los procedimientos mas representativos de esta categoria para ayudarte a decidir con mas claridad.' }}</p>
 
-                                @if ($remainingCategoryServices->isNotEmpty())
-                                    <div class="services-more-wrap">
-                                        <span class="services-more-label">Tambien trabajamos</span>
-                                        <div class="services-more-list">
-                                            @foreach ($remainingCategoryServices as $service)
-                                                <span>{{ $service->name }}</span>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @endif
-
                                 <div class="services-panel-cta">
-                                    <a href="{{ $whatsappUrl }}" class="btn btn-primary" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>Quiero asesoria de esta categoria</a>
+                                    <a href="{{ route('services.index') }}#cat-{{ $category->id }}" class="btn btn-ghost">Explorar categoria</a>
+                                    <a href="{{ $whatsappUrl }}" class="btn btn-primary" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>Asesoria por WhatsApp</a>
                                 </div>
                             </aside>
 
@@ -435,7 +424,8 @@
                             @endforeach
                         </div>
                         <div class="services-panel-cta">
-                            <a href="{{ $whatsappUrl }}" class="btn btn-primary" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>Quiero asesoria por WhatsApp</a>
+                            <a href="{{ route('services.index') }}" class="btn btn-ghost">Ver todos los tratamientos</a>
+                            <a href="{{ $whatsappUrl }}" class="btn btn-primary" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>Asesoria por WhatsApp</a>
                         </div>
                     </div>
                 @endforelse
