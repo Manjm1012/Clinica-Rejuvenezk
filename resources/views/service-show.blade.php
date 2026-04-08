@@ -19,7 +19,7 @@
         </section>
 
         <section class="section-block split-section">
-            <article class="rich-copy">{!! $service->description !!}</article>
+            <article class="rich-copy {{ data_get($service->meta, 'justify_description', true) ? 'rich-copy-justified' : '' }}">{!! $service->description !!}</article>
             <aside class="doctor-box">
                 <h3>Contacto rápido</h3>
                 <p>{{ $settings['phone'] }}</p>

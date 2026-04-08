@@ -2031,6 +2031,12 @@ button {
     color: #b8954e;
 }
 
+.rich-copy-justified {
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+}
+
 /* Testimonial star rating */
 .testimonial-rating {
     font-size: 0.9rem;

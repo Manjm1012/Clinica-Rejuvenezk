@@ -93,6 +93,10 @@ class ServiceResource extends Resource
                             'blockquote', 'link',
                         ])
                         ->columnSpanFull(),
+                    Forms\Components\Toggle::make('meta.justify_description')
+                        ->label('Justificar descripción en la web')
+                        ->helperText('Aplica alineación justificada al contenido de la descripción en la página pública.')
+                        ->default(true),
                 ]),
 
             Forms\Components\Section::make('Imágenes')
