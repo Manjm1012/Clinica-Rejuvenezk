@@ -668,6 +668,39 @@ a {
     margin-top: 28px;
 }
 
+.service-category-block + .service-category-block {
+    margin-top: 34px;
+}
+
+.service-category-head {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1.3fr);
+    gap: 18px;
+    align-items: end;
+    margin-top: 28px;
+}
+
+.service-category-head h3 {
+    margin: 6px 0 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.7rem, 3vw, 2.5rem);
+}
+
+.service-category-head p {
+    margin: 0;
+    color: #6b5c5d;
+    line-height: 1.7;
+}
+
+.service-category-kicker {
+    margin: 0;
+    color: #8f4f5f;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
 .landing-service-card {
     border-radius: 28px;
     padding: 18px;
@@ -833,6 +866,7 @@ a {
     .footer-inner,
     .contact-layout,
     .hero,
+    .service-category-head,
     .services-grid,
     .social-grid,
     .testimonials-grid,

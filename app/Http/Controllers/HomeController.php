@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Doctor;
 use App\Models\Service;
+use App\Models\ServiceCategory;
 use App\Models\SiteSetting;
 use App\Models\Stat;
 use App\Models\Technology;
@@ -58,6 +59,14 @@ class HomeController extends Controller
         return view('home', [
             'settings' => array_merge($branding, $contact, $social),
             'services' => Service::query()->where('is_active', true)->orderBy('sort_order')->get(),
+            'serviceCategories' => ServiceCategory::query()
+                ->where('is_active', true)
+                ->whereHas('services', fn ($query) => $query->where('is_active', true))
+                ->with([
+                    'services' => fn ($query) => $query->where('is_active', true)->orderBy('sort_order'),
+                ])
+                ->orderBy('sort_order')
+                ->get(),
             'featuredServices' => Service::query()->where('is_active', true)->where('is_featured', true)->orderBy('sort_order')->limit(6)->get(),
             'doctor' => Doctor::query()->where('is_active', true)->orderBy('sort_order')->first(),
             'stats' => Stat::query()->where('is_active', true)->orderBy('sort_order')->get(),

@@ -163,27 +163,41 @@
             <div class="container reveal reveal-2">
                 <p class="kicker">{{ $servicesKicker }}</p>
                 <h2 class="section-title">{{ $servicesTitle }}</h2>
-                <div class="services-grid">
-                    @foreach ($services->take(6) as $service)
-                        <article class="service-card landing-service-card">
-                            @if ($service->image_path)
-                                <figure class="media-placeholder media-placeholder-service service-media">
-                                    <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
-                                </figure>
-                            @else
-                                <figure class="media-placeholder media-placeholder-service service-media service-fallback">
-                                    <span>{{ $service->category?->name ?: 'Procedimiento' }}</span>
-                                </figure>
-                            @endif
-                            <h3>{{ $service->name }}</h3>
-                            <p>{{ $service->short_description ?: 'Tratamiento personalizado con enfoque medico, seguridad y resultados naturales.' }}</p>
-                            <div class="service-links">
-                                <a href="{{ route('services.show', $service) }}">Ver detalle</a>
-                                <a href="{{ $service->whatsapp_url }}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                @foreach ($serviceCategories as $category)
+                    <section class="service-category-block">
+                        <div class="service-category-head">
+                            <div>
+                                <p class="service-category-kicker">Categoría</p>
+                                <h3>{{ $category->name }}</h3>
                             </div>
-                        </article>
-                    @endforeach
-                </div>
+                            @if ($category->description)
+                                <p>{{ $category->description }}</p>
+                            @endif
+                        </div>
+
+                        <div class="services-grid">
+                            @foreach ($category->services as $service)
+                                <article class="service-card landing-service-card">
+                                    @if ($service->image_path)
+                                        <figure class="media-placeholder media-placeholder-service service-media">
+                                            <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
+                                        </figure>
+                                    @else
+                                        <figure class="media-placeholder media-placeholder-service service-media service-fallback">
+                                            <span>{{ $category->name }}</span>
+                                        </figure>
+                                    @endif
+                                    <h3>{{ $service->name }}</h3>
+                                    <p>{{ $service->short_description ?: 'Tratamiento personalizado con enfoque medico, seguridad y resultados naturales.' }}</p>
+                                    <div class="service-links">
+                                        <a href="{{ route('services.show', $service) }}">Ver detalle</a>
+                                        <a href="{{ $service->whatsapp_url }}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                                    </div>
+                                </article>
+                            @endforeach
+                        </div>
+                    </section>
+                @endforeach
             </div>
         </section>
 
