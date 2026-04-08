@@ -47,7 +47,6 @@ class ClinicResource extends Resource
                 Forms\Components\TextInput::make('name')->required()->maxLength(180),
                 Forms\Components\FileUpload::make('logo_path')
                     ->label('Logo de la clínica')
-                    ->image()
                     ->disk('public')
                     ->visibility('public')
                     ->directory('branding/logos')
@@ -58,6 +57,9 @@ class ClinicResource extends Resource
                         'image/svg+xml',
                     ])
                     ->maxSize(5120)
+                    ->previewable(false)
+                    ->downloadable()
+                    ->openable()
                     ->helperText('Formatos recomendados: SVG, PNG o WebP. El editor se desactiva para permitir logos vectoriales y transparentes.'),
                 Forms\Components\TextInput::make('slug')->required()->maxLength(200)->unique(Clinic::class, 'slug', ignoreRecord: true),
                 Forms\Components\TextInput::make('domain')->maxLength(255)->unique(Clinic::class, 'domain', ignoreRecord: true),
