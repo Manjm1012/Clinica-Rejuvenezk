@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
 	const toggle = document.querySelector('.nav-toggle');
-	const panel = document.querySelector('.mobile-nav-drawer');
+	const panel = document.querySelector('.mobile-nav-panel');
 	const overlay = document.querySelector('.mobile-nav-overlay');
 	const closeButton = document.querySelector('.mobile-nav-close');
 
