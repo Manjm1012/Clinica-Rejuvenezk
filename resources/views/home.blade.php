@@ -170,17 +170,6 @@
     <main id="inicio">
         <section class="hero section container">
             <div class="hero-copy reveal reveal-2">
-                @if ($clinicLogoUrl)
-                    <div class="hero-brand-ribbon" aria-label="Marca de {{ $clinicName }}">
-                        <span class="hero-brand-ribbon-logo">
-                            <img src="{{ $clinicLogoUrl }}" alt="Logo de {{ $clinicName }}">
-                        </span>
-                        <div class="hero-brand-ribbon-copy">
-                            <strong>{{ $clinicName }}</strong>
-                            <span>{{ $doctor?->specialty ?: 'Medicina estetica facial y corporal' }}</span>
-                        </div>
-                    </div>
-                @endif
                 <p class="kicker">{{ $heroKicker }}</p>
                 <h1>{{ $heroTitle }}</h1>
                 <p class="lead">{{ $heroSubtitle }}</p>
@@ -220,11 +209,6 @@
                     </div>
                     <div class="hero-portrait-copy">
                         <div class="hero-brand-chip">
-                            @if ($clinicLogoUrl)
-                                <span class="hero-brand-chip-logo">
-                                    <img src="{{ $clinicLogoUrl }}" alt="Logo de {{ $clinicName }}">
-                                </span>
-                            @endif
                             <div>
                                 <span>{{ $heroCardKicker }}</span>
                                 <strong>{{ $doctor?->name ?: $clinicName }}</strong>
