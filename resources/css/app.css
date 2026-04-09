@@ -977,6 +977,7 @@ button {
 .hero-panel {
     display: grid;
     gap: 12px;
+    align-content: start;
 }
 
 .hero-panel-featured {
@@ -1220,6 +1221,8 @@ button {
 .hero-stack-editorial {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     margin-top: 2px;
+    align-items: start;
+    align-self: start;
 }
 
 .mini-card {
@@ -1228,6 +1231,8 @@ button {
     padding: 14px 16px 15px;
     border: 1px solid rgba(201, 169, 110, 0.18);
     overflow: hidden;
+    min-height: 0;
+    height: auto;
 }
 
 .mini-card-link {
