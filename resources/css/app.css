@@ -790,9 +790,9 @@ button {
     position: relative;
     z-index: 1;
     display: grid;
-    grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.9fr);
+    grid-template-columns: minmax(0, 1.36fr) minmax(300px, 0.84fr);
     gap: 30px;
-    align-items: center;
+    align-items: start;
     padding-top: 80px;
 }
 
@@ -982,6 +982,7 @@ button {
 
 .hero-panel-featured {
     align-self: stretch;
+    max-width: 46rem;
 }
 
 .hero-copy-compact {
@@ -1011,10 +1012,10 @@ button {
 
 .hero-portrait-card {
     display: grid;
-    grid-template-columns: minmax(200px, 0.9fr) minmax(0, 1.1fr);
-    gap: 18px;
+    grid-template-columns: minmax(220px, 0.98fr) minmax(0, 1.02fr);
+    gap: 16px;
     align-items: stretch;
-    min-height: 480px;
+    min-height: 500px;
     padding: 22px;
     border-radius: 38px;
     background:
@@ -1223,12 +1224,13 @@ button {
     margin-top: 2px;
     align-items: start;
     align-self: start;
+    max-width: 28rem;
 }
 
 .mini-card {
     position: relative;
-    border-radius: 22px;
-    padding: 14px 16px 15px;
+    border-radius: 18px;
+    padding: 11px 14px 12px;
     border: 1px solid rgba(201, 169, 110, 0.18);
     overflow: hidden;
     min-height: 0;
@@ -1238,7 +1240,7 @@ button {
 .mini-card-link {
     display: grid;
     align-content: start;
-    gap: 4px;
+    gap: 3px;
     text-decoration: none;
     transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
@@ -1246,17 +1248,17 @@ button {
 .mini-card-link::after {
     content: '\2197';
     position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 26px;
-    height: 26px;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
     display: grid;
     place-items: center;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.88);
     border: 1px solid rgba(201, 169, 110, 0.2);
     color: #aa8950;
-    font-size: 0.82rem;
+    font-size: 0.76rem;
     box-shadow: 0 8px 18px rgba(43, 43, 43, 0.06);
 }
 
@@ -1268,7 +1270,7 @@ button {
 
 .hero-accent-card strong,
 .hero-accent-card-muted strong {
-    font-size: 0.98rem;
+    font-size: 0.92rem;
     letter-spacing: -0.01em;
 }
 
@@ -1299,15 +1301,15 @@ button {
 }
 
 .mini-card strong {
-    max-width: 9rem;
-    font-size: 1.02rem;
+    max-width: 8rem;
+    font-size: 0.94rem;
     line-height: 1.18;
 }
 
 .mini-card span {
-    font-size: 0.66rem;
+    font-size: 0.6rem;
     font-weight: 800;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
