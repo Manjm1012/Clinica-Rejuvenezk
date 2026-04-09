@@ -790,8 +790,8 @@ button {
     position: relative;
     z-index: 1;
     display: grid;
-    grid-template-columns: minmax(0, 1.36fr) minmax(300px, 0.84fr);
-    gap: 30px;
+    grid-template-columns: minmax(0, 1.28fr) minmax(320px, 0.72fr);
+    gap: 42px;
     align-items: start;
     padding-top: 80px;
 }
@@ -805,19 +805,19 @@ button {
 .hero-copy {
     max-width: 39rem;
     position: relative;
-    padding: 26px 28px 28px;
-    border-radius: 30px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(247, 243, 237, 0.78));
-    border: 1px solid rgba(201, 169, 110, 0.18);
-    box-shadow: 0 26px 64px rgba(43, 43, 43, 0.07);
+    padding: 30px 10px 12px 0;
+    border-radius: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
 }
 
 .hero-copy::after {
     content: '';
     position: absolute;
-    right: 22px;
-    top: 22px;
-    width: 72px;
+    left: 0;
+    top: 0;
+    width: 94px;
     height: 1px;
     background: linear-gradient(90deg, rgba(201, 169, 110, 0.1), rgba(201, 169, 110, 0.8));
 }
@@ -930,15 +930,15 @@ button {
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
-    margin-top: 22px;
+    margin-top: 26px;
 }
 
 .hero-metrics {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-    margin-top: 28px;
-    max-width: 32rem;
+    gap: 12px;
+    margin-top: 30px;
+    max-width: 27rem;
 }
 
 .hero-metrics article,
@@ -957,10 +957,10 @@ button {
 }
 
 .hero-metrics article {
-    border-radius: 20px;
-    padding: 16px 18px;
-    background: rgba(255, 255, 255, 0.7);
-    box-shadow: 0 12px 28px rgba(43, 43, 43, 0.05);
+    border-radius: 18px;
+    padding: 15px 16px;
+    background: rgba(255, 255, 255, 0.76);
+    box-shadow: 0 10px 24px rgba(43, 43, 43, 0.05);
 }
 
 .hero-metrics strong {
@@ -982,52 +982,53 @@ button {
 
 .hero-panel-featured {
     align-self: stretch;
-    max-width: 46rem;
+    max-width: 48rem;
 }
 
 .hero-copy-compact {
     max-width: none;
     align-self: center;
-    padding: 22px 22px 24px;
+    padding: 34px 0 10px;
 }
 
 .hero-copy-compact h1 {
-    font-size: clamp(2.4rem, 4.8vw, 4.4rem);
-    line-height: 0.94;
+    max-width: 10ch;
+    font-size: clamp(2.8rem, 4.8vw, 4.9rem);
+    line-height: 0.92;
 }
 
 .hero-copy-compact .lead {
-    max-width: none;
+    max-width: 28rem;
     font-size: 0.98rem;
 }
 
 .hero-copy-compact .hero-editorial-note {
-    max-width: none;
+    max-width: 26rem;
 }
 
 .hero-copy-compact .hero-metrics {
-    max-width: none;
-    margin-top: 22px;
+    max-width: 27rem;
+    margin-top: 26px;
 }
 
 .hero-portrait-card {
     display: grid;
-    grid-template-columns: minmax(220px, 0.98fr) minmax(0, 1.02fr);
-    gap: 16px;
+    grid-template-columns: minmax(280px, 1.14fr) minmax(220px, 0.86fr);
+    gap: 0;
     align-items: stretch;
-    min-height: 500px;
-    padding: 22px;
-    border-radius: 38px;
+    min-height: 560px;
+    padding: 18px;
+    border-radius: 40px;
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(245, 240, 233, 0.94)),
         linear-gradient(135deg, rgba(201, 169, 110, 0.08), rgba(168, 191, 163, 0.12));
-    box-shadow: 0 32px 80px rgba(43, 43, 43, 0.12);
+    box-shadow: 0 38px 96px rgba(43, 43, 43, 0.14);
 }
 
 .hero-portrait-media {
     position: relative;
     overflow: hidden;
-    border-radius: 30px;
+    border-radius: 30px 0 0 30px;
     min-height: 100%;
     border: 1px solid rgba(255, 255, 255, 0.5);
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(231, 223, 214, 0.94));
@@ -1060,8 +1061,8 @@ button {
 }
 
 .hero-portrait-image {
-    object-position: center 18%;
-    transform: scale(1.03);
+    object-position: center 16%;
+    transform: scale(1.06);
 }
 
 .hero-portrait-note {
@@ -1124,8 +1125,11 @@ button {
 .hero-portrait-copy {
     display: grid;
     align-content: start;
-    gap: 14px;
-    padding: 4px 2px 2px;
+    gap: 16px;
+    padding: 22px 22px 20px;
+    background: linear-gradient(180deg, rgba(255, 252, 248, 0.94), rgba(246, 240, 233, 0.92));
+    border-left: 1px solid rgba(201, 169, 110, 0.16);
+    border-radius: 0 30px 30px 0;
 }
 
 .hero-brand-chip {
@@ -1133,11 +1137,17 @@ button {
     align-items: center;
     gap: 12px;
     width: fit-content;
-    padding: 9px 13px;
+    padding: 10px 14px;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.96);
     border: 1px solid rgba(201, 169, 110, 0.28);
     box-shadow: 0 10px 26px rgba(43, 43, 43, 0.08);
+}
+
+.hero-portrait-body {
+    display: grid;
+    gap: 12px;
+    padding: 4px 0 2px;
 }
 
 .hero-brand-chip-logo {
@@ -1199,17 +1209,17 @@ button {
 }
 
 .hero-portrait-copy h2 {
-    max-width: 18rem;
-    font-size: clamp(1.28rem, 1.9vw, 1.75rem);
-    line-height: 1.15;
+    max-width: 15rem;
+    font-size: clamp(1.35rem, 2vw, 1.95rem);
+    line-height: 1.08;
     letter-spacing: -0.01em;
     color: #2f2c2c;
     margin: 2px 0 0;
 }
 
 .hero-portrait-copy p {
-    font-size: 0.98rem;
-    line-height: 1.78;
+    font-size: 0.95rem;
+    line-height: 1.72;
     color: #685c5e;
     margin: 0;
 }
@@ -1221,16 +1231,21 @@ button {
 
 .hero-stack-editorial {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin-top: 2px;
+    margin-top: auto;
     align-items: start;
     align-self: start;
-    max-width: 28rem;
+    max-width: none;
+}
+
+.hero-portrait-links {
+    padding-top: 12px;
+    border-top: 1px solid rgba(201, 169, 110, 0.16);
 }
 
 .mini-card {
     position: relative;
-    border-radius: 18px;
-    padding: 11px 14px 12px;
+    border-radius: 20px;
+    padding: 14px 16px 15px;
     border: 1px solid rgba(201, 169, 110, 0.18);
     overflow: hidden;
     min-height: 0;
@@ -1240,7 +1255,7 @@ button {
 .mini-card-link {
     display: grid;
     align-content: start;
-    gap: 3px;
+    gap: 6px;
     text-decoration: none;
     transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
@@ -1248,10 +1263,10 @@ button {
 .mini-card-link::after {
     content: '\2197';
     position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 24px;
-    height: 24px;
+    top: 14px;
+    right: 14px;
+    width: 26px;
+    height: 26px;
     display: grid;
     place-items: center;
     border-radius: 999px;
@@ -1270,7 +1285,7 @@ button {
 
 .hero-accent-card strong,
 .hero-accent-card-muted strong {
-    font-size: 0.92rem;
+    font-size: 0.95rem;
     letter-spacing: -0.01em;
 }
 
@@ -1301,15 +1316,15 @@ button {
 }
 
 .mini-card strong {
-    max-width: 8rem;
-    font-size: 0.94rem;
-    line-height: 1.18;
+    max-width: 10rem;
+    font-size: 1rem;
+    line-height: 1.22;
 }
 
 .mini-card span {
-    font-size: 0.6rem;
+    font-size: 0.62rem;
     font-weight: 800;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.11em;
     text-transform: uppercase;
 }
 
@@ -2022,10 +2037,20 @@ button {
 
     .hero-portrait-card {
         grid-template-columns: 1fr;
+        min-height: 0;
+        gap: 0;
     }
 
     .hero-portrait-media {
         min-height: 320px;
+        border-radius: 28px 28px 0 0;
+    }
+
+    .hero-portrait-copy {
+        border-left: 0;
+        border-top: 1px solid rgba(201, 169, 110, 0.16);
+        border-radius: 0 0 28px 28px;
+        padding: 20px;
     }
 
     .hero-portrait-note {
@@ -2069,6 +2094,7 @@ button {
 
     .hero {
         padding-top: 48px;
+        gap: 22px;
     }
 
     .banner-slot {
@@ -2083,8 +2109,8 @@ button {
     }
 
     .hero-copy {
-        padding: 20px 20px 22px;
-        border-radius: 24px;
+        padding: 18px 0 8px;
+        border-radius: 0;
     }
 
     .hero-copy-compact {
@@ -2097,8 +2123,15 @@ button {
 
     .hero-copy::after {
         width: 54px;
-        right: 16px;
+        left: 0;
         top: 16px;
+    }
+
+    .hero-copy-compact h1,
+    .hero-copy-compact .lead,
+    .hero-copy-compact .hero-editorial-note,
+    .hero-copy-compact .hero-metrics {
+        max-width: none;
     }
 
     .service-category-block + .service-category-block {
@@ -2178,7 +2211,7 @@ button {
     }
 
     .hero-stack-editorial {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .landing-hero-card,
@@ -2390,6 +2423,44 @@ button {
         font-size: clamp(2.25rem, 13vw, 3.35rem);
         line-height: 0.98;
         letter-spacing: 0.2px;
+    }
+
+    .hero-copy-compact {
+        padding-top: 10px;
+    }
+
+    .hero-portrait-card {
+        padding: 14px;
+        border-radius: 28px;
+    }
+
+    .hero-portrait-media {
+        min-height: 280px;
+        border-radius: 22px 22px 0 0;
+    }
+
+    .hero-portrait-copy {
+        padding: 18px 16px 16px;
+        border-radius: 0 0 22px 22px;
+    }
+
+    .hero-portrait-copy h2 {
+        max-width: none;
+        font-size: clamp(1.28rem, 7vw, 1.62rem);
+    }
+
+    .hero-portrait-links {
+        grid-template-columns: 1fr;
+        padding-top: 10px;
+    }
+
+    .mini-card {
+        padding: 13px 14px 14px;
+    }
+
+    .mini-card strong {
+        max-width: none;
+        font-size: 0.98rem;
     }
 
     .landing-hero-card h2,

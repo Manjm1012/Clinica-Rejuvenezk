@@ -258,19 +258,21 @@
                                 <strong>{{ $doctor?->name ?: $clinicName }}</strong>
                             </div>
                         </div>
-                        <h2>{{ $doctor?->subtitle ?: $heroCardTitle }}</h2>
-                        <p>{{ $heroCardText }}</p>
+                        <div class="hero-portrait-body">
+                            <h2>{{ $doctor?->subtitle ?: $heroCardTitle }}</h2>
+                            <p>{{ $heroCardText }}</p>
+                        </div>
+                        <div class="hero-stack hero-stack-editorial hero-portrait-links">
+                            <a href="{{ route('services.index') }}" class="mini-card mini-card-link hero-accent-card">
+                                <span>Explorar catalogo</span>
+                                <strong>Tratamientos faciales</strong>
+                            </a>
+                            <a href="{{ route('services.index') }}" class="mini-card mini-card-link hero-accent-card-muted">
+                                <span>Explorar catalogo</span>
+                                <strong>Tratamientos corporales</strong>
+                            </a>
+                        </div>
                     </div>
-                </div>
-                <div class="hero-stack hero-stack-editorial">
-                    <a href="{{ route('services.index') }}" class="mini-card mini-card-link hero-accent-card">
-                        <span>Explorar catálogo</span>
-                        <strong>Tratamientos faciales</strong>
-                    </a>
-                    <a href="{{ route('services.index') }}" class="mini-card mini-card-link hero-accent-card-muted">
-                        <span>Explorar catálogo</span>
-                        <strong>Tratamientos corporales</strong>
-                    </a>
                 </div>
             </aside>
 
