@@ -979,6 +979,35 @@ button {
     gap: 14px;
 }
 
+.hero-panel-featured {
+    align-self: stretch;
+}
+
+.hero-copy-compact {
+    max-width: none;
+    align-self: center;
+    padding: 22px 22px 24px;
+}
+
+.hero-copy-compact h1 {
+    font-size: clamp(2.4rem, 4.8vw, 4.4rem);
+    line-height: 0.94;
+}
+
+.hero-copy-compact .lead {
+    max-width: none;
+    font-size: 0.98rem;
+}
+
+.hero-copy-compact .hero-editorial-note {
+    max-width: none;
+}
+
+.hero-copy-compact .hero-metrics {
+    max-width: none;
+    margin-top: 22px;
+}
+
 .hero-portrait-card {
     display: grid;
     grid-template-columns: minmax(200px, 0.9fr) minmax(0, 1.1fr);
@@ -2002,6 +2031,14 @@ button {
     .hero-copy {
         padding: 20px 20px 22px;
         border-radius: 24px;
+    }
+
+    .hero-copy-compact {
+        order: 2;
+    }
+
+    .hero-panel-featured {
+        order: 1;
     }
 
     .hero-copy::after {

@@ -232,26 +232,7 @@
 
     <main id="inicio">
         <section class="hero section container">
-            <div class="hero-copy reveal reveal-2">
-                <p class="kicker">{{ $heroKicker }}</p>
-                <h1>{{ $heroTitle }}</h1>
-                <p class="lead">{{ $heroSubtitle }}</p>
-                <p class="hero-editorial-note">{{ $heroEditorialNote }}</p>
-                <div class="hero-actions">
-                    <a href="#contacto" class="btn btn-primary">{{ $heroPrimaryCta }}</a>
-                    <a href="#servicios" class="btn btn-ghost">{{ $heroSecondaryCta }}</a>
-                </div>
-                <div class="hero-metrics">
-                    @foreach ($heroMetrics as $metric)
-                        <article>
-                            <strong>{{ $metric['value'] }}</strong>
-                            <span>{{ $metric['label'] }}</span>
-                        </article>
-                    @endforeach
-                </div>
-            </div>
-
-            <aside class="hero-panel reveal reveal-3" aria-label="Resumen de experiencia {{ $clinicName }}">
+            <aside class="hero-panel hero-panel-featured reveal reveal-2" aria-label="Resumen de experiencia {{ $clinicName }}">
                 <div class="hero-card landing-hero-card hero-portrait-card">
                     <div class="hero-portrait-media">
                         @if ($doctorPhotoUrl)
@@ -292,6 +273,25 @@
                     </div>
                 </div>
             </aside>
+
+            <div class="hero-copy hero-copy-compact reveal reveal-3">
+                <p class="kicker">{{ $heroKicker }}</p>
+                <h1>{{ $heroTitle }}</h1>
+                <p class="lead">{{ $heroSubtitle }}</p>
+                <p class="hero-editorial-note">{{ $heroEditorialNote }}</p>
+                <div class="hero-actions">
+                    <a href="#contacto" class="btn btn-primary">{{ $heroPrimaryCta }}</a>
+                    <a href="#servicios" class="btn btn-ghost">{{ $heroSecondaryCta }}</a>
+                </div>
+                <div class="hero-metrics">
+                    @foreach ($heroMetrics as $metric)
+                        <article>
+                            <strong>{{ $metric['value'] }}</strong>
+                            <span>{{ $metric['label'] }}</span>
+                        </article>
+                    @endforeach
+                </div>
+            </div>
         </section>
 
         <section class="container banner-slot reveal reveal-2" aria-label="Espacio principal de impacto visual">
