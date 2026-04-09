@@ -1069,25 +1069,26 @@ button {
     bottom: 18px;
     z-index: 2;
     display: grid;
-    gap: 4px;
-    padding: 14px 16px;
-    border-radius: 20px;
-    background: rgba(42, 36, 36, 0.38);
-    border: 1px solid rgba(255, 255, 255, 0.24);
+    gap: 6px;
+    padding: 18px 18px 16px;
+    border-radius: 24px;
+    background: rgba(31, 27, 27, 0.52);
+    border: 1px solid rgba(255, 255, 255, 0.28);
     backdrop-filter: blur(14px);
     color: #fffaf7;
-    box-shadow: 0 14px 32px rgba(43, 43, 43, 0.2);
+    box-shadow: 0 18px 36px rgba(43, 43, 43, 0.24);
 }
 
 .hero-portrait-note strong {
-    font-size: 1rem;
-    line-height: 1.2;
+    font-size: 1.18rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
 }
 
 .hero-portrait-note span {
-    font-size: 0.78rem;
+    font-size: 0.82rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: rgba(255, 247, 242, 0.88);
 }
@@ -1222,21 +1223,42 @@ button {
 }
 
 .mini-card {
-    border-radius: 18px;
-    padding: 16px 18px;
-    border-left: 2px solid rgba(201, 169, 110, 0.32);
+    position: relative;
+    border-radius: 22px;
+    padding: 18px 18px 20px;
+    border: 1px solid rgba(201, 169, 110, 0.18);
+    overflow: hidden;
 }
 
 .mini-card-link {
-    display: block;
+    display: grid;
+    align-content: start;
+    gap: 6px;
     text-decoration: none;
-    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.mini-card-link::after {
+    content: '\2197';
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(201, 169, 110, 0.2);
+    color: #aa8950;
+    font-size: 0.92rem;
+    box-shadow: 0 8px 18px rgba(43, 43, 43, 0.06);
 }
 
 .mini-card-link:hover {
     transform: translateY(-2px);
-    border-left-color: rgba(201, 169, 110, 0.58);
-    box-shadow: 0 16px 30px rgba(43, 43, 43, 0.08);
+    border-color: rgba(201, 169, 110, 0.34);
+    box-shadow: 0 18px 34px rgba(43, 43, 43, 0.08);
 }
 
 .hero-accent-card strong,
@@ -1246,12 +1268,12 @@ button {
 }
 
 .hero-accent-card {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 244, 238, 0.96));
-    border-color: rgba(201, 169, 110, 0.24);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 244, 238, 0.98));
+    border-color: rgba(201, 169, 110, 0.26);
 }
 
 .hero-accent-card-muted {
-    background: rgba(255, 255, 255, 0.66);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(245, 240, 233, 0.92));
     box-shadow: 0 10px 24px rgba(43, 43, 43, 0.04);
 }
 
@@ -1268,7 +1290,20 @@ button {
 .landing-service-card h3,
 .quote-card cite {
     display: block;
-    margin-top: 6px;
+    margin-top: 4px;
+}
+
+.mini-card strong {
+    max-width: 10rem;
+    font-size: 1.15rem;
+    line-height: 1.18;
+}
+
+.mini-card span {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
 }
 
 .banner-slot {
