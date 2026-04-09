@@ -264,11 +264,9 @@
                         </div>
                         <div class="hero-stack hero-stack-editorial hero-portrait-links">
                             <a href="{{ route('services.index') }}" class="mini-card mini-card-link hero-accent-card">
-                                <span>Explorar catalogo</span>
                                 <strong>Tratamientos faciales</strong>
                             </a>
                             <a href="{{ route('services.index') }}" class="mini-card mini-card-link hero-accent-card-muted">
-                                <span>Explorar catalogo</span>
                                 <strong>Tratamientos corporales</strong>
                             </a>
                         </div>
