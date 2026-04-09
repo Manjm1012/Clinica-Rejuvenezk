@@ -1227,6 +1227,18 @@ button {
     border-left: 2px solid rgba(201, 169, 110, 0.32);
 }
 
+.mini-card-link {
+    display: block;
+    text-decoration: none;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mini-card-link:hover {
+    transform: translateY(-2px);
+    border-left-color: rgba(201, 169, 110, 0.58);
+    box-shadow: 0 16px 30px rgba(43, 43, 43, 0.08);
+}
+
 .hero-accent-card strong,
 .hero-accent-card-muted strong {
     font-size: 1.04rem;

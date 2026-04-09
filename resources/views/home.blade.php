@@ -263,14 +263,14 @@
                     </div>
                 </div>
                 <div class="hero-stack hero-stack-editorial">
-                    <div class="mini-card hero-accent-card">
-                        <span>{{ $heroStackPrimaryLabel }}</span>
-                        <strong>{{ $featuredServices->first()?->name ?: 'Lift & Glow 360' }}</strong>
-                    </div>
-                    <div class="mini-card hero-accent-card-muted">
-                        <span>{{ $heroStackSecondaryLabel }}</span>
-                        <strong>{{ $doctor?->name ?: 'Equipo medico premium' }}</strong>
-                    </div>
+                    <a href="{{ route('services.index') }}" class="mini-card mini-card-link hero-accent-card">
+                        <span>Explorar catálogo</span>
+                        <strong>Tratamientos faciales</strong>
+                    </a>
+                    <a href="{{ route('services.index') }}" class="mini-card mini-card-link hero-accent-card-muted">
+                        <span>Explorar catálogo</span>
+                        <strong>Tratamientos corporales</strong>
+                    </a>
                 </div>
             </aside>
 
