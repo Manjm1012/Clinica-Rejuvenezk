@@ -9,6 +9,8 @@
 - Base de datos SQLite o MySQL/MariaDB
 - Acceso para ejecutar tareas programadas y colas si se usan en produccion
 
+Para produccion en Dokploy no uses SQLite dentro del contenedor si esperas conservar contenido tras rebuilds. Usa MySQL o MariaDB persistente.
+
 ## Variables de entorno minimas
 
 Configura al menos estas variables en `.env`:
@@ -41,6 +43,8 @@ MAIL_FROM_NAME="${APP_NAME}"
 
 La configuracion de TayrAI se gestiona en la base de datos mediante los ajustes del sitio.
 
+Si los archivos subidos desde Filament deben sobrevivir a rebuilds, monta un volumen persistente para `storage/app/public` o mueve el disco `public` a S3.
+
 ## Primer despliegue
 
 ```bash
@@ -56,6 +60,12 @@ php artisan storage:link
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
+```
+
+Alternativa usando el script del proyecto:
+
+```bash
+composer run deploy:full
 ```
 
 ## Permisos
@@ -78,6 +88,71 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 ```
+
+Alternativa usando el script del proyecto:
+
+```bash
+composer run deploy:full
+```
+
+## Dokploy
+
+Configura el servicio para que el rebuild no pierda contenido administrativo ni uploads.
+
+### Variables recomendadas
+
+```dotenv
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://tu-dominio.com
+
+DB_CONNECTION=mysql
+DB_HOST=<host-del-servicio-mysql>
+DB_PORT=3306
+DB_DATABASE=clinica_rejuvenezk
+DB_USERNAME=<usuario>
+DB_PASSWORD=<password>
+
+FILESYSTEM_DISK=public
+SESSION_DRIVER=database
+CACHE_STORE=database
+QUEUE_CONNECTION=database
+```
+
+### Build Command
+
+```bash
+composer install --no-dev --prefer-dist --optimize-autoloader && npm ci && npm run build
+```
+
+### Start o Post-Deploy Command
+
+Si Dokploy te permite comando post-deploy, usa:
+
+```bash
+composer run deploy
+```
+
+Si solo te permite un comando unico de despliegue, usa:
+
+```bash
+composer run deploy:full
+```
+
+### Volumenes persistentes
+
+Monta al menos estos paths si el contenedor se reemplaza en cada rebuild:
+
+- `storage/app/public`
+- `database` solo si aun insistes en SQLite
+
+Si vas a usar MySQL, no montes `database/database.sqlite` como estrategia principal.
+
+### Recomendacion operativa
+
+- Base de datos: MySQL o MariaDB administrado por Dokploy o externo.
+- Uploads: volumen persistente o S3.
+- Despues del deploy valida el panel de Filament y una imagen subida desde el admin.
 
 ## Queue worker y scheduler
 
