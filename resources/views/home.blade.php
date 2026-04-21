@@ -188,7 +188,7 @@
     }
 
     if (! $aboutImageUrl) {
-        $aboutImageUrl = $doctorPhotoUrl ?: ($clinicLogoUrl ?: $bannerMedia);
+        $aboutImageUrl = $bannerMedia ?: $clinicLogoUrl;
     }
 
     $aboutImageAlt = $settings['about_image_alt'] ?? ('Especialista de ' . $clinicName);
@@ -348,26 +348,6 @@
             </div>
         </section>
 
-        <section class="container banner-slot reveal reveal-2" aria-label="Espacio principal de impacto visual">
-            @if ($bannerMedia)
-                <figure class="media-placeholder media-placeholder-lg media-banner">
-                    <img src="{{ $bannerMedia }}" alt="Imagen principal de {{ $clinicName }}" loading="lazy">
-                </figure>
-            @else
-                <figure class="media-placeholder media-placeholder-lg media-banner media-banner-fallback">
-                    <figcaption>
-                        @if ($clinicLogoUrl)
-                            <span class="banner-logo-wrap">
-                                <img src="{{ $clinicLogoUrl }}" alt="Logo de {{ $clinicName }}" class="banner-logo">
-                            </span>
-                        @endif
-                        <span class="kicker">Experiencia premium</span>
-                        <strong>{{ $clinicName }}</strong>
-                    </figcaption>
-                </figure>
-            @endif
-        </section>
-
         <section class="section benefits-section">
             <div class="container reveal reveal-2">
                 <div class="benefits-head">
@@ -387,34 +367,6 @@
                         </article>
                     @endforeach
                 </div>
-            </div>
-        </section>
-
-        <section class="section section-white trust-section">
-            <div class="container trust-layout reveal reveal-2">
-                <div class="trust-copy">
-                    <p class="kicker">{{ $credentialKicker }}</p>
-                    <h2 class="section-title trust-title">{{ $credentialTitle }}</h2>
-                    <div class="credential-badges" aria-label="Credenciales de confianza">
-                        @foreach ($credentialBadges as $badge)
-                            <span>{{ $badge }}</span>
-                        @endforeach
-                    </div>
-                </div>
-
-                <article class="social-proof-card" aria-label="Calificacion de pacientes">
-                    <p class="social-proof-kicker">Experiencia de pacientes</p>
-                    <div class="social-proof-score">
-                        <strong>{{ $testimonialsAvg }}</strong>
-                        <span>/ 5</span>
-                    </div>
-                    <p class="social-proof-meta">Basado en {{ $testimonialsCount > 0 ? $testimonialsCount : 16 }} valoraciones visibles.</p>
-                    @if ($reviewsUrl !== '')
-                        <a href="{{ $reviewsUrl }}" target="_blank" rel="noopener noreferrer" class="social-proof-link">Ver resenas verificadas</a>
-                    @else
-                        <a href="#resultados" class="social-proof-link">Ver testimonios</a>
-                    @endif
-                </article>
             </div>
         </section>
 
