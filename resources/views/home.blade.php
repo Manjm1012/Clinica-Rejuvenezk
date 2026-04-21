@@ -166,6 +166,32 @@
             'label' => 'Precision',
         ],
     ]);
+
+    $aboutKicker = $settings['about_kicker'] ?? 'Quienes somos';
+    $aboutTitle = $settings['about_title'] ?? 'Medicina estetica con criterio humano y respaldo medico';
+    $aboutLead = $settings['about_lead'] ?? 'Somos un centro medico estetico especializado en el cuidado integral de la salud y la belleza. Nuestro equipo esta conformado por profesionales certificados, comprometidos con resultados naturales y progresivos.';
+    $aboutDoctorLine = $settings['about_doctor_line'] ?? ('En ' . $clinicName . ' combinamos ciencia avanzada y diagnostico personalizado para ofrecer tratamientos seguros, eficaces y minimamente invasivos.');
+    $aboutMission = $settings['about_mission'] ?? 'Brindar soluciones esteticas integrales que realcen la belleza natural de nuestros pacientes, combinando vanguardia medica con un trato humano y personalizado para mejorar su autoestima y calidad de vida.';
+    $aboutVision = $settings['about_vision'] ?? 'Ser una clinica estetica lider en la region, reconocida por la calidez en el servicio y la excelencia en resultados naturales, logrando que cada paciente se sienta la mejor version de si mismo.';
+
+    $aboutImageUrl = null;
+    $aboutImagePathCandidate = trim((string) ($settings['about_image_url'] ?? ''));
+    if ($aboutImagePathCandidate !== '') {
+        if (filter_var($aboutImagePathCandidate, FILTER_VALIDATE_URL)) {
+            $aboutImageUrl = $aboutImagePathCandidate;
+        } else {
+            $normalizedAboutImagePath = $normalizeMediaPath($aboutImagePathCandidate);
+            if ($normalizedAboutImagePath && $publicDisk->exists($normalizedAboutImagePath)) {
+                $aboutImageUrl = $publicDisk->url($normalizedAboutImagePath);
+            }
+        }
+    }
+
+    if (! $aboutImageUrl) {
+        $aboutImageUrl = $doctorPhotoUrl ?: ($clinicLogoUrl ?: $bannerMedia);
+    }
+
+    $aboutImageAlt = $settings['about_image_alt'] ?? ('Especialista de ' . $clinicName);
 @endphp
 
 <!DOCTYPE html>
@@ -203,6 +229,7 @@
                 </span>
             </a>
             <nav class="nav-links" aria-label="Navegacion principal">
+                <a href="#quienes-somos">Quienes somos</a>
                 <a href="#servicios">Servicios</a>
                 <a href="#resultados">Resultados</a>
                 <a href="#contacto">Contacto</a>
@@ -228,6 +255,7 @@
                 </div>
                 <nav class="mobile-nav-links" aria-label="Navegacion movil">
                     <a href="#inicio">Inicio</a>
+                    <a href="#quienes-somos">Quienes somos</a>
                     <a href="#servicios">Servicios</a>
                     <a href="#doctor">Especialista</a>
                     <a href="#contacto">Contacto</a>
@@ -387,6 +415,41 @@
                         <a href="#resultados" class="social-proof-link">Ver testimonios</a>
                     @endif
                 </article>
+            </div>
+        </section>
+
+        <section id="quienes-somos" class="section section-white about-section">
+            <div class="container about-layout reveal reveal-2">
+                <article class="about-content-card">
+                    <p class="kicker">{{ $aboutKicker }}</p>
+                    <h2 class="section-title">{{ $aboutTitle }}</h2>
+                    <p class="section-intro about-intro">{{ $aboutLead }}</p>
+                    <p class="about-doctor-line">{{ $aboutDoctorLine }}</p>
+
+                    <div class="about-pillars" aria-label="Mision y vision de {{ $clinicName }}">
+                        <article class="about-pillar">
+                            <h3>Mision</h3>
+                            <p>{{ $aboutMission }}</p>
+                        </article>
+                        <article class="about-pillar">
+                            <h3>Vision</h3>
+                            <p>{{ $aboutVision }}</p>
+                        </article>
+                    </div>
+                </article>
+
+                <aside class="about-media-card" aria-label="Imagen institucional de {{ $clinicName }}">
+                    @if ($aboutImageUrl)
+                        <figure class="about-media-frame">
+                            <img src="{{ $aboutImageUrl }}" alt="{{ $aboutImageAlt }}" loading="lazy" class="about-media-image">
+                        </figure>
+                    @else
+                        <div class="about-media-fallback">
+                            <span>{{ $brandInitials ?: 'CR' }}</span>
+                            <small>{{ $clinicName }}</small>
+                        </div>
+                    @endif
+                </aside>
             </div>
         </section>
 
