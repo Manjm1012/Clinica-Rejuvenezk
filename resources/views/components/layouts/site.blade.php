@@ -8,11 +8,16 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="site-body">
+    @php
+        $publicDisk = \Illuminate\Support\Facades\Storage::disk('public');
+        $logoSourcePath = $currentClinic?->logo_path ?? $clinic?->logo_path ?? null;
+        $logoPath = ($logoSourcePath !== null && trim($logoSourcePath) !== '') ? ltrim(trim($logoSourcePath), '/') : null;
+    @endphp
     <div class="site-shell">
         <header class="topbar">
             <a href="{{ route('home') }}" class="brand-mark">
-                @if (!empty($currentClinic?->logo_path) && \Illuminate\Support\Facades\Storage::disk('public')->exists($currentClinic->logo_path))
-                    <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($currentClinic->logo_path) }}" alt="Logo {{ $settings['clinic_name'] ?? 'Clínica' }}" class="brand-logo">
+                @if ($logoPath && $publicDisk->exists($logoPath))
+                    <img src="{{ $publicDisk->url($logoPath) }}" alt="Logo {{ $settings['clinic_name'] ?? 'Clínica' }}" class="brand-logo">
                 @else
                     {{ $settings['clinic_name'] ?? 'Clínica Rejuvenezk' }}
                 @endif

@@ -1,6 +1,7 @@
 @php
     $clinicName = $settings['clinic_name'] ?? 'Clínica Rejuvenezk';
     $publicDisk = \Illuminate\Support\Facades\Storage::disk('public');
+    $normalizeMediaPath = fn (?string $path): ?string => ($path !== null && trim($path) !== '') ? ltrim(trim($path), '/') : null;
 @endphp
 
 <x-layouts.site :settings="$settings" :title="'Tratamientos | ' . $clinicName">
@@ -28,10 +29,11 @@
 
                 <div class="services-grid services-grid-catalog">
                     @foreach ($category->services as $service)
+                        @php($serviceImagePath = $normalizeMediaPath($service->image_path))
                         <article class="landing-service-card">
-                            @if ($service->image_path && $publicDisk->exists($service->image_path))
+                            @if ($serviceImagePath && $publicDisk->exists($serviceImagePath))
                                 <figure class="media-placeholder media-placeholder-service service-media">
-                                    <img src="{{ $publicDisk->url($service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
+                                    <img src="{{ $publicDisk->url($serviceImagePath) }}" alt="{{ $service->name }}" loading="lazy">
                                 </figure>
                             @endif
                             <div class="service-card-copy">

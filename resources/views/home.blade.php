@@ -35,11 +35,14 @@
         ? $whatsappRawUrl
         : ($whatsappDigits ? 'https://wa.me/' . $whatsappDigits : '#contacto');
     $publicDisk = \Illuminate\Support\Facades\Storage::disk('public');
-    $clinicLogoUrl = !empty($clinic?->logo_path) && $publicDisk->exists($clinic->logo_path)
-        ? $publicDisk->url($clinic->logo_path)
+    $normalizeMediaPath = fn (?string $path): ?string => ($path !== null && trim($path) !== '') ? ltrim(trim($path), '/') : null;
+    $clinicLogoPath = $normalizeMediaPath($clinic?->logo_path);
+    $doctorPhotoPath = $normalizeMediaPath($doctor?->photo_path);
+    $clinicLogoUrl = $clinicLogoPath && $publicDisk->exists($clinicLogoPath)
+        ? $publicDisk->url($clinicLogoPath)
         : null;
-    $doctorPhotoUrl = !empty($doctor?->photo_path) && $publicDisk->exists($doctor->photo_path)
-        ? $publicDisk->url($doctor->photo_path)
+    $doctorPhotoUrl = $doctorPhotoPath && $publicDisk->exists($doctorPhotoPath)
+        ? $publicDisk->url($doctorPhotoPath)
         : null;
     $brandInitials = collect(preg_split('/\s+/', trim($clinicName)))
         ->filter()
@@ -48,12 +51,15 @@
         ->implode('');
     $bannerMedia = null;
 
-    if (!empty($featuredServices->first()?->banner_path)) {
-        $bannerMedia = $publicDisk->exists($featuredServices->first()->banner_path)
-            ? $publicDisk->url($featuredServices->first()->banner_path)
+    $featuredBannerPath = $normalizeMediaPath($featuredServices->first()?->banner_path);
+    $featuredImagePath = $normalizeMediaPath($featuredServices->first()?->image_path);
+
+    if ($featuredBannerPath) {
+        $bannerMedia = $publicDisk->exists($featuredBannerPath)
+            ? $publicDisk->url($featuredBannerPath)
             : null;
-    } elseif (!empty($featuredServices->first()?->image_path) && $publicDisk->exists($featuredServices->first()->image_path)) {
-        $bannerMedia = $publicDisk->url($featuredServices->first()->image_path);
+    } elseif ($featuredImagePath && $publicDisk->exists($featuredImagePath)) {
+        $bannerMedia = $publicDisk->url($featuredImagePath);
     }
 
     $heroMetrics = $stats->take(2)->map(fn ($stat) => [
@@ -416,10 +422,11 @@
 
                             <div class="services-grid services-grid-curated">
                                 @foreach ($featuredCategoryServices as $service)
+                                    @php($serviceImagePath = $normalizeMediaPath($service->image_path))
                                     <article class="landing-service-card">
-                                        @if ($service->image_path && $publicDisk->exists($service->image_path))
+                                        @if ($serviceImagePath && $publicDisk->exists($serviceImagePath))
                                             <figure class="media-placeholder media-placeholder-service service-media">
-                                                    <img src="{{ $publicDisk->url($service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
+                                                    <img src="{{ $publicDisk->url($serviceImagePath) }}" alt="{{ $service->name }}" loading="lazy">
                                             </figure>
                                         @endif
                                         <div class="service-card-copy">
@@ -439,10 +446,11 @@
                     <div class="services-panel is-active">
                         <div class="services-grid">
                             @foreach ($featuredServices as $service)
+                                @php($serviceImagePath = $normalizeMediaPath($service->image_path))
                                 <article class="landing-service-card">
-                                    @if ($service->image_path && $publicDisk->exists($service->image_path))
+                                    @if ($serviceImagePath && $publicDisk->exists($serviceImagePath))
                                         <figure class="media-placeholder media-placeholder-service service-media">
-                                            <img src="{{ $publicDisk->url($service->image_path) }}" alt="{{ $service->name }}" loading="lazy">
+                                            <img src="{{ $publicDisk->url($serviceImagePath) }}" alt="{{ $service->name }}" loading="lazy">
                                         </figure>
                                     @endif
                                     <div class="service-card-copy">
