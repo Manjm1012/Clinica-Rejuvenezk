@@ -1,7 +1,27 @@
 @php
     $clinicName = $settings['clinic_name'] ?? 'Clínica Rejuvenezk';
     $publicDisk = \Illuminate\Support\Facades\Storage::disk('public');
-    $normalizeMediaPath = fn (?string $path): ?string => ($path !== null && trim($path) !== '') ? ltrim(trim($path), '/') : null;
+    $normalizeMediaPath = function (?string $path): ?string {
+        if ($path === null || trim($path) === '') {
+            return null;
+        }
+
+        $normalized = trim($path);
+
+        if (filter_var($normalized, FILTER_VALIDATE_URL)) {
+            $normalized = parse_url($normalized, PHP_URL_PATH) ?: $normalized;
+        }
+
+        $normalized = ltrim(rawurldecode($normalized), '/');
+
+        foreach (['media/', 'storage/', 'public/', 'app/public/'] as $prefix) {
+            if (str_starts_with($normalized, $prefix)) {
+                $normalized = substr($normalized, strlen($prefix));
+            }
+        }
+
+        return $normalized !== '' ? $normalized : null;
+    };
 @endphp
 
 <x-layouts.site :settings="$settings" :title="'Tratamientos | ' . $clinicName">
