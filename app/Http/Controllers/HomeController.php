@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Clinic;
 use App\Models\Doctor;
+use App\Models\GalleryItem;
 use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Models\SiteSetting;
@@ -82,6 +83,17 @@ class HomeController extends Controller
                 ->get(),
             'featuredServices' => Service::query()->where('is_active', true)->where('is_featured', true)->orderBy('sort_order')->limit(6)->get(),
             'doctor' => Doctor::query()->where('is_active', true)->orderBy('sort_order')->first(),
+            'galleryItems' => GalleryItem::query()
+                ->where('is_active', true)
+                ->where(function ($query) {
+                    $query->whereNotNull('image_path')
+                        ->orWhereNotNull('before_image_path')
+                        ->orWhereNotNull('after_image_path');
+                })
+                ->orderByDesc('is_featured')
+                ->orderBy('sort_order')
+                ->limit(6)
+                ->get(),
             'stats' => Stat::query()->where('is_active', true)->orderBy('sort_order')->get(),
             'technologies' => Technology::query()->where('is_active', true)->orderBy('sort_order')->get(),
             'testimonials' => Testimonial::query()->where('is_active', true)->orderByDesc('is_featured')->orderBy('sort_order')->limit(8)->get(),

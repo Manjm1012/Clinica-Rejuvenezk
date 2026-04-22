@@ -127,6 +127,8 @@
         ['label' => 'Correo', 'icon' => 'mail', 'handle' => $settings['email'] ?: 'contacto@rejuvenezk.com', 'text' => 'Solicita informacion detallada y propuestas personalizadas', 'url' => !empty($settings['email']) ? 'mailto:' . $settings['email'] : null],
     ]);
 
+    $socialBannerCards = $socialCards->filter(fn ($card) => ! empty($card['url']))->values();
+
     $socialIcons = [
         'instagram' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.9A3.85 3.85 0 0 0 3.9 7.75v8.5a3.85 3.85 0 0 0 3.85 3.85h8.5a3.85 3.85 0 0 0 3.85-3.85v-8.5a3.85 3.85 0 0 0-3.85-3.85h-8.5Zm8.9 1.5a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.9A3.1 3.1 0 1 0 12 15.1 3.1 3.1 0 0 0 12 8.9Z"/></svg>',
         'facebook' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.5-3h-3.2V9.1c0-.9.3-1.5 1.7-1.5h1.6V5c-.8-.1-1.7-.2-2.6-.2-2.6 0-4.2 1.6-4.2 4.4V11H8v3h2.5v8h3Z"/></svg>',
@@ -195,6 +197,31 @@
     $aboutEntryTitle = $settings['about_entry_title'] ?? 'Conoce la clinica, su historia y el enfoque medico detras de cada tratamiento.';
     $aboutEntryLead = $settings['about_entry_lead'] ?? 'La portada ahora prioriza tratamientos e imagenes. Si quieres profundizar en nuestra identidad, abre la seccion dedicada.';
     $aboutEntryCta = $settings['about_entry_cta'] ?? 'Ver quienes somos';
+    $resultsKicker = $settings['results_kicker'] ?? 'Casos y resultados';
+    $resultsTitle = $settings['results_title'] ?? 'Imagenes que capturan el tipo de cambio que buscan tus pacientes.';
+    $resultsLead = $settings['results_lead'] ?? 'Menos discurso y mas evidencia visual: tratamientos, armonizacion y resultados reales en una sola mirada.';
+
+    $galleryPreview = $galleryItems->map(function ($item) use ($normalizeMediaPath, $publicDisk) {
+        $candidates = [
+            $item->image_path,
+            $item->after_image_path,
+            $item->before_image_path,
+        ];
+
+        foreach ($candidates as $candidate) {
+            $normalized = $normalizeMediaPath($candidate);
+
+            if ($normalized && $publicDisk->exists($normalized)) {
+                return [
+                    'url' => $publicDisk->url($normalized),
+                    'title' => $item->title ?: ($item->service?->name ?? 'Resultado Rejuvenezk'),
+                    'label' => $item->service?->name ?: 'Caso destacado',
+                ];
+            }
+        }
+
+        return null;
+    })->filter()->take(4)->values();
 @endphp
 
 <!DOCTYPE html>
@@ -505,6 +532,29 @@
                 <p class="kicker">{{ $testimonialsKicker }}</p>
                 <h2 class="section-title">{{ $testimonialsTitle }}</h2>
             </div>
+
+            @if ($galleryPreview->isNotEmpty())
+                <div class="container result-visual-band reveal reveal-2">
+                    <article class="result-visual-copy">
+                        <p class="kicker">{{ $resultsKicker }}</p>
+                        <h3>{{ $resultsTitle }}</h3>
+                        <p>{{ $resultsLead }}</p>
+                    </article>
+
+                    <div class="result-visual-grid" aria-label="Galeria visual de {{ $clinicName }}">
+                        @foreach ($galleryPreview as $item)
+                            <figure class="result-visual-card">
+                                <img src="{{ $item['url'] }}" alt="{{ $item['title'] }}" loading="lazy">
+                                <figcaption>
+                                    <strong>{{ $item['title'] }}</strong>
+                                    <span>{{ $item['label'] }}</span>
+                                </figcaption>
+                            </figure>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
             <div class="container testimonials-grid reveal reveal-3">
                 @forelse ($testimonialsToShow as $testimonial)
                     <blockquote class="quote-card">
@@ -535,15 +585,22 @@
                 <h2 class="section-title">{{ $socialTitle }}</h2>
                 <p class="lead social-lead">{{ $socialLead }}</p>
 
-                <div class="social-grid">
-                    @foreach ($socialCards as $card)
-                        <a class="social-card" href="{{ $card['url'] ?: '#contacto' }}" @if($card['url']) target="_blank" rel="noopener noreferrer" @endif aria-label="Ir a {{ $card['label'] }}">
-                            <span class="social-card-icon" aria-hidden="true">{!! $socialIcons[$card['icon']] ?? '' !!}</span>
-                            <strong>{{ $card['label'] }}</strong>
-                            <span>{{ $card['handle'] }}</span>
-                            <small>{{ $card['text'] }}</small>
-                        </a>
-                    @endforeach
+                <div class="social-banner" aria-label="Canales sociales y contacto de {{ $clinicName }}">
+                    <div class="social-banner-copy">
+                        <strong>Siguenos, escribe o descubre mas desde un solo bloque.</strong>
+                        <span>Instagram, Facebook, TikTok, YouTube, WhatsApp y correo reunidos para una navegacion mas rapida en movil.</span>
+                    </div>
+                    <div class="social-banner-logos">
+                        @foreach ($socialBannerCards as $card)
+                            <a class="social-banner-link" href="{{ $card['url'] }}" target="_blank" rel="noopener noreferrer" aria-label="Ir a {{ $card['label'] }}">
+                                <span class="social-card-icon" aria-hidden="true">{!! $socialIcons[$card['icon']] ?? '' !!}</span>
+                                <span class="social-banner-meta">
+                                    <strong>{{ $card['label'] }}</strong>
+                                    <small>{{ $card['handle'] }}</small>
+                                </span>
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </section>
