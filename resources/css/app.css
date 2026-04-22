@@ -2159,6 +2159,30 @@ button {
     font-size: 0.95rem;
 }
 
+.result-visual-dots {
+    display: none;
+    justify-content: center;
+    gap: 8px;
+    padding-top: 14px;
+}
+
+.result-visual-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d6c8a8;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.25s;
+    flex-shrink: 0;
+}
+
+.result-visual-dot.is-active {
+    background: #8d7446;
+    transform: scale(1.35);
+}
+
 .result-visual-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -3345,6 +3369,10 @@ button {
 
     .result-visual-card {
         scroll-snap-align: start;
+    }
+
+    .result-visual-dots {
+        display: flex;
     }
 
     .social-banner {

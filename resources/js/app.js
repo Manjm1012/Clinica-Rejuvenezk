@@ -33,6 +33,47 @@ document.addEventListener('DOMContentLoaded', () => {
 	elements.forEach((element) => observer.observe(element));
 });
 
+// Results carousel pagination dots
+document.addEventListener('DOMContentLoaded', () => {
+	const grid = document.getElementById('resultCarousel');
+	const dotsContainer = document.getElementById('resultDots');
+
+	if (!grid || !dotsContainer) return;
+
+	const cards = Array.from(grid.querySelectorAll('.result-visual-card'));
+	if (!cards.length) return;
+
+	// Build dots
+	cards.forEach((card, i) => {
+		const btn = document.createElement('button');
+		btn.className = 'result-visual-dot' + (i === 0 ? ' is-active' : '');
+		btn.setAttribute('aria-label', `Ver caso ${i + 1}`);
+		btn.addEventListener('click', () => {
+			card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+		});
+		dotsContainer.appendChild(btn);
+	});
+
+	const dots = Array.from(dotsContainer.querySelectorAll('.result-visual-dot'));
+
+	// Update active dot on scroll
+	let scrollTimer;
+	grid.addEventListener('scroll', () => {
+		clearTimeout(scrollTimer);
+		scrollTimer = setTimeout(() => {
+			const center = grid.scrollLeft + grid.clientWidth / 2;
+			let closest = 0;
+			let closestDist = Infinity;
+			cards.forEach((card, i) => {
+				const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+				const dist = Math.abs(cardCenter - center);
+				if (dist < closestDist) { closestDist = dist; closest = i; }
+			});
+			dots.forEach((d, i) => d.classList.toggle('is-active', i === closest));
+		}, 50);
+	}, { passive: true });
+});
+
 // Services tab filter
 document.addEventListener('DOMContentLoaded', () => {
 	const tabs = document.querySelectorAll('.services-tab');

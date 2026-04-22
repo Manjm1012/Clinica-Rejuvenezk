@@ -542,7 +542,7 @@
                         <span class="result-visual-hint">Desliza para ver mas casos</span>
                     </article>
 
-                    <div class="result-visual-grid" aria-label="Galeria visual de {{ $clinicName }}">
+                    <div class="result-visual-grid" id="resultCarousel" aria-label="Galeria visual de {{ $clinicName }}">
                         @foreach ($galleryPreview as $item)
                             <figure class="result-visual-card">
                                 <img src="{{ $item['url'] }}" alt="{{ $item['title'] }}" loading="lazy">
@@ -553,6 +553,7 @@
                             </figure>
                         @endforeach
                     </div>
+                    <div class="result-visual-dots" id="resultDots" aria-hidden="true"></div>
                 </div>
             @endif
 
