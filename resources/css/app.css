@@ -2017,7 +2017,7 @@ button {
 .svc-carousel {
     display: grid;
     grid-auto-flow: column;
-    grid-auto-columns: minmax(260px, 1fr);
+    grid-auto-columns: clamp(240px, 28vw, 320px);
     gap: 16px;
     overflow-x: auto;
     overflow-y: hidden;
@@ -2060,7 +2060,9 @@ button {
 
 .svc-card-media {
     width: 100%;
-    height: 190px;
+    aspect-ratio: 16 / 10;
+    max-height: 190px;
+    height: auto;
     overflow: hidden;
     flex-shrink: 0;
     background: #f0e9df;
@@ -2917,6 +2919,10 @@ button {
         margin-bottom: 14px;
     }
 
+    .svc-carousel {
+        grid-auto-columns: minmax(300px, 62vw);
+    }
+
     .cta-actions {
         margin-top: 20px;
     }
@@ -2971,7 +2977,11 @@ button {
     }
 
     .svc-carousel {
-        grid-auto-columns: minmax(80%, 1fr);
+        grid-auto-columns: minmax(78vw, 78vw);
+    }
+
+    .svc-card-media {
+        max-height: 170px;
     }
 
     .svc-carousel-hint {
