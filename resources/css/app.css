@@ -2143,6 +2143,22 @@ button {
     line-height: 1.72;
 }
 
+.result-visual-hint {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    color: #8d7446;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.result-visual-hint::after {
+    content: '→';
+    font-size: 0.95rem;
+}
+
 .result-visual-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -2721,6 +2737,10 @@ button {
     .result-visual-copy p,
     .social-banner-copy span {
         display: none;
+    }
+
+    .result-visual-hint {
+        display: inline-flex;
     }
 
     .about-content-card,
@@ -3305,6 +3325,26 @@ button {
 
     .result-visual-card {
         min-height: 240px;
+    }
+
+    .result-visual-grid {
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(78%, 1fr);
+        grid-template-columns: none;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-bottom: 6px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .result-visual-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .result-visual-card {
+        scroll-snap-align: start;
     }
 
     .social-banner {

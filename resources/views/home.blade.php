@@ -539,6 +539,7 @@
                         <p class="kicker">{{ $resultsKicker }}</p>
                         <h3>{{ $resultsTitle }}</h3>
                         <p>{{ $resultsLead }}</p>
+                        <span class="result-visual-hint">Desliza para ver mas casos</span>
                     </article>
 
                     <div class="result-visual-grid" aria-label="Galeria visual de {{ $clinicName }}">
