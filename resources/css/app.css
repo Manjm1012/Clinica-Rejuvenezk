@@ -756,10 +756,10 @@ button {
     right: 16px;
     bottom: 16px;
     z-index: 45;
-    display: none;
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 11px 16px;
+    gap: 10px;
+    padding: 12px 18px;
     border-radius: 999px;
     background: linear-gradient(135deg, #1fa855 0%, #1b8e4a 100%);
     color: #f7fff9;
@@ -768,12 +768,12 @@ button {
 }
 
 .whatsapp-fab span {
-    font-size: 0.95rem;
+    font-size: 1rem;
     line-height: 1;
 }
 
 .whatsapp-fab strong {
-    font-size: 0.85rem;
+    font-size: 0.92rem;
     letter-spacing: 0.02em;
 }
 
@@ -2628,15 +2628,15 @@ button {
 .footer-social {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 16px;
 }
 
 .footer-social-link {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     background: transparent;
     color: var(--text-secondary);
@@ -2649,8 +2649,8 @@ button {
 }
 
 .footer-social-link svg {
-    width: 18px;
-    height: 18px;
+    width: 24px;
+    height: 24px;
     fill: currentColor;
 }
 

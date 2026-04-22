@@ -1,33 +1,33 @@
 @php
-    $clinicName = $settings['clinic_name'] ?? 'Clinica Rejuvenezk';
-    $heroKicker = $settings['hero_kicker'] ?? 'Medicina estetica avanzada';
+    $clinicName = $settings['clinic_name'] ?? 'Clínica Rejuvenezk';
+    $heroKicker = $settings['hero_kicker'] ?? 'Medicina estética avanzada';
     $heroTitle = $settings['hero_title'] ?? 'Rejuvenecimiento facial con resultados naturales.';
-    $heroSubtitle = $settings['hero_subtitle'] ?? 'Tecnologia avanzada, criterio medico y protocolos personalizados para armonizar tu rostro sin perder expresion.';
-    $heroPrimaryCta = $settings['hero_primary_cta'] ?? 'Reservar valoracion';
+    $heroSubtitle = $settings['hero_subtitle'] ?? 'Tecnología avanzada, criterio médico y protocolos personalizados para armonizar tu rostro sin perder expresión.';
+    $heroPrimaryCta = $settings['hero_primary_cta'] ?? 'Reservar valoración';
     $heroSecondaryCta = $settings['hero_secondary_cta'] ?? 'Ver tratamientos';
     $heroCardKicker = $settings['hero_card_kicker'] ?? 'Primera cita';
-    $heroCardTitle = $settings['hero_card_title'] ?? ($doctor?->subtitle ?: 'Diagnostico inteligente de piel');
-    $heroCardText = $settings['hero_card_text'] ?? ($doctor?->bio ?: 'Analisis de calidad cutanea y plan estetico por etapas para resultados armonicos y progresivos.');
+    $heroCardTitle = $settings['hero_card_title'] ?? ($doctor?->subtitle ?: 'Diagnóstico inteligente de piel');
+    $heroCardText = $settings['hero_card_text'] ?? ($doctor?->bio ?: 'Análisis de calidad cutánea y plan estético por etapas para resultados armónicos y progresivos.');
     $heroStackPrimaryLabel = $settings['hero_stack_primary_label'] ?? 'Protocolo estrella';
     $heroStackSecondaryLabel = $settings['hero_stack_secondary_label'] ?? 'Especialista';
     $servicesKicker = $settings['services_kicker'] ?? 'Nuestros tratamientos';
-    $servicesTitle = $settings['services_title'] ?? 'Tratamientos seleccionados con enfoque medico estetico';
-    $servicesLead = $settings['services_lead'] ?? 'Cada protocolo combina diagnostico, tecnica y naturalidad para construir resultados elegantes, progresivos y coherentes con tu rostro.';
+    $servicesTitle = $settings['services_title'] ?? 'Tratamientos seleccionados con enfoque médico estético';
+    $servicesLead = $settings['services_lead'] ?? 'Cada protocolo combina diagnóstico, técnica y naturalidad para construir resultados elegantes, progresivos y coherentes con tu rostro.';
     $benefitsKicker = $settings['benefits_kicker'] ?? 'Nuestra promesa';
-    $benefitsTitle = $settings['benefits_title'] ?? 'Una experiencia estetica pensada para verse bien y sentirse correcta.';
-    $benefitsLead = $settings['benefits_lead'] ?? 'Combinamos precision medica, criterio facial y acompanamiento cercano para que cada decision se tome con confianza.';
+    $benefitsTitle = $settings['benefits_title'] ?? 'Una experiencia estética pensada para verse bien y sentirse bien.';
+    $benefitsLead = $settings['benefits_lead'] ?? 'Combinamos precisión médica, criterio facial y acompañamiento cercano para que cada decisión se tome con confianza.';
     $testimonialsKicker = $settings['testimonials_kicker'] ?? 'Testimonios';
     $testimonialsTitle = $settings['testimonials_title'] ?? 'Pacientes que ya viven su cambio';
     $socialKicker = $settings['social_kicker'] ?? ('Comunidad ' . $clinicName);
     $socialTitle = $settings['social_title'] ?? 'Conecta con nuestras redes y canales';
     $socialLead = $settings['social_lead'] ?? 'Comparte resultados, conoce casos reales y recibe novedades de nuestros tratamientos en tiempo real.';
     $ctaKicker = $settings['cta_kicker'] ?? 'Agenda tu cita';
-    $ctaTitle = $settings['cta_title'] ?? 'Empieza tu valoracion con una experiencia clara y personalizada.';
-    $ctaBody = $settings['cta_body'] ?? 'Atencion medica estetica, seguimiento ordenado y una propuesta pensada para tus objetivos reales.';
-    $ctaNote = $settings['cta_note'] ?? 'Respuesta comercial por WhatsApp o correo con orientacion inicial y siguientes pasos.';
+    $ctaTitle = $settings['cta_title'] ?? 'Empieza tu valoración con una experiencia clara y personalizada.';
+    $ctaBody = $settings['cta_body'] ?? 'Atención médica estética, seguimiento ordenado y una propuesta pensada para tus objetivos reales.';
+    $ctaNote = $settings['cta_note'] ?? 'Respuesta comercial por WhatsApp o correo con orientación inicial y siguientes pasos.';
     $topbarCtaLabel = $settings['topbar_cta_label'] ?? 'Agenda ahora';
     $ctaWhatsappLabel = $settings['cta_whatsapp_label'] ?? 'WhatsApp';
-    $ctaEmailLabel = $settings['cta_email_label'] ?? 'Solicitar informacion';
+    $ctaEmailLabel = $settings['cta_email_label'] ?? 'Solicitar información';
     $whatsappRawUrl = trim((string) ($settings['whatsapp_url'] ?? ''));
     $whatsappDigits = preg_replace('/[^0-9]/', '', $settings['whatsapp_number'] ?? '');
     $hasWhatsappLink = $whatsappRawUrl !== '' || $whatsappDigits !== '';
@@ -90,13 +90,13 @@
     if ($heroMetrics->isEmpty()) {
         $heroMetrics = collect([
             ['value' => '+4,800', 'label' => 'Pacientes atendidos'],
-            ['value' => '12 anos', 'label' => 'Experiencia clinica'],
+            ['value' => '12 años', 'label' => 'Experiencia clínica'],
         ]);
     }
 
     $heroEditorialNote = $doctor?->name
-        ? 'Valoracion dirigida por ' . $doctor->name . ' con enfoque medico estetico y protocolos a medida.'
-        : 'Valoraciones personalizadas con criterio medico, tecnologia avanzada y resultados armonicos.';
+        ? 'Valoración dirigida por ' . $doctor->name . ' con enfoque médico estético y protocolos a medida.'
+        : 'Valoraciones personalizadas con criterio médico, tecnología avanzada y resultados armónicos.';
 
     $heroSubtitle = trim((string) $heroSubtitle);
     if (mb_strlen($heroSubtitle) > 210) {
@@ -119,12 +119,12 @@
     }
 
     $socialCards = collect([
-        ['label' => 'Instagram', 'icon' => 'instagram', 'handle' => $instagramHandle, 'text' => 'Antes y despues, reels y tips de cuidado', 'url' => $settings['instagram_url'] ?? null],
+        ['label' => 'Instagram', 'icon' => 'instagram', 'handle' => $instagramHandle, 'text' => 'Antes y después, reels y tips de cuidado', 'url' => $settings['instagram_url'] ?? null],
         ['label' => 'Facebook', 'icon' => 'facebook', 'handle' => 'Perfil oficial', 'text' => 'Novedades, eventos y promociones especiales', 'url' => $settings['facebook_url'] ?? null],
         ['label' => 'TikTok', 'icon' => 'tiktok', 'handle' => '@rejuvenezk', 'text' => 'Videos de procedimientos y contenido educativo', 'url' => $settings['tiktok_url'] ?? null],
-        ['label' => 'YouTube', 'icon' => 'youtube', 'handle' => 'Rejuvenezk TV', 'text' => 'Testimonios completos y explicacion medica', 'url' => $settings['youtube_url'] ?? null],
-        ['label' => 'WhatsApp', 'icon' => 'whatsapp', 'handle' => $settings['phone'] ?: 'Agenda inmediata', 'text' => 'Atencion comercial y seguimiento de valoraciones', 'url' => $hasWhatsappLink ? $whatsappUrl : null],
-        ['label' => 'Correo', 'icon' => 'mail', 'handle' => $settings['email'] ?: 'contacto@rejuvenezk.com', 'text' => 'Solicita informacion detallada y propuestas personalizadas', 'url' => !empty($settings['email']) ? 'mailto:' . $settings['email'] : null],
+        ['label' => 'YouTube', 'icon' => 'youtube', 'handle' => 'Rejuvenezk TV', 'text' => 'Testimonios completos y explicación médica', 'url' => $settings['youtube_url'] ?? null],
+        ['label' => 'WhatsApp', 'icon' => 'whatsapp', 'handle' => $settings['phone'] ?: 'Agenda inmediata', 'text' => 'Atención comercial y seguimiento de valoraciones', 'url' => $hasWhatsappLink ? $whatsappUrl : null],
+        ['label' => 'Correo', 'icon' => 'mail', 'handle' => $settings['email'] ?: 'contacto@rejuvenezk.com', 'text' => 'Solicita información detallada y propuestas personalizadas', 'url' => !empty($settings['email']) ? 'mailto:' . $settings['email'] : null],
     ]);
 
     $socialBannerCards = $socialCards->filter(fn ($card) => ! empty($card['url']))->values();
@@ -142,13 +142,13 @@
     $reviewsUrl = trim((string) ($settings['reviews_url'] ?? ''));
     $testimonialsCount = $testimonials->count();
     $testimonialsAvg = $testimonialsCount > 0 ? number_format((float) $testimonials->avg('rating'), 1) : '4.9';
-    $credentialKicker = $settings['credentials_kicker'] ?? 'Respaldo medico';
+    $credentialKicker = $settings['credentials_kicker'] ?? 'Respaldo médico';
     $credentialTitle = $settings['credentials_title'] ?? 'Certificaciones y trayectoria para decidir con confianza';
 
     $credentialBadges = collect([
-        $settings['credential_badge_1'] ?? 'Miembro de sociedad cientifica',
+        $settings['credential_badge_1'] ?? 'Miembro de sociedad científica',
         $settings['credential_badge_2'] ?? 'Protocolos estandarizados y trazables',
-        $settings['credential_badge_3'] ?? 'Tecnologia con enfoque medico-estetico',
+        $settings['credential_badge_3'] ?? 'Tecnología con enfoque médico-estético',
     ])->filter();
 
     $benefitCards = collect([
@@ -158,23 +158,23 @@
             'label' => 'Naturalidad',
         ],
         [
-            'title' => 'Seguridad clinica',
-            'text' => 'Protocolos medicos, tecnologia confiable y decisiones guiadas por evaluacion profesional.',
+            'title' => 'Seguridad clínica',
+            'text' => 'Protocolos médicos, tecnología confiable y decisiones guiadas por evaluación profesional.',
             'label' => 'Confianza',
         ],
         [
             'title' => 'Criterio personalizado',
-            'text' => 'Cada tratamiento se diseña segun tu anatomia, tus objetivos y el ritmo adecuado para ti.',
+            'text' => 'Cada tratamiento se diseña según tu anatomía, tus objetivos y el ritmo adecuado para ti.',
             'label' => 'Precision',
         ],
     ]);
 
-    $aboutKicker = $settings['about_kicker'] ?? 'Quienes somos';
-    $aboutTitle = $settings['about_title'] ?? 'Medicina estetica con criterio humano y respaldo medico';
-    $aboutLead = $settings['about_lead'] ?? 'Somos un centro medico estetico especializado en el cuidado integral de la salud y la belleza. Nuestro equipo esta conformado por profesionales certificados, comprometidos con resultados naturales y progresivos.';
-    $aboutDoctorLine = $settings['about_doctor_line'] ?? ('En ' . $clinicName . ' combinamos ciencia avanzada y diagnostico personalizado para ofrecer tratamientos seguros, eficaces y minimamente invasivos.');
-    $aboutMission = $settings['about_mission'] ?? 'Brindar soluciones esteticas integrales que realcen la belleza natural de nuestros pacientes, combinando vanguardia medica con un trato humano y personalizado para mejorar su autoestima y calidad de vida.';
-    $aboutVision = $settings['about_vision'] ?? 'Ser una clinica estetica lider en la region, reconocida por la calidez en el servicio y la excelencia en resultados naturales, logrando que cada paciente se sienta la mejor version de si mismo.';
+    $aboutKicker = $settings['about_kicker'] ?? 'Quiénes somos';
+    $aboutTitle = $settings['about_title'] ?? 'Medicina estética con criterio humano y respaldo médico';
+    $aboutLead = $settings['about_lead'] ?? 'Somos un centro médico estético especializado en el cuidado integral de la salud y la belleza. Nuestro equipo está conformado por profesionales certificados, comprometidos con resultados naturales y progresivos.';
+    $aboutDoctorLine = $settings['about_doctor_line'] ?? ('En ' . $clinicName . ' combinamos ciencia avanzada y diagnóstico personalizado para ofrecer tratamientos seguros, eficaces y mínimamente invasivos.');
+    $aboutMission = $settings['about_mission'] ?? 'Brindar soluciones estéticas integrales que realcen la belleza natural de nuestros pacientes, combinando vanguardia médica con un trato humano y personalizado para mejorar su autoestima y calidad de vida.';
+    $aboutVision = $settings['about_vision'] ?? 'Ser una clínica estética líder en la región, reconocida por la calidez en el servicio y la excelencia en resultados naturales, logrando que cada paciente se sienta la mejor versión de sí mismo.';
 
     $aboutImageUrl = null;
     $aboutImagePathCandidate = trim((string) ($settings['about_image_url'] ?? ''));
@@ -194,12 +194,12 @@
     }
 
     $aboutImageAlt = $settings['about_image_alt'] ?? ('Especialista de ' . $clinicName);
-    $aboutEntryTitle = $settings['about_entry_title'] ?? 'Conoce la clinica, su historia y el enfoque medico detras de cada tratamiento.';
-    $aboutEntryLead = $settings['about_entry_lead'] ?? 'La portada ahora prioriza tratamientos e imagenes. Si quieres profundizar en nuestra identidad, abre la seccion dedicada.';
-    $aboutEntryCta = $settings['about_entry_cta'] ?? 'Ver quienes somos';
+    $aboutEntryTitle = $settings['about_entry_title'] ?? 'Conoce la clínica, su historia y el enfoque médico detrás de cada tratamiento.';
+    $aboutEntryLead = $settings['about_entry_lead'] ?? 'La portada ahora prioriza tratamientos e imágenes. Si quieres profundizar en nuestra identidad, abre la sección dedicada.';
+    $aboutEntryCta = $settings['about_entry_cta'] ?? 'Ver quiénes somos';
     $resultsKicker = $settings['results_kicker'] ?? 'Casos y resultados';
-    $resultsTitle = $settings['results_title'] ?? 'Imagenes que capturan el tipo de cambio que buscan tus pacientes.';
-    $resultsLead = $settings['results_lead'] ?? 'Menos discurso y mas evidencia visual: tratamientos, armonizacion y resultados reales en una sola mirada.';
+    $resultsTitle = $settings['results_title'] ?? 'Imágenes que capturan el tipo de cambio que buscan tus pacientes.';
+    $resultsLead = $settings['results_lead'] ?? 'Menos discurso y más evidencia visual: tratamientos, armonización y resultados reales en una sola mirada.';
 
     $galleryPreview = $galleryItems->map(function ($item) use ($normalizeMediaPath, $publicDisk) {
         $candidates = [
@@ -230,7 +230,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ $clinicName }} | Medicina Estetica Premium</title>
+    <title>{{ $clinicName }} | Medicina Estética Premium</title>
     <meta name="description" content="{{ $heroSubtitle }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -255,18 +255,18 @@
                 @endif
                 <span class="brand-copy">
                     <strong>{{ $clinicName }}</strong>
-                    <small>{{ $doctor?->name ?: 'Medicina estetica facial y corporal' }}</small>
+                    <small>{{ $doctor?->name ?: 'Medicina estética facial y corporal' }}</small>
                 </span>
             </a>
-            <nav class="nav-links" aria-label="Navegacion principal">
-                <a href="{{ route('about') }}">Quienes somos</a>
+            <nav class="nav-links" aria-label="Navegación principal">
+                <a href="{{ route('about') }}">Quiénes somos</a>
                 <a href="#servicios">Servicios</a>
                 <a href="#resultados">Resultados</a>
                 <a href="#contacto">Contacto</a>
             </nav>
             <div class="topbar-actions">
                 <a href="{{ $whatsappUrl }}" class="btn btn-outline topbar-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
-                <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav-panel" aria-label="Abrir menu de navegacion">
+                <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav-panel" aria-label="Abrir menú de navegación">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -279,13 +279,13 @@
                 <div class="mobile-nav-head">
                     <div class="mobile-nav-brand">
                         <span>{{ $clinicName }}</span>
-                        <small>Navegacion</small>
+                        <small>Navegación</small>
                     </div>
-                    <button type="button" class="mobile-nav-close" aria-label="Cerrar menu de navegacion">×</button>
+                    <button type="button" class="mobile-nav-close" aria-label="Cerrar menú de navegación">×</button>
                 </div>
-                <nav class="mobile-nav-links" aria-label="Navegacion movil">
+                <nav class="mobile-nav-links" aria-label="Navegación móvil">
                     <a href="#inicio">Inicio</a>
-                    <a href="{{ route('about') }}">Quienes somos</a>
+                    <a href="{{ route('about') }}">Quiénes somos</a>
                     <a href="#servicios">Servicios</a>
                     <a href="#resultados">Resultados</a>
                     <a href="#contacto">Contacto</a>
@@ -323,7 +323,7 @@
                             <img src="{{ $doctorPhotoUrl }}" alt="Foto del doctor {{ $doctor?->name ?: $clinicName }}" loading="lazy" class="hero-portrait-image">
                             <div class="hero-portrait-note">
                                 <strong>{{ $doctor?->name ?: $clinicName }}</strong>
-                                <span>{{ $doctor?->specialty ?: 'Medicina estetica facial y corporal' }}</span>
+                                <span>{{ $doctor?->specialty ?: 'Medicina estética facial y corporal' }}</span>
                             </div>
                         @elseif ($clinicLogoUrl)
                             <div class="hero-portrait-fallback hero-logo-fallback">
@@ -474,7 +474,7 @@
                                 <article class="svc-card svc-card-cta">
                                     <div class="svc-card-cta-inner">
                                         <strong>¿No encuentras lo que buscas?</strong>
-                                        <p>Agenda una valoracion y diseñamos un protocolo a tu medida.</p>
+                                        <p>Agenda una valoración y diseñamos un protocolo a tu medida.</p>
                                         <a href="{{ $whatsappUrl }}" class="btn btn-primary" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>WhatsApp</a>
                                         <a href="{{ route('services.index') }}" class="btn btn-ghost">Ver catalogo completo</a>
                                     </div>
@@ -499,10 +499,10 @@
                         <p class="kicker">{{ $resultsKicker }}</p>
                         <h3>{{ $resultsTitle }}</h3>
                         <p>{{ $resultsLead }}</p>
-                        <span class="result-visual-hint">Desliza para ver mas casos</span>
+                        <span class="result-visual-hint">Desliza para ver más casos</span>
                     </article>
 
-                    <div class="result-visual-grid" id="resultCarousel" aria-label="Galeria visual de {{ $clinicName }}">
+                    <div class="result-visual-grid" id="resultCarousel" aria-label="Galería visual de {{ $clinicName }}">
                         @foreach ($galleryPreview as $item)
                             <figure class="result-visual-card">
                                 <img src="{{ $item['url'] }}" alt="{{ $item['title'] }}" loading="lazy">
@@ -526,7 +526,7 @@
                     </blockquote>
                 @empty
                     <blockquote class="quote-card">
-                        <p>"Me encanto porque respetaron mis facciones y me explicaron cada paso. Me veo fresca, no cambiada."</p>
+                        <p>"Me encantó porque respetaron mis facciones y me explicaron cada paso. Me veo fresca, no cambiada."</p>
                         <cite>Paciente Rejuvenezk</cite>
                     </blockquote>
                     <blockquote class="quote-card">
@@ -568,7 +568,7 @@
                             <option value="{{ $service->id }}" @selected((string) old('service_id') === (string) $service->id)>{{ $service->name }}</option>
                         @endforeach
                     </select>
-                    <textarea name="message" rows="5" placeholder="Cuentanos que objetivo estetico quieres trabajar">{{ old('message') }}</textarea>
+                    <textarea name="message" rows="5" placeholder="Cuéntanos qué objetivo estético quieres trabajar">{{ old('message') }}</textarea>
                     <button type="submit" class="btn btn-primary btn-submit">Enviar solicitud</button>
                 </form>
             </div>
@@ -585,7 +585,7 @@
                 @endif
                 <div>
                     <p>{{ $clinicName }}</p>
-                    <small>{{ $doctor?->name ?: 'Direccion medica estetica' }}</small>
+                    <small>{{ $doctor?->name ?: 'Dirección médica estética' }}</small>
                 </div>
             </div>
             @if ($socialBannerCards->isNotEmpty())
@@ -597,7 +597,7 @@
                     @endforeach
                 </div>
             @endif
-            <p>{{ $settings['phone'] ?: 'Atencion comercial premium' }}</p>
+            <p>{{ $settings['phone'] ?: 'Atención comercial premium' }}</p>
         </div>
     </footer>
 </body>

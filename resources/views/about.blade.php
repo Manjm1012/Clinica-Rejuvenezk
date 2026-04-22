@@ -1,5 +1,5 @@
 @php
-    $clinicName = $settings['clinic_name'] ?? 'Clinica Rejuvenezk';
+    $clinicName = $settings['clinic_name'] ?? 'Clínica Rejuvenezk';
     $publicDisk = \Illuminate\Support\Facades\Storage::disk('public');
     $normalizeMediaPath = function (?string $path): ?string {
         if ($path === null || trim($path) === '') {
@@ -37,12 +37,12 @@
         ->map(fn ($segment) => strtoupper(substr($segment, 0, 1)))
         ->implode('');
 
-    $aboutKicker = $settings['about_kicker'] ?? 'Quienes somos';
-    $aboutTitle = $settings['about_title'] ?? 'Medicina estetica con criterio humano y respaldo medico';
-    $aboutLead = $settings['about_lead'] ?? 'Somos un centro medico estetico especializado en el cuidado integral de la salud y la belleza. Nuestro equipo esta conformado por profesionales certificados, comprometidos con resultados naturales y progresivos.';
-    $aboutDoctorLine = $settings['about_doctor_line'] ?? ('En ' . $clinicName . ' combinamos ciencia avanzada y diagnostico personalizado para ofrecer tratamientos seguros, eficaces y minimamente invasivos.');
-    $aboutMission = $settings['about_mission'] ?? 'Brindar soluciones esteticas integrales que realcen la belleza natural de nuestros pacientes, combinando vanguardia medica con un trato humano y personalizado para mejorar su autoestima y calidad de vida.';
-    $aboutVision = $settings['about_vision'] ?? 'Ser una clinica estetica lider en la region, reconocida por la calidez en el servicio y la excelencia en resultados naturales, logrando que cada paciente se sienta la mejor version de si mismo.';
+    $aboutKicker = $settings['about_kicker'] ?? 'Quiénes somos';
+    $aboutTitle = $settings['about_title'] ?? 'Medicina estética con criterio humano y respaldo médico';
+    $aboutLead = $settings['about_lead'] ?? 'Somos un centro médico estético especializado en el cuidado integral de la salud y la belleza. Nuestro equipo está conformado por profesionales certificados, comprometidos con resultados naturales y progresivos.';
+    $aboutDoctorLine = $settings['about_doctor_line'] ?? ('En ' . $clinicName . ' combinamos ciencia avanzada y diagnóstico personalizado para ofrecer tratamientos seguros, eficaces y mínimamente invasivos.');
+    $aboutMission = $settings['about_mission'] ?? 'Brindar soluciones estéticas integrales que realcen la belleza natural de nuestros pacientes, combinando vanguardia médica con un trato humano y personalizado para mejorar su autoestima y calidad de vida.';
+    $aboutVision = $settings['about_vision'] ?? 'Ser una clínica estética líder en la región, reconocida por la calidez en el servicio y la excelencia en resultados naturales, logrando que cada paciente se sienta la mejor versión de sí mismo.';
     $topbarCtaLabel = $settings['topbar_cta_label'] ?? 'Agenda ahora';
 
     $aboutImageUrl = null;
@@ -69,12 +69,12 @@
     $whatsappUrl = $whatsappRawUrl !== ''
         ? $whatsappRawUrl
         : ($whatsappDigits ? 'https://wa.me/' . $whatsappDigits : route('home') . '#contacto');
-    $credentialKicker = $settings['credentials_kicker'] ?? 'Respaldo medico';
+    $credentialKicker = $settings['credentials_kicker'] ?? 'Respaldo médico';
     $credentialTitle = $settings['credentials_title'] ?? 'Certificaciones y trayectoria para decidir con confianza';
     $credentialBadges = collect([
-        $settings['credential_badge_1'] ?? 'Miembro de sociedad cientifica',
+        $settings['credential_badge_1'] ?? 'Miembro de sociedad científica',
         $settings['credential_badge_2'] ?? 'Protocolos estandarizados y trazables',
-        $settings['credential_badge_3'] ?? 'Tecnologia con enfoque medico-estetico',
+        $settings['credential_badge_3'] ?? 'Tecnología con enfoque médico-estético',
     ])->filter();
 @endphp
 
@@ -84,8 +84,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ $clinicName }} | Quienes somos</title>
-    <meta name="description" content="Conoce la historia, el equipo y el enfoque medico estetico de {{ $clinicName }}.">
+    <title>{{ $clinicName }} | Quiénes somos</title>
+    <meta name="description" content="Conoce la historia, el equipo y el enfoque médico estético de {{ $clinicName }}.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -109,18 +109,18 @@
                 @endif
                 <span class="brand-copy">
                     <strong>{{ $clinicName }}</strong>
-                    <small>{{ $doctor?->name ?: 'Medicina estetica facial y corporal' }}</small>
+                    <small>{{ $doctor?->name ?: 'Medicina estética facial y corporal' }}</small>
                 </span>
             </a>
-            <nav class="nav-links" aria-label="Navegacion principal">
+            <nav class="nav-links" aria-label="Navegación principal">
                 <a href="{{ route('home') }}">Inicio</a>
-                <a href="{{ route('about') }}" class="is-active">Quienes somos</a>
+                <a href="{{ route('about') }}" class="is-active">Quiénes somos</a>
                 <a href="{{ route('services.index') }}">Servicios</a>
                 <a href="{{ route('home') }}#contacto">Contacto</a>
             </nav>
             <div class="topbar-actions">
                 <a href="{{ $whatsappUrl }}" class="btn btn-outline topbar-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
-                <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav-panel" aria-label="Abrir menu de navegacion">
+                <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav-panel" aria-label="Abrir menú de navegación">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -133,13 +133,13 @@
                 <div class="mobile-nav-head">
                     <div class="mobile-nav-brand">
                         <span>{{ $clinicName }}</span>
-                        <small>Navegacion</small>
+                        <small>Navegación</small>
                     </div>
-                    <button type="button" class="mobile-nav-close" aria-label="Cerrar menu de navegacion">×</button>
+                    <button type="button" class="mobile-nav-close" aria-label="Cerrar menú de navegación">×</button>
                 </div>
-                <nav class="mobile-nav-links" aria-label="Navegacion movil">
+                <nav class="mobile-nav-links" aria-label="Navegación móvil">
                     <a href="{{ route('home') }}">Inicio</a>
-                    <a href="{{ route('about') }}">Quienes somos</a>
+                    <a href="{{ route('about') }}">Quiénes somos</a>
                     <a href="{{ route('services.index') }}">Servicios</a>
                     <a href="{{ route('home') }}#contacto">Contacto</a>
                 </nav>
@@ -157,7 +157,7 @@
                     <p class="lead">{{ $aboutLead }}</p>
                     <p class="hero-editorial-note">{{ $aboutDoctorLine }}</p>
                     <div class="hero-actions about-story-actions">
-                        <a href="{{ route('home') }}#contacto" class="btn btn-primary">Agendar valoracion</a>
+                        <a href="{{ route('home') }}#contacto" class="btn btn-primary">Agendar valoración</a>
                         <a href="{{ route('services.index') }}" class="btn btn-ghost">Ver tratamientos</a>
                     </div>
                 </article>
@@ -181,17 +181,17 @@
             <div class="container about-layout reveal reveal-2">
                 <article class="about-content-card">
                     <p class="kicker">Nuestra esencia</p>
-                    <h2 class="section-title">Ciencia, criterio y acompanamiento humano.</h2>
+                    <h2 class="section-title">Ciencia, criterio y acompañamiento humano.</h2>
                     <p class="section-intro about-intro">{{ $aboutLead }}</p>
                     <p class="about-doctor-line">{{ $aboutDoctorLine }}</p>
 
-                    <div class="about-pillars" aria-label="Mision y vision de {{ $clinicName }}">
+                    <div class="about-pillars" aria-label="Misión y visión de {{ $clinicName }}">
                         <article class="about-pillar">
-                            <h3>Mision</h3>
+                            <h3>Misión</h3>
                             <p>{{ $aboutMission }}</p>
                         </article>
                         <article class="about-pillar">
-                            <h3>Vision</h3>
+                            <h3>Visión</h3>
                             <p>{{ $aboutVision }}</p>
                         </article>
                     </div>
@@ -214,7 +214,7 @@
                         @endif
                         <div>
                             <strong>{{ $doctor?->name ?: $clinicName }}</strong>
-                            <span>{{ $doctor?->specialty ?: 'Medicina estetica facial y corporal' }}</span>
+                            <span>{{ $doctor?->specialty ?: 'Medicina estética facial y corporal' }}</span>
                         </div>
                     </div>
                 </aside>
