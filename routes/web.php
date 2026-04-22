@@ -12,6 +12,7 @@ Route::get('/media/{path}', PublicMediaController::class)
 	->name('media.public');
 
 Route::get('/', HomeController::class)->name('home');
+Route::get('/quienes-somos', [HomeController::class, 'about'])->name('about');
 Route::get('/servicios', [ServiceController::class, 'index'])->name('services.index');
 Route::get('/procedimientos/{service:slug}', [ServiceController::class, 'show'])->name('services.show');
 Route::post('/contacto', [LeadController::class, 'store'])->name('leads.store');

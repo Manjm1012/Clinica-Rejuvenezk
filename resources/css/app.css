@@ -1377,6 +1377,17 @@ button {
     padding-top: 28px;
 }
 
+.about-entry-section {
+    padding-top: 24px;
+}
+
+.about-entry-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.96fr) minmax(280px, 1.04fr);
+    gap: 22px;
+    align-items: stretch;
+}
+
 .about-layout {
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
@@ -1385,10 +1396,30 @@ button {
 }
 
 .about-content-card,
-.about-media-card {
+.about-media-card,
+.about-entry-card,
+.about-entry-media,
+.about-credibility-card,
+.about-story-copy,
+.about-story-visual {
     border-radius: 28px;
     border: 1px solid rgba(37, 22, 26, 0.08);
     box-shadow: 0 18px 44px rgba(43, 43, 43, 0.08);
+}
+
+.about-entry-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+    padding: 30px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(250, 246, 240, 0.94) 100%),
+        radial-gradient(circle at top right, rgba(198, 160, 98, 0.12), transparent 38%);
+}
+
+.about-entry-intro {
+    max-width: 32rem;
 }
 
 .about-content-card {
@@ -1443,6 +1474,13 @@ button {
     background: linear-gradient(160deg, rgba(255, 255, 255, 0.92), rgba(237, 230, 223, 0.92));
 }
 
+.about-entry-media,
+.about-credibility-card,
+.about-story-visual {
+    padding: 14px;
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.92), rgba(233, 223, 211, 0.92));
+}
+
 .about-media-frame {
     margin: 0;
     height: 100%;
@@ -1492,6 +1530,107 @@ button {
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: #4e4344;
+}
+
+.about-page-body main {
+    padding-top: 8px;
+}
+
+.about-story-hero {
+    padding-top: 52px;
+}
+
+.about-story-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(300px, 1.05fr);
+    gap: 22px;
+    align-items: stretch;
+}
+
+.about-story-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+    padding: 34px;
+    background: linear-gradient(180deg, rgba(255, 253, 249, 0.96), rgba(244, 237, 228, 0.92));
+}
+
+.about-story-copy h1 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    line-height: 0.98;
+}
+
+.about-story-copy .lead {
+    margin: 0;
+    max-width: 34rem;
+}
+
+.about-story-actions {
+    margin-top: 8px;
+}
+
+.about-story-frame,
+.about-story-fallback {
+    min-height: 520px;
+}
+
+.about-credibility-card {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.about-credential-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.about-credential-list span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background: rgba(198, 160, 98, 0.12);
+    color: #946f33;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.about-specialist-card {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 14px;
+    align-items: center;
+    margin-top: auto;
+    padding: 16px;
+    border-radius: 22px;
+    background: rgba(255, 253, 249, 0.92);
+    border: 1px solid rgba(198, 160, 98, 0.16);
+}
+
+.about-specialist-card img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.about-specialist-card strong,
+.nav-links a.is-active {
+    color: var(--text-primary);
+}
+
+.about-specialist-card span {
+    display: block;
+    margin-top: 4px;
+    color: var(--text-secondary);
+    line-height: 1.5;
 }
 
 .credential-badges {
@@ -2192,6 +2331,8 @@ button {
     .footer-inner,
     .contact-layout,
     .hero,
+    .about-entry-layout,
+    .about-story-grid,
     .benefits-head,
     .trust-layout,
     .about-layout,
@@ -2233,6 +2374,15 @@ button {
     .hero-copy {
         padding: 18px 0 8px;
         border-radius: 0;
+    }
+
+    .about-story-copy {
+        padding: 26px;
+    }
+
+    .about-story-frame,
+    .about-story-fallback {
+        min-height: 360px;
     }
 
     .hero-copy-compact {
@@ -2304,7 +2454,12 @@ button {
     }
 
     .about-content-card,
-    .about-media-card {
+    .about-media-card,
+    .about-entry-card,
+    .about-entry-media,
+    .about-credibility-card,
+    .about-story-copy,
+    .about-story-visual {
         border-radius: 24px;
     }
 
@@ -2332,6 +2487,12 @@ button {
     .cta p {
         font-size: 1rem;
         line-height: 1.75;
+    }
+
+    .services-panel-intro,
+    .benefits-intro,
+    .about-entry-intro {
+        max-width: none;
     }
 
     .section-intro {
@@ -2366,7 +2527,10 @@ button {
     .landing-contact-form,
     .benefit-card,
     .about-content-card,
-    .about-pillar {
+    .about-pillar,
+    .about-entry-card,
+    .about-credibility-card,
+    .about-story-copy {
         padding: 22px;
     }
 
@@ -2387,7 +2551,8 @@ button {
 @media (max-width: 820px) {
     .hero-actions .btn,
     .services-panel-cta .btn,
-    .cta-actions .btn {
+    .cta-actions .btn,
+    .about-story-actions .btn {
         width: 100%;
     }
 
@@ -2395,9 +2560,20 @@ button {
         grid-template-columns: 1fr;
     }
 
+    .hero-editorial-note,
+    .benefits-intro,
+    .services-panel-intro {
+        display: none;
+    }
+
     .about-content-card,
     .about-pillar,
-    .about-media-card {
+    .about-media-card,
+    .about-entry-card,
+    .about-entry-media,
+    .about-credibility-card,
+    .about-story-copy,
+    .about-story-visual {
         padding: 20px;
     }
 }
@@ -2584,6 +2760,13 @@ button {
         padding-top: 10px;
     }
 
+    .hero-copy-compact .lead {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
     .hero-portrait-card {
         padding: 14px;
         border-radius: 28px;
@@ -2620,6 +2803,7 @@ button {
 
     .landing-hero-card h2,
     .section-title,
+    .about-story-copy h1,
     .cta h2 {
         font-size: clamp(1.7rem, 8vw, 2.35rem);
         line-height: 1.02;
@@ -2639,11 +2823,6 @@ button {
     .cta-note,
     .section-intro {
         font-size: 0.93rem;
-    }
-
-    .hero-editorial-note {
-        font-size: 0.92rem;
-        padding: 10px 12px;
     }
 
     .hero-actions,
@@ -2717,7 +2896,17 @@ button {
 
         .service-card-copy {
             padding: 16px 18px 18px;
-    }
+        }
+
+        .service-card-copy p,
+        .benefit-card p,
+        .social-card small,
+        .quote-card p {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
 
     .service-subcategory-head {
         align-items: flex-start;
@@ -2744,8 +2933,40 @@ button {
 
     .about-content-card,
     .about-pillar,
-    .about-media-card {
+    .about-media-card,
+    .about-entry-card,
+    .about-entry-media,
+    .about-credibility-card,
+    .about-story-copy,
+    .about-story-visual {
         padding: 16px;
+    }
+
+    .about-entry-section {
+        padding-top: 12px;
+    }
+
+    .about-story-hero {
+        padding-top: 22px;
+    }
+
+    .about-story-frame,
+    .about-story-fallback,
+    .about-media-frame,
+    .about-media-fallback {
+        min-height: 260px;
+    }
+
+    .about-specialist-card {
+        grid-template-columns: 60px minmax(0, 1fr);
+        padding: 14px;
+        border-radius: 18px;
+    }
+
+    .about-specialist-card img {
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
     }
 
     .landing-service-card p {
@@ -2759,7 +2980,9 @@ button {
 
     .hero-actions .btn,
     .cta-actions .btn,
-    .services-panel-cta .btn {
+    .services-panel-cta .btn,
+    .about-story-actions .btn,
+    .about-entry-card .btn {
         width: 100%;
     }
 

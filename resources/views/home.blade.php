@@ -192,6 +192,9 @@
     }
 
     $aboutImageAlt = $settings['about_image_alt'] ?? ('Especialista de ' . $clinicName);
+    $aboutEntryTitle = $settings['about_entry_title'] ?? 'Conoce la clinica, su historia y el enfoque medico detras de cada tratamiento.';
+    $aboutEntryLead = $settings['about_entry_lead'] ?? 'La portada ahora prioriza tratamientos e imagenes. Si quieres profundizar en nuestra identidad, abre la seccion dedicada.';
+    $aboutEntryCta = $settings['about_entry_cta'] ?? 'Ver quienes somos';
 @endphp
 
 <!DOCTYPE html>
@@ -229,7 +232,7 @@
                 </span>
             </a>
             <nav class="nav-links" aria-label="Navegacion principal">
-                <a href="#quienes-somos">Quienes somos</a>
+                <a href="{{ route('about') }}">Quienes somos</a>
                 <a href="#servicios">Servicios</a>
                 <a href="#resultados">Resultados</a>
                 <a href="#contacto">Contacto</a>
@@ -255,7 +258,7 @@
                 </div>
                 <nav class="mobile-nav-links" aria-label="Navegacion movil">
                     <a href="#inicio">Inicio</a>
-                    <a href="#quienes-somos">Quienes somos</a>
+                    <a href="{{ route('about') }}">Quienes somos</a>
                     <a href="#servicios">Servicios</a>
                     <a href="#doctor">Especialista</a>
                     <a href="#contacto">Contacto</a>
@@ -345,63 +348,6 @@
                         </article>
                     @endforeach
                 </div>
-            </div>
-        </section>
-
-        <section class="section benefits-section">
-            <div class="container reveal reveal-2">
-                <div class="benefits-head">
-                    <div>
-                        <p class="kicker">{{ $benefitsKicker }}</p>
-                        <h2 class="section-title">{{ $benefitsTitle }}</h2>
-                    </div>
-                    <p class="section-intro benefits-intro">{{ $benefitsLead }}</p>
-                </div>
-
-                <div class="benefits-grid">
-                    @foreach ($benefitCards as $benefit)
-                        <article class="benefit-card">
-                            <span class="benefit-card-label">{{ $benefit['label'] }}</span>
-                            <h3>{{ $benefit['title'] }}</h3>
-                            <p>{{ $benefit['text'] }}</p>
-                        </article>
-                    @endforeach
-                </div>
-            </div>
-        </section>
-
-        <section id="quienes-somos" class="section section-white about-section">
-            <div class="container about-layout reveal reveal-2">
-                <article class="about-content-card">
-                    <p class="kicker">{{ $aboutKicker }}</p>
-                    <h2 class="section-title">{{ $aboutTitle }}</h2>
-                    <p class="section-intro about-intro">{{ $aboutLead }}</p>
-                    <p class="about-doctor-line">{{ $aboutDoctorLine }}</p>
-
-                    <div class="about-pillars" aria-label="Mision y vision de {{ $clinicName }}">
-                        <article class="about-pillar">
-                            <h3>Mision</h3>
-                            <p>{{ $aboutMission }}</p>
-                        </article>
-                        <article class="about-pillar">
-                            <h3>Vision</h3>
-                            <p>{{ $aboutVision }}</p>
-                        </article>
-                    </div>
-                </article>
-
-                <aside class="about-media-card" aria-label="Imagen institucional de {{ $clinicName }}">
-                    @if ($aboutImageUrl)
-                        <figure class="about-media-frame">
-                            <img src="{{ $aboutImageUrl }}" alt="{{ $aboutImageAlt }}" loading="lazy" class="about-media-image">
-                        </figure>
-                    @else
-                        <div class="about-media-fallback">
-                            <span>{{ $brandInitials ?: 'CR' }}</span>
-                            <small>{{ $clinicName }}</small>
-                        </div>
-                    @endif
-                </aside>
             </div>
         </section>
 
@@ -505,6 +451,52 @@
                         </div>
                     </div>
                 @endforelse
+            </div>
+        </section>
+
+        <section class="section section-white about-entry-section">
+            <div class="container about-entry-layout reveal reveal-2">
+                <article class="about-entry-card">
+                    <p class="kicker">{{ $aboutKicker }}</p>
+                    <h2 class="section-title">{{ $aboutEntryTitle }}</h2>
+                    <p class="section-intro about-entry-intro">{{ $aboutEntryLead }}</p>
+                    <a href="{{ route('about') }}" class="btn btn-primary">{{ $aboutEntryCta }}</a>
+                </article>
+
+                <aside class="about-entry-media" aria-label="Vista institucional de {{ $clinicName }}">
+                    @if ($aboutImageUrl)
+                        <figure class="about-media-frame">
+                            <img src="{{ $aboutImageUrl }}" alt="{{ $aboutImageAlt }}" loading="lazy" class="about-media-image">
+                        </figure>
+                    @else
+                        <div class="about-media-fallback">
+                            <span>{{ $brandInitials ?: 'CR' }}</span>
+                            <small>{{ $clinicName }}</small>
+                        </div>
+                    @endif
+                </aside>
+            </div>
+        </section>
+
+        <section class="section benefits-section">
+            <div class="container reveal reveal-2">
+                <div class="benefits-head">
+                    <div>
+                        <p class="kicker">{{ $benefitsKicker }}</p>
+                        <h2 class="section-title">{{ $benefitsTitle }}</h2>
+                    </div>
+                    <p class="section-intro benefits-intro">{{ $benefitsLead }}</p>
+                </div>
+
+                <div class="benefits-grid">
+                    @foreach ($benefitCards as $benefit)
+                        <article class="benefit-card">
+                            <span class="benefit-card-label">{{ $benefit['label'] }}</span>
+                            <h3>{{ $benefit['title'] }}</h3>
+                            <p>{{ $benefit['text'] }}</p>
+                        </article>
+                    @endforeach
+                </div>
             </div>
         </section>
 

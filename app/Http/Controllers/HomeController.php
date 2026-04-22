@@ -16,6 +16,16 @@ class HomeController extends Controller
 {
     public function __invoke(): View
     {
+        return view('home', $this->pageData());
+    }
+
+    public function about(): View
+    {
+        return view('about', $this->pageData());
+    }
+
+    private function pageData(): array
+    {
         $branding = array_merge([
             'clinic_name' => 'Clínica Rejuvenezk',
             'hero_kicker' => 'Medicina estética avanzada',
@@ -58,7 +68,7 @@ class HomeController extends Controller
             'youtube_url' => '',
         ], SiteSetting::group('social'));
 
-        return view('home', [
+        return [
             'settings' => array_merge($branding, $contact, $social),
             'clinic' => Clinic::query()->where('is_active', true)->orderBy('id')->first(),
             'services' => Service::query()->where('is_active', true)->orderBy('sort_order')->get(),
@@ -75,6 +85,6 @@ class HomeController extends Controller
             'stats' => Stat::query()->where('is_active', true)->orderBy('sort_order')->get(),
             'technologies' => Technology::query()->where('is_active', true)->orderBy('sort_order')->get(),
             'testimonials' => Testimonial::query()->where('is_active', true)->orderByDesc('is_featured')->orderBy('sort_order')->limit(8)->get(),
-        ]);
+        ];
     }
 }
