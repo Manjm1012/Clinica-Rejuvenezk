@@ -287,7 +287,7 @@
                     <a href="#inicio">Inicio</a>
                     <a href="{{ route('about') }}">Quienes somos</a>
                     <a href="#servicios">Servicios</a>
-                    <a href="#doctor">Especialista</a>
+                    <a href="#resultados">Resultados</a>
                     <a href="#contacto">Contacto</a>
                 </nav>
                 <a href="{{ $whatsappUrl }}" class="btn btn-primary mobile-nav-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
@@ -481,52 +481,6 @@
             </div>
         </section>
 
-        <section class="section section-white about-entry-section">
-            <div class="container about-entry-layout reveal reveal-2">
-                <article class="about-entry-card">
-                    <p class="kicker">{{ $aboutKicker }}</p>
-                    <h2 class="section-title">{{ $aboutEntryTitle }}</h2>
-                    <p class="section-intro about-entry-intro">{{ $aboutEntryLead }}</p>
-                    <a href="{{ route('about') }}" class="btn btn-primary">{{ $aboutEntryCta }}</a>
-                </article>
-
-                <aside class="about-entry-media" aria-label="Vista institucional de {{ $clinicName }}">
-                    @if ($aboutImageUrl)
-                        <figure class="about-media-frame">
-                            <img src="{{ $aboutImageUrl }}" alt="{{ $aboutImageAlt }}" loading="lazy" class="about-media-image">
-                        </figure>
-                    @else
-                        <div class="about-media-fallback">
-                            <span>{{ $brandInitials ?: 'CR' }}</span>
-                            <small>{{ $clinicName }}</small>
-                        </div>
-                    @endif
-                </aside>
-            </div>
-        </section>
-
-        <section class="section benefits-section">
-            <div class="container reveal reveal-2">
-                <div class="benefits-head">
-                    <div>
-                        <p class="kicker">{{ $benefitsKicker }}</p>
-                        <h2 class="section-title">{{ $benefitsTitle }}</h2>
-                    </div>
-                    <p class="section-intro benefits-intro">{{ $benefitsLead }}</p>
-                </div>
-
-                <div class="benefits-grid">
-                    @foreach ($benefitCards as $benefit)
-                        <article class="benefit-card">
-                            <span class="benefit-card-label">{{ $benefit['label'] }}</span>
-                            <h3>{{ $benefit['title'] }}</h3>
-                            <p>{{ $benefit['text'] }}</p>
-                        </article>
-                    @endforeach
-                </div>
-            </div>
-        </section>
-
         <section id="resultados" class="section section-white">
             <div class="container reveal reveal-2">
                 <p class="kicker">{{ $testimonialsKicker }}</p>
@@ -581,32 +535,6 @@
             </div>
         </section>
 
-        <section id="redes" class="section section-soft section-beige social-section">
-            <div class="container reveal reveal-2">
-                <p class="kicker">{{ $socialKicker }}</p>
-                <h2 class="section-title">{{ $socialTitle }}</h2>
-                <p class="lead social-lead">{{ $socialLead }}</p>
-
-                <div class="social-banner" aria-label="Canales sociales y contacto de {{ $clinicName }}">
-                    <div class="social-banner-copy">
-                        <strong>Siguenos, escribe o descubre mas desde un solo bloque.</strong>
-                        <span>Instagram, Facebook, TikTok, YouTube, WhatsApp y correo reunidos para una navegacion mas rapida en movil.</span>
-                    </div>
-                    <div class="social-banner-logos">
-                        @foreach ($socialBannerCards as $card)
-                            <a class="social-banner-link" href="{{ $card['url'] }}" target="_blank" rel="noopener noreferrer" aria-label="Ir a {{ $card['label'] }}">
-                                <span class="social-card-icon" aria-hidden="true">{!! $socialIcons[$card['icon']] ?? '' !!}</span>
-                                <span class="social-banner-meta">
-                                    <strong>{{ $card['label'] }}</strong>
-                                    <small>{{ $card['handle'] }}</small>
-                                </span>
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <section id="contacto" class="section section-white cta-wrap">
             <div class="container contact-layout reveal reveal-2">
                 <div class="cta">
@@ -654,6 +582,15 @@
                     <small>{{ $doctor?->name ?: 'Direccion medica estetica' }}</small>
                 </div>
             </div>
+            @if ($socialBannerCards->isNotEmpty())
+                <div class="footer-social" aria-label="Redes sociales">
+                    @foreach ($socialBannerCards as $card)
+                        <a href="{{ $card['url'] }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $card['label'] }}" class="footer-social-link">
+                            {!! $socialIcons[$card['icon']] ?? '' !!}
+                        </a>
+                    @endforeach
+                </div>
+            @endif
             <p>{{ $settings['phone'] ?: 'Atencion comercial premium' }}</p>
         </div>
     </footer>
