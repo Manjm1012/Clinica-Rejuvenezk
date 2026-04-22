@@ -409,72 +409,78 @@
                         id="cat-{{ $category->id }}"
                         role="tabpanel"
                     >
-                        @php
-                            $featuredCategoryServices = $category->services->take(2);
-                        @endphp
-
-                        @if ($category->description)
-                            <p class="services-panel-intro">{{ $category->description }}</p>
-                        @endif
-                        <div class="services-curated-layout">
-                            <aside class="services-category-card">
-                                <span class="services-category-count">{{ $category->services->count() }} tratamientos</span>
-                                <h3>{{ $category->name }}</h3>
-                                <p>{{ $category->description ?: 'Seleccionamos los procedimientos mas representativos de esta categoria para ayudarte a decidir con mas claridad.' }}</p>
-
-                                <div class="services-panel-cta">
-                                    <a href="{{ route('services.index') }}#cat-{{ $category->id }}" class="btn btn-ghost">Explorar categoria</a>
-                                    <a href="{{ $whatsappUrl }}" class="btn btn-primary" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>Asesoria por WhatsApp</a>
-                                </div>
-                            </aside>
-
-                            <div class="services-grid services-grid-curated">
-                                @foreach ($featuredCategoryServices as $service)
+                        <div class="svc-carousel-wrap">
+                            <div class="svc-carousel" aria-label="Tratamientos de {{ $category->name }}">
+                                @foreach ($category->services as $service)
                                     @php($serviceImagePath = $normalizeMediaPath($service->image_path))
-                                    <article class="landing-service-card">
+                                    <article class="svc-card">
                                         @if ($serviceImagePath && $publicDisk->exists($serviceImagePath))
-                                            <figure class="media-placeholder media-placeholder-service service-media">
-                                                    <img src="{{ $publicDisk->url($serviceImagePath) }}" alt="{{ $service->name }}" loading="lazy">
+                                            <figure class="svc-card-media">
+                                                <img src="{{ $publicDisk->url($serviceImagePath) }}" alt="{{ $service->name }}" loading="lazy">
                                             </figure>
+                                        @else
+                                            <div class="svc-card-media svc-card-media-empty">
+                                                <span>{{ mb_strtoupper(mb_substr($service->name, 0, 2)) }}</span>
+                                            </div>
                                         @endif
-                                        <div class="service-card-copy">
+                                        <div class="svc-card-copy">
                                             <h3>{{ $service->name }}</h3>
                                             <p>{{ $service->short_description ?: 'Tratamiento personalizado con enfoque medico, seguridad y resultados naturales.' }}</p>
-                                            <div class="service-links">
-                                                <a href="{{ route('services.show', $service) }}">Ver detalle</a>
-                                                <a href="{{ $service->whatsapp_url }}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                                            <div class="svc-card-links">
+                                                <a href="{{ route('services.show', $service) }}" class="svc-card-link">Ver detalle</a>
                                             </div>
                                         </div>
                                     </article>
                                 @endforeach
+
+                                {{-- CTA card at the end --}}
+                                <article class="svc-card svc-card-cta">
+                                    <div class="svc-card-cta-inner">
+                                        <strong>¿No encuentras lo que buscas?</strong>
+                                        <p>Agenda una valoracion y diseñamos un protocolo a tu medida.</p>
+                                        <a href="{{ $whatsappUrl }}" class="btn btn-primary" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>WhatsApp</a>
+                                        <a href="{{ route('services.index') }}" class="btn btn-ghost">Ver catalogo completo</a>
+                                    </div>
+                                </article>
                             </div>
+                            <div class="svc-carousel-hint" aria-hidden="true">Desliza para ver todos los tratamientos →</div>
                         </div>
                     </div>
                 @empty
                     <div class="services-panel is-active">
-                        <div class="services-grid">
-                            @foreach ($featuredServices as $service)
-                                @php($serviceImagePath = $normalizeMediaPath($service->image_path))
-                                <article class="landing-service-card">
-                                    @if ($serviceImagePath && $publicDisk->exists($serviceImagePath))
-                                        <figure class="media-placeholder media-placeholder-service service-media">
-                                            <img src="{{ $publicDisk->url($serviceImagePath) }}" alt="{{ $service->name }}" loading="lazy">
-                                        </figure>
-                                    @endif
-                                    <div class="service-card-copy">
-                                        <h3>{{ $service->name }}</h3>
-                                        <p>{{ $service->short_description ?: 'Tratamiento personalizado con enfoque medico, seguridad y resultados naturales.' }}</p>
-                                        <div class="service-links">
-                                            <a href="{{ route('services.show', $service) }}">Ver detalle</a>
-                                            <a href="{{ $service->whatsapp_url }}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                        <div class="svc-carousel-wrap">
+                            <div class="svc-carousel" aria-label="Tratamientos">
+                                @foreach ($featuredServices as $service)
+                                    @php($serviceImagePath = $normalizeMediaPath($service->image_path))
+                                    <article class="svc-card">
+                                        @if ($serviceImagePath && $publicDisk->exists($serviceImagePath))
+                                            <figure class="svc-card-media">
+                                                <img src="{{ $publicDisk->url($serviceImagePath) }}" alt="{{ $service->name }}" loading="lazy">
+                                            </figure>
+                                        @else
+                                            <div class="svc-card-media svc-card-media-empty">
+                                                <span>{{ mb_strtoupper(mb_substr($service->name, 0, 2)) }}</span>
+                                            </div>
+                                        @endif
+                                        <div class="svc-card-copy">
+                                            <h3>{{ $service->name }}</h3>
+                                            <p>{{ $service->short_description ?: 'Tratamiento personalizado con enfoque medico, seguridad y resultados naturales.' }}</p>
+                                            <div class="svc-card-links">
+                                                <a href="{{ route('services.show', $service) }}" class="svc-card-link">Ver detalle</a>
+                                            </div>
                                         </div>
+                                    </article>
+                                @endforeach
+                                <article class="svc-card svc-card-cta">
+                                    <div class="svc-card-cta-inner">
+                                        <strong>¿No encuentras lo que buscas?</strong>
+                                        <p>Agenda una valoracion y diseñamos un protocolo a tu medida.</p>
+                                        <a href="{{ $whatsappUrl }}" class="btn btn-primary" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>WhatsApp</a>
+                                        <a href="{{ route('services.index') }}" class="btn btn-ghost">Ver catalogo completo</a>
                                     </div>
                                 </article>
-                            @endforeach
-                        </div>
-                        <div class="services-panel-cta">
-                            <a href="{{ route('services.index') }}" class="btn btn-ghost">Ver todos los tratamientos</a>
-                            <a href="{{ $whatsappUrl }}" class="btn btn-primary" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>Asesoria por WhatsApp</a>
+                            </div>
+                            <div class="svc-carousel-hint" aria-hidden="true">Desliza para ver todos los tratamientos →</div>
                         </div>
                     </div>
                 @endforelse
