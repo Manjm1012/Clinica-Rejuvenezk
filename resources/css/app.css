@@ -1035,13 +1035,14 @@ button {
 }
 
 .hero-copy-compact h1 {
-    max-width: 12ch;
+    max-width: 14ch;
     font-family: var(--font-sans);
-    font-weight: 600;
-    font-size: clamp(1.9rem, 3.1vw, 3.05rem);
-    line-height: 1.12;
-    letter-spacing: -0.01em;
-    text-wrap: pretty;
+    font-weight: 500;
+    font-size: clamp(1.72rem, 2.45vw, 2.55rem);
+    line-height: 1.18;
+    letter-spacing: -0.008em;
+    color: #343131;
+    text-wrap: balance;
 }
 
 .hero-copy-compact .lead {
