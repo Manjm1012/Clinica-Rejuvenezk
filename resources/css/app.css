@@ -3210,7 +3210,12 @@ button {
     }
 
     .svc-carousel {
-        grid-auto-columns: minmax(300px, 62vw);
+        grid-auto-columns: minmax(320px, 72vw);
+    }
+
+    .svc-card-media {
+        aspect-ratio: 4 / 3;
+        max-height: 230px;
     }
 
     .cta-actions {
@@ -3267,11 +3272,44 @@ button {
     }
 
     .svc-carousel {
-        grid-auto-columns: minmax(78vw, 78vw);
+        grid-auto-columns: minmax(88vw, 88vw);
+        gap: 12px;
+        padding-bottom: 12px;
+        scroll-padding-left: 2px;
+    }
+
+    .svc-card {
+        border-radius: 22px;
     }
 
     .svc-card-media {
-        max-height: 170px;
+        aspect-ratio: 4 / 3;
+        max-height: none;
+        min-height: 210px;
+    }
+
+    .svc-card-media img {
+        object-position: center 24%;
+    }
+
+    .svc-card-copy {
+        padding: 16px 16px 18px;
+        gap: 10px;
+    }
+
+    .svc-card-copy p {
+        flex: initial;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .svc-card-links {
+        margin-top: 8px;
+        padding-top: 12px;
     }
 
     .svc-carousel-hint {
