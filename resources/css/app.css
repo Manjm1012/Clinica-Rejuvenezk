@@ -2253,7 +2253,9 @@ button {
 
 .svc-card-media {
     width: 100%;
-    aspect-ratio: 4 / 3;
+    height: 0;
+    padding-bottom: 75%; /* 4:3 ratio */
+    position: relative;
     overflow: hidden;
     flex-shrink: 0;
     background: #f0e9df;
@@ -2262,6 +2264,8 @@ button {
 }
 
 .svc-card-media img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -2276,6 +2280,7 @@ button {
 }
 
 .svc-card-media-empty span {
+    position: absolute;
     font-family: var(--font-serif);
     font-size: 2.8rem;
     font-weight: 600;
