@@ -336,25 +336,36 @@
                         @endif
                     </div>
                     <div class="hero-portrait-copy">
-                        <div class="hero-brand-chip">
-                            <div>
-                                <span>{{ $heroCardKicker }}</span>
-                                <strong>{{ $doctor?->name ?: $clinicName }}</strong>
-                            </div>
+                        <div class="hero-profile-kicker">
+                            <span>{{ $heroCardKicker }}</span>
                         </div>
+                        <div class="hero-profile-identity">
+                            <h2>{{ $doctor?->name ?: $clinicName }}</h2>
+                            <p class="hero-profile-specialty">{{ $doctor?->specialty ?: 'Medicina estética facial y corporal' }}</p>
+                        </div>
+                        <div class="hero-profile-divider"></div>
                         <div class="hero-portrait-body">
-                            <h2>{{ $doctor?->subtitle ?: $heroCardTitle }}</h2>
-                            <p>{{ $heroCardText }}</p>
-                        </div>
-                        <div class="hero-stack hero-stack-editorial hero-portrait-links">
-                            <a href="{{ route('services.index') }}" class="mini-card mini-card-link hero-accent-card">
-                                <strong>Tratamientos faciales</strong>
-                            </a>
-                            <a href="{{ route('services.index') }}" class="mini-card mini-card-link hero-accent-card-muted">
-                                <strong>Tratamientos corporales</strong>
-                            </a>
+                            <p>{{ $doctor?->subtitle ?: $heroCardTitle }}</p>
+                            <p class="hero-profile-bio">{{ $heroCardText }}</p>
                         </div>
                     </div>
+                </div>
+
+                <div class="hero-treatment-cta">
+                    <a href="{{ route('services.index') }}" class="hero-treat-btn hero-treat-btn--primary">
+                        <span class="hero-treat-label">
+                            <strong>Tratamientos faciales</strong>
+                            <span>Armonización y rejuvenecimiento</span>
+                        </span>
+                        <span class="hero-treat-arrow">↗</span>
+                    </a>
+                    <a href="{{ route('services.index') }}" class="hero-treat-btn hero-treat-btn--muted">
+                        <span class="hero-treat-label">
+                            <strong>Tratamientos corporales</strong>
+                            <span>Remodelación y estética corporal</span>
+                        </span>
+                        <span class="hero-treat-arrow">↗</span>
+                    </a>
                 </div>
             </aside>
 
