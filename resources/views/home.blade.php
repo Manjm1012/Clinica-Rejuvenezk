@@ -103,6 +103,10 @@
         $heroSubtitle = \Illuminate\Support\Str::limit($heroSubtitle, 210, '...');
     }
 
+    if (trim((string) $heroTitle) === 'Medicina estética y cirugía con enfoque premium') {
+        $heroTitle = 'Medicina estética y cirugía con enfoque médico';
+    }
+
     $heroEditorialNote = trim((string) $heroEditorialNote);
     if (mb_strlen($heroEditorialNote) > 150) {
         $heroEditorialNote = \Illuminate\Support\Str::limit($heroEditorialNote, 150, '...');
