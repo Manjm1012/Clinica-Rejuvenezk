@@ -1036,8 +1036,8 @@ button {
 
 .hero-copy-compact h1 {
     max-width: 10ch;
-    font-size: clamp(2.8rem, 4.8vw, 4.9rem);
-    line-height: 0.92;
+    font-size: clamp(2.2rem, 3.7vw, 3.9rem);
+    line-height: 1;
 }
 
 .hero-copy-compact .lead {
@@ -1333,6 +1333,9 @@ button {
     font-size: 0.87rem !important;
     line-height: 1.7 !important;
     color: #8a7b7d !important;
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
 }
 
 .hero-brand-chip-logo {
