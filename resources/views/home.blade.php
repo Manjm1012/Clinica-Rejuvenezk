@@ -6,8 +6,8 @@
     $heroPrimaryCta = $settings['hero_primary_cta'] ?? 'Reservar valoración';
     $heroSecondaryCta = $settings['hero_secondary_cta'] ?? 'Ver tratamientos';
     $heroCardKicker = $settings['hero_card_kicker'] ?? 'Primera cita';
-    $heroCardTitle = $settings['hero_card_title'] ?? ($doctor?->subtitle ?: 'Diagnóstico inteligente de piel');
-    $heroCardText = $settings['hero_card_text'] ?? ($doctor?->bio ?: 'Análisis de calidad cutánea y plan estético por etapas para resultados armónicos y progresivos.');
+    $heroCardTitle = $doctor?->subtitle ?: ($settings['hero_card_title'] ?? 'Diagnóstico inteligente de piel');
+    $heroCardText = $doctor?->bio ?: ($settings['hero_card_text'] ?? 'Análisis de calidad cutánea y plan estético por etapas para resultados armónicos y progresivos.');
     $heroStackPrimaryLabel = $settings['hero_stack_primary_label'] ?? 'Protocolo estrella';
     $heroStackSecondaryLabel = $settings['hero_stack_secondary_label'] ?? 'Especialista';
     $servicesKicker = $settings['services_kicker'] ?? 'Nuestros tratamientos';
@@ -345,8 +345,8 @@
                         </div>
                         <div class="hero-profile-divider"></div>
                         <div class="hero-portrait-body">
-                            <p>{{ $doctor?->subtitle ?: $heroCardTitle }}</p>
-                            <p class="hero-profile-bio">{{ $heroCardText }}</p>
+                            <p>{{ $heroCardTitle }}</p>
+                            <p class="hero-profile-bio">{!! nl2br(e($heroCardText)) !!}</p>
                         </div>
                     </div>
                 </div>
