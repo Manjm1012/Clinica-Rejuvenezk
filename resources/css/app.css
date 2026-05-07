@@ -2255,7 +2255,7 @@ button {
 
 .svc-card-media {
     width: 100%;
-    height: 216px;
+    aspect-ratio: 3 / 4;
     overflow: hidden;
     flex-shrink: 0;
     background: linear-gradient(180deg, #f4ece4 0%, #f7f0e9 100%);
@@ -2280,7 +2280,7 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 200px;
+    aspect-ratio: 3 / 4;
 }
 
 .svc-card-media-empty span {
@@ -3294,6 +3294,11 @@ button {
     .svc-card {
         border-radius: 18px;
         box-shadow: 0 8px 20px rgba(40, 27, 29, 0.1);
+    }
+
+    .svc-card-media,
+    .svc-card-media-empty {
+        aspect-ratio: 7 / 9;
     }
 
     .svc-card:hover {
