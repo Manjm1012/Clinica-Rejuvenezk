@@ -2957,8 +2957,8 @@ button {
 
     .brand-logo-shell,
     .brand-monogram {
-        width: 42px;
-        height: 42px;
+        width: 46px;
+        height: 46px;
         border-radius: 12px;
     }
 
@@ -2966,11 +2966,8 @@ button {
         min-width: 0;
     }
 
-    .brand-copy strong {
-        font-size: clamp(1rem, 2.2vw, 1.2rem);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    .brand-copy {
+        display: none;
     }
 
     .brand-copy small,
