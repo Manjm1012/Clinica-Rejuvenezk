@@ -75,9 +75,8 @@
                 <div class="topbar-actions">
                     <a href="{{ $whatsappUrl }}" class="btn btn-outline topbar-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
                     <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav-panel" aria-label="Abrir menú de navegación">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span class="nav-toggle-icon"><span></span><span></span><span></span></span>
+                        <span class="nav-toggle-label">Menú</span>
                     </button>
                 </div>
             </div>
