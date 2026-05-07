@@ -2988,8 +2988,10 @@ button {
         position: relative;
         display: inline-flex;
         flex: 0 0 auto;
-        width: 42px;
-        height: 42px;
+        width: auto;
+        height: auto;
+        padding: 8px 12px;
+        font-size: 0.65rem;
     }
 
     .mobile-nav-overlay {
@@ -3425,8 +3427,10 @@ button {
         position: relative;
         display: inline-flex;
         flex: 0 0 auto;
-        width: 42px;
-        height: 42px;
+        width: auto;
+        height: auto;
+        padding: 8px 12px;
+        font-size: 0.65rem;
     }
 
     .topbar .btn {
