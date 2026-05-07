@@ -431,11 +431,11 @@ a {
     z-index: 20;
     margin: 12px auto 0;
     width: min(1180px, calc(100% - 32px));
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.97);
-    border: 1px solid rgba(37, 22, 26, 0.09);
-    box-shadow: 0 4px 24px rgba(35, 22, 22, 0.08), 0 1px 4px rgba(35, 22, 22, 0.04);
-    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    background: rgba(26, 15, 16, 0.97);
+    border: 1px solid rgba(201, 169, 110, 0.18);
+    box-shadow: 0 8px 32px rgba(10, 5, 5, 0.28);
+    backdrop-filter: blur(16px);
 }
 
 .topbar-inner {
@@ -506,15 +506,15 @@ a {
     font-size: clamp(1.05rem, 1.3vw, 1.35rem);
     font-weight: 600;
     line-height: 1;
-    color: #1a0f10;
+    color: #f5ede0;
 }
 
 .brand-copy small {
-    color: var(--text-secondary);
+    color: rgba(201, 169, 110, 0.85);
     font-family: var(--font-sans);
-    font-size: 0.74rem;
-    font-weight: 600;
-    letter-spacing: 0.16em;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
 }
 
@@ -524,10 +524,14 @@ a {
     gap: 14px;
     flex-wrap: wrap;
     font-family: var(--font-sans);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 500;
-    letter-spacing: 0.02em;
-    color: var(--text-secondary);
+    letter-spacing: 0.03em;
+    color: rgba(245, 237, 224, 0.72);
+}
+
+.nav-links a:hover {
+    color: #f5ede0;
 }
 
 .topbar-actions {
@@ -540,14 +544,13 @@ a {
     display: none;
     align-items: center;
     justify-content: center;
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
     border-radius: 10px;
-    border: 1px solid rgba(37, 22, 26, 0.1);
-    background: #fff;
-    color: #1a0f10;
-    box-shadow: 0 2px 8px rgba(43, 43, 43, 0.06);
-    transition: background 0.18s ease, border-color 0.18s ease;
+    border: 1px solid rgba(201, 169, 110, 0.3);
+    background: rgba(255, 255, 255, 0.06);
+    color: #f5ede0;
+    transition: background 0.18s ease;
 }
 
 .nav-toggle span {
