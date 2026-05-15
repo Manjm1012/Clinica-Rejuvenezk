@@ -826,8 +826,7 @@ button {
 .banners-carousel {
     position: relative;
     width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 5;
+    height: clamp(220px, 30vw, 390px);
     overflow: hidden;
     background: linear-gradient(135deg, #f5f0ea 0%, #f9f7f3 100%);
 }
@@ -844,8 +843,22 @@ button {
     opacity: 0;
     transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: clamp(18px, 3.4vw, 40px) clamp(16px, 4vw, 52px);
+    background: linear-gradient(110deg, rgba(27, 22, 20, 0.88) 0%, rgba(39, 31, 29, 0.78) 42%, rgba(91, 73, 48, 0.52) 100%);
+}
+
+.banner-slide.tone-0 {
+    background: linear-gradient(115deg, rgba(41, 32, 25, 0.9) 0%, rgba(98, 78, 48, 0.62) 50%, rgba(139, 114, 72, 0.45) 100%);
+}
+
+.banner-slide.tone-1 {
+    background: linear-gradient(115deg, rgba(36, 34, 33, 0.88) 0%, rgba(85, 67, 54, 0.62) 50%, rgba(143, 113, 83, 0.42) 100%);
+}
+
+.banner-slide.tone-2 {
+    background: linear-gradient(115deg, rgba(33, 29, 26, 0.9) 0%, rgba(86, 77, 60, 0.62) 50%, rgba(154, 128, 89, 0.42) 100%);
 }
 
 .banner-slide.active {
@@ -854,11 +867,61 @@ button {
 }
 
 .banner-slide img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
     display: block;
+    z-index: 1;
+    filter: saturate(1.02) contrast(0.98);
+}
+
+.banner-slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(102deg, rgba(21, 17, 14, 0.52) 10%, rgba(21, 17, 14, 0.18) 58%, rgba(21, 17, 14, 0.4) 100%);
+    z-index: 2;
+}
+
+.banner-slide-overlay {
+    position: relative;
+    z-index: 3;
+    width: min(680px, 100%);
+    color: #f7f2ea;
+    display: grid;
+    gap: 8px;
+}
+
+.banner-slide-overlay span {
+    display: inline-flex;
+    width: fit-content;
+    padding: 6px 11px;
+    border-radius: 999px;
+    background: rgba(201, 169, 110, 0.26);
+    border: 1px solid rgba(201, 169, 110, 0.44);
+    font-size: 0.66rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.banner-slide-overlay strong {
+    font-family: var(--font-serif);
+    font-size: clamp(1.35rem, 2.2vw, 2.25rem);
+    line-height: 1.06;
+    letter-spacing: 0.01em;
+    font-weight: 500;
+}
+
+.banner-slide-overlay p {
+    margin: 0;
+    max-width: 56ch;
+    color: rgba(247, 242, 234, 0.92);
+    font-size: clamp(0.86rem, 1.08vw, 1rem);
+    line-height: 1.55;
 }
 
 /* Controls: Prev/Next Buttons */
@@ -930,7 +993,11 @@ button {
 /* Responsive: Tablet */
 @media (max-width: 980px) {
     .banners-carousel {
-        aspect-ratio: 16 / 6;
+        height: clamp(210px, 34vw, 320px);
+    }
+
+    .banner-slide {
+        padding: 22px 24px;
     }
 
     .banner-control {
@@ -951,12 +1018,39 @@ button {
         bottom: 16px;
         gap: 8px;
     }
+
+    .banner-slide-overlay p {
+        max-width: 49ch;
+    }
 }
 
 /* Responsive: Mobile */
 @media (max-width: 640px) {
     .banners-carousel {
-        aspect-ratio: 4 / 3;
+        height: clamp(220px, 62vw, 320px);
+    }
+
+    .banner-slide {
+        padding: 16px 14px 46px;
+    }
+
+    .banner-slide::after {
+        background: linear-gradient(180deg, rgba(21, 17, 14, 0.16) 0%, rgba(21, 17, 14, 0.68) 70%, rgba(21, 17, 14, 0.8) 100%);
+    }
+
+    .banner-slide-overlay {
+        width: 100%;
+        gap: 7px;
+    }
+
+    .banner-slide-overlay span {
+        font-size: 0.6rem;
+        padding: 5px 9px;
+    }
+
+    .banner-slide-overlay p {
+        font-size: 0.82rem;
+        line-height: 1.48;
     }
 
     .banner-control {

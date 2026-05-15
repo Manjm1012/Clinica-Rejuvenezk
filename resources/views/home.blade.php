@@ -64,6 +64,27 @@
     $doctorPhotoUrl = $doctorPhotoPath && $publicDisk->exists($doctorPhotoPath)
         ? $publicDisk->url($doctorPhotoPath)
         : null;
+    $resolveMediaUrl = function (?string $value) use ($normalizeMediaPath, $publicDisk): ?string {
+        if ($value === null || trim($value) === '') {
+            return null;
+        }
+
+        $candidate = trim($value);
+
+        if (filter_var($candidate, FILTER_VALIDATE_URL)) {
+            return $candidate;
+        }
+
+        $normalized = $normalizeMediaPath($candidate);
+
+        if (! $normalized) {
+            return null;
+        }
+
+        return $publicDisk->exists($normalized)
+            ? $publicDisk->url($normalized)
+            : null;
+    };
     $brandInitials = collect(preg_split('/\s+/', trim($clinicName)))
         ->filter()
         ->take(2)
@@ -81,6 +102,47 @@
     } elseif ($featuredImagePath && $publicDisk->exists($featuredImagePath)) {
         $bannerMedia = $publicDisk->url($featuredImagePath);
     }
+
+    $homeBannerDefinitions = collect([
+        [
+            'kicker' => 'Medicina estética',
+            'title' => 'Resultados naturales con criterio médico',
+            'text' => 'Valoración personalizada y protocolos diseñados para tu rostro.',
+            'image' => $resolveMediaUrl($settings['home_banner_1_image'] ?? null),
+        ],
+        [
+            'kicker' => 'Tecnología avanzada',
+            'title' => 'Tratamientos seguros y progresivos',
+            'text' => 'Combinamos diagnóstico, precisión clínica y seguimiento cercano.',
+            'image' => $resolveMediaUrl($settings['home_banner_2_image'] ?? null),
+        ],
+        [
+            'kicker' => 'Atención profesional',
+            'title' => 'Plan integral para armonizar tu belleza',
+            'text' => 'Una experiencia estética clara, elegante y enfocada en confianza.',
+            'image' => $resolveMediaUrl($settings['home_banner_3_image'] ?? null),
+        ],
+    ]);
+
+    $fallbackBannerImages = collect([
+        $doctorPhotoUrl,
+        $bannerMedia,
+        $resolveMediaUrl($settings['hero_banner_image'] ?? null),
+        $clinicLogoUrl,
+    ])->filter()->values();
+
+    $heroBanners = $homeBannerDefinitions
+        ->map(function (array $banner, int $index) use ($fallbackBannerImages) {
+            if (!empty($banner['image'])) {
+                return $banner;
+            }
+
+            return [
+                ...$banner,
+                'image' => $fallbackBannerImages[$index] ?? $fallbackBannerImages->first(),
+            ];
+        })
+        ->values();
 
     $heroMetrics = $stats->take(2)->map(fn ($stat) => [
         'value' => $stat->value,
@@ -322,34 +384,37 @@
         <section class="banners-carousel-wrap section">
             <div class="banners-carousel" role="region" aria-label="Banners promocionales">
                 <div class="banners-carousel-inner">
-                    <!-- Banner 1: Doctor con consultorio -->
-                    <article class="banner-slide" data-slide="0">
-                        <img src="https://via.placeholder.com/1200x400?text=Dr.+Kevin+Maldonado" alt="Dr. Kevin Maldonado - Medicina estética facial y corporal" loading="lazy">
-                    </article>
-                    <!-- Banner 2: Equipo médico -->
-                    <article class="banner-slide" data-slide="1">
-                        <img src="https://via.placeholder.com/1200x400?text=Equipo+Profesional" alt="Equipo profesional de medicina estética" loading="lazy">
-                    </article>
-                    <!-- Banner 3: Procedimiento -->
-                    <article class="banner-slide" data-slide="2">
-                        <img src="https://via.placeholder.com/1200x400?text=Procedimientos+Avanzados" alt="Procedimientos avanzados de medicina estética" loading="lazy">
-                    </article>
+                    @foreach ($heroBanners as $index => $banner)
+                        <article class="banner-slide tone-{{ $index % 3 }}" data-slide="{{ $index }}">
+                            @if (!empty($banner['image']))
+                                <img src="{{ $banner['image'] }}" alt="{{ $banner['title'] }}" loading="{{ $index === 0 ? 'eager' : 'lazy' }}" onerror="this.remove()">
+                            @endif
+
+                            <div class="banner-slide-overlay">
+                                <span>{{ $banner['kicker'] }}</span>
+                                <strong>{{ $banner['title'] }}</strong>
+                                <p>{{ $banner['text'] }}</p>
+                            </div>
+                        </article>
+                    @endforeach
                 </div>
 
-                <!-- Controls -->
-                <button class="banner-control banner-prev" aria-label="Banner anterior">
-                    <span aria-hidden="true">‹</span>
-                </button>
-                <button class="banner-control banner-next" aria-label="Banner siguiente">
-                    <span aria-hidden="true">›</span>
-                </button>
+                @if ($heroBanners->count() > 1)
+                    <!-- Controls -->
+                    <button class="banner-control banner-prev" aria-label="Banner anterior">
+                        <span aria-hidden="true">‹</span>
+                    </button>
+                    <button class="banner-control banner-next" aria-label="Banner siguiente">
+                        <span aria-hidden="true">›</span>
+                    </button>
 
-                <!-- Indicators -->
-                <div class="banner-indicators">
-                    <button class="banner-indicator active" data-index="0" aria-label="Ir a banner 1" aria-current="true"></button>
-                    <button class="banner-indicator" data-index="1" aria-label="Ir a banner 2"></button>
-                    <button class="banner-indicator" data-index="2" aria-label="Ir a banner 3"></button>
-                </div>
+                    <!-- Indicators -->
+                    <div class="banner-indicators">
+                        @foreach ($heroBanners as $index => $banner)
+                            <button class="banner-indicator{{ $index === 0 ? ' active' : '' }}" data-index="{{ $index }}" aria-label="Ir a banner {{ $index + 1 }}" @if($index === 0) aria-current="true" @endif></button>
+                        @endforeach
+                    </div>
+                @endif
             </div>
         </section>
 
