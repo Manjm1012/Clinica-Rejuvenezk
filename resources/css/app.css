@@ -813,6 +813,176 @@ button {
     margin-top: 22px;
 }
 
+/* ========================================
+   Banners Carousel
+   ======================================== */
+.banners-carousel-wrap {
+    padding: 0;
+    margin-top: -8px;
+    position: relative;
+    z-index: 10;
+}
+
+.banners-carousel {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 5;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f5f0ea 0%, #f9f7f3 100%);
+}
+
+.banners-carousel-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.banner-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner-slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.banner-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* Controls: Prev/Next Buttons */
+.banner-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(198, 160, 98, 0.3);
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-size: 1.8rem;
+    font-weight: 300;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    z-index: 3;
+}
+
+.banner-control:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(198, 160, 98, 0.6);
+}
+
+.banner-prev {
+    left: 20px;
+}
+
+.banner-next {
+    right: 20px;
+}
+
+/* Indicators: Dots */
+.banner-indicators {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 3;
+}
+
+.banner-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.banner-indicator.active {
+    background: rgba(255, 255, 255, 0.95);
+    width: 28px;
+    border-radius: 5px;
+}
+
+.banner-indicator:hover {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+/* Responsive: Tablet */
+@media (max-width: 980px) {
+    .banners-carousel {
+        aspect-ratio: 16 / 6;
+    }
+
+    .banner-control {
+        width: 44px;
+        height: 44px;
+        font-size: 1.6rem;
+    }
+
+    .banner-prev {
+        left: 16px;
+    }
+
+    .banner-next {
+        right: 16px;
+    }
+
+    .banner-indicators {
+        bottom: 16px;
+        gap: 8px;
+    }
+}
+
+/* Responsive: Mobile */
+@media (max-width: 640px) {
+    .banners-carousel {
+        aspect-ratio: 4 / 3;
+    }
+
+    .banner-control {
+        width: 40px;
+        height: 40px;
+        font-size: 1.4rem;
+    }
+
+    .banner-prev {
+        left: 12px;
+    }
+
+    .banner-next {
+        right: 12px;
+    }
+
+    .banner-indicators {
+        bottom: 12px;
+        gap: 6px;
+    }
+
+    .banner-indicator.active {
+        width: 24px;
+    }
+}
+
 .hero {
     position: relative;
     z-index: 1;

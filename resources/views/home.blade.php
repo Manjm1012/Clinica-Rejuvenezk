@@ -318,6 +318,41 @@
     </a>
 
     <main id="inicio">
+        <!-- Banners Carousel -->
+        <section class="banners-carousel-wrap section">
+            <div class="banners-carousel" role="region" aria-label="Banners promocionales">
+                <div class="banners-carousel-inner">
+                    <!-- Banner 1: Doctor con consultorio -->
+                    <article class="banner-slide" data-slide="0">
+                        <img src="https://via.placeholder.com/1200x400?text=Dr.+Kevin+Maldonado" alt="Dr. Kevin Maldonado - Medicina estética facial y corporal" loading="lazy">
+                    </article>
+                    <!-- Banner 2: Equipo médico -->
+                    <article class="banner-slide" data-slide="1">
+                        <img src="https://via.placeholder.com/1200x400?text=Equipo+Profesional" alt="Equipo profesional de medicina estética" loading="lazy">
+                    </article>
+                    <!-- Banner 3: Procedimiento -->
+                    <article class="banner-slide" data-slide="2">
+                        <img src="https://via.placeholder.com/1200x400?text=Procedimientos+Avanzados" alt="Procedimientos avanzados de medicina estética" loading="lazy">
+                    </article>
+                </div>
+
+                <!-- Controls -->
+                <button class="banner-control banner-prev" aria-label="Banner anterior">
+                    <span aria-hidden="true">‹</span>
+                </button>
+                <button class="banner-control banner-next" aria-label="Banner siguiente">
+                    <span aria-hidden="true">›</span>
+                </button>
+
+                <!-- Indicators -->
+                <div class="banner-indicators">
+                    <button class="banner-indicator active" data-index="0" aria-label="Ir a banner 1" aria-current="true"></button>
+                    <button class="banner-indicator" data-index="1" aria-label="Ir a banner 2"></button>
+                    <button class="banner-indicator" data-index="2" aria-label="Ir a banner 3"></button>
+                </div>
+            </div>
+        </section>
+
         <section class="hero section container">
             <aside class="hero-panel hero-panel-featured reveal reveal-2" aria-label="Resumen de experiencia {{ $clinicName }}">
                 <div class="hero-card landing-hero-card hero-portrait-card">

@@ -161,3 +161,88 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	closeMenu();
 });
+
+// Banners Carousel Auto-Rotation
+document.addEventListener('DOMContentLoaded', () => {
+	const carousel = document.querySelector('.banners-carousel');
+	const carouselInner = document.querySelector('.banners-carousel-inner');
+	const slides = document.querySelectorAll('.banner-slide');
+	const indicators = document.querySelectorAll('.banner-indicator');
+	const prevBtn = document.querySelector('.banner-prev');
+	const nextBtn = document.querySelector('.banner-next');
+
+	if (!carousel || !slides.length) return;
+
+	let currentSlide = 0;
+	let autoPlayInterval = null;
+	const AUTO_PLAY_DELAY = 5500; // 5.5 seconds
+
+	const updateSlide = (index) => {
+		// Remove active from all slides and indicators
+		slides.forEach((slide) => slide.classList.remove('active'));
+		indicators.forEach((indicator) => indicator.classList.remove('active'));
+
+		// Add active to current slide and indicator
+		slides[index].classList.add('active');
+		indicators[index].classList.add('active');
+
+		currentSlide = index;
+	};
+
+	const nextSlide = () => {
+		const next = (currentSlide + 1) % slides.length;
+		updateSlide(next);
+	};
+
+	const prevSlide = () => {
+		const prev = (currentSlide - 1 + slides.length) % slides.length;
+		updateSlide(prev);
+	};
+
+	const goToSlide = (index) => {
+		updateSlide(index);
+		resetAutoPlay();
+	};
+
+	const startAutoPlay = () => {
+		autoPlayInterval = setInterval(nextSlide, AUTO_PLAY_DELAY);
+	};
+
+	const resetAutoPlay = () => {
+		if (autoPlayInterval) {
+			clearInterval(autoPlayInterval);
+		}
+		startAutoPlay();
+	};
+
+	// Event listeners for buttons
+	prevBtn?.addEventListener('click', () => {
+		prevSlide();
+		resetAutoPlay();
+	});
+
+	nextBtn?.addEventListener('click', () => {
+		nextSlide();
+		resetAutoPlay();
+	});
+
+	// Event listeners for indicators
+	indicators.forEach((indicator, index) => {
+		indicator.addEventListener('click', () => goToSlide(index));
+	});
+
+	// Pause on hover
+	carousel?.addEventListener('mouseenter', () => {
+		if (autoPlayInterval) {
+			clearInterval(autoPlayInterval);
+		}
+	});
+
+	carousel?.addEventListener('mouseleave', () => {
+		startAutoPlay();
+	});
+
+	// Initialize
+	updateSlide(0);
+	startAutoPlay();
+});
