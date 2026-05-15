@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Models\SiteSetting;
+use Filament\Forms\Components\BaseFileUpload;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -10,6 +11,9 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class HomeBanners extends Page implements HasForms
 {
@@ -51,27 +55,103 @@ class HomeBanners extends Page implements HasForms
                             ->disk('public')
                             ->directory('branding/banners')
                             ->visibility('public')
-                            ->imageEditor()
+                            ->acceptedFileTypes([
+                                'image/jpeg',
+                                'image/png',
+                                'image/webp',
+                            ])
+                            ->maxSize(5120)
+                            ->maxParallelUploads(1)
                             ->openable()
-                            ->downloadable(),
+                            ->downloadable()
+                            ->saveUploadedFileUsing(function (BaseFileUpload $component, TemporaryUploadedFile $file): ?string {
+                                $extension = $file->getClientOriginalExtension() ?: $file->guessExtension() ?: 'bin';
+                                $path = trim('branding/banners/' . Str::ulid() . '.' . $extension, '/');
+                                $stream = fopen($file->getRealPath(), 'r');
+
+                                if ($stream === false) {
+                                    return null;
+                                }
+
+                                try {
+                                    Storage::disk('public')->put($path, $stream, [
+                                        'visibility' => 'public',
+                                    ]);
+                                } finally {
+                                    fclose($stream);
+                                }
+
+                                return Storage::disk('public')->exists($path) ? $path : null;
+                            })
+                            ->helperText('JPG, PNG o WebP. Máximo 5 MB. Se sube de un archivo a la vez para mayor estabilidad.'),
                         FileUpload::make('home_banner_2_image')
                             ->label('Banner 2')
                             ->image()
                             ->disk('public')
                             ->directory('branding/banners')
                             ->visibility('public')
-                            ->imageEditor()
+                            ->acceptedFileTypes([
+                                'image/jpeg',
+                                'image/png',
+                                'image/webp',
+                            ])
+                            ->maxSize(5120)
+                            ->maxParallelUploads(1)
                             ->openable()
-                            ->downloadable(),
+                            ->downloadable()
+                            ->saveUploadedFileUsing(function (BaseFileUpload $component, TemporaryUploadedFile $file): ?string {
+                                $extension = $file->getClientOriginalExtension() ?: $file->guessExtension() ?: 'bin';
+                                $path = trim('branding/banners/' . Str::ulid() . '.' . $extension, '/');
+                                $stream = fopen($file->getRealPath(), 'r');
+
+                                if ($stream === false) {
+                                    return null;
+                                }
+
+                                try {
+                                    Storage::disk('public')->put($path, $stream, [
+                                        'visibility' => 'public',
+                                    ]);
+                                } finally {
+                                    fclose($stream);
+                                }
+
+                                return Storage::disk('public')->exists($path) ? $path : null;
+                            }),
                         FileUpload::make('home_banner_3_image')
                             ->label('Banner 3')
                             ->image()
                             ->disk('public')
                             ->directory('branding/banners')
                             ->visibility('public')
-                            ->imageEditor()
+                            ->acceptedFileTypes([
+                                'image/jpeg',
+                                'image/png',
+                                'image/webp',
+                            ])
+                            ->maxSize(5120)
+                            ->maxParallelUploads(1)
                             ->openable()
-                            ->downloadable(),
+                            ->downloadable()
+                            ->saveUploadedFileUsing(function (BaseFileUpload $component, TemporaryUploadedFile $file): ?string {
+                                $extension = $file->getClientOriginalExtension() ?: $file->guessExtension() ?: 'bin';
+                                $path = trim('branding/banners/' . Str::ulid() . '.' . $extension, '/');
+                                $stream = fopen($file->getRealPath(), 'r');
+
+                                if ($stream === false) {
+                                    return null;
+                                }
+
+                                try {
+                                    Storage::disk('public')->put($path, $stream, [
+                                        'visibility' => 'public',
+                                    ]);
+                                } finally {
+                                    fclose($stream);
+                                }
+
+                                return Storage::disk('public')->exists($path) ? $path : null;
+                            }),
                     ]),
             ])
             ->statePath('data');

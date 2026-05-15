@@ -10,6 +10,9 @@ use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class SiteSettingResource extends Resource
 {
@@ -41,12 +44,37 @@ class SiteSettingResource extends Resource
                     ->disk('public')
                     ->directory('branding/banners')
                     ->visibility('public')
-                    ->imageEditor()
+                    ->acceptedFileTypes([
+                        'image/jpeg',
+                        'image/png',
+                        'image/webp',
+                    ])
+                    ->maxSize(5120)
+                    ->maxParallelUploads(1)
                     ->openable()
                     ->downloadable()
+                    ->saveUploadedFileUsing(function (Forms\Components\BaseFileUpload $component, TemporaryUploadedFile $file): ?string {
+                        $extension = $file->getClientOriginalExtension() ?: $file->guessExtension() ?: 'bin';
+                        $path = trim('branding/banners/' . Str::ulid() . '.' . $extension, '/');
+                        $stream = fopen($file->getRealPath(), 'r');
+
+                        if ($stream === false) {
+                            return null;
+                        }
+
+                        try {
+                            Storage::disk('public')->put($path, $stream, [
+                                'visibility' => 'public',
+                            ]);
+                        } finally {
+                            fclose($stream);
+                        }
+
+                        return Storage::disk('public')->exists($path) ? $path : null;
+                    })
                     ->columnSpanFull()
                     ->visible(fn (Get $get): bool => $get('type') === 'image')
-                    ->helperText('Sube banners o imágenes de marca. Se guardará la ruta en este ajuste.'),
+                    ->helperText('JPG, PNG o WebP. Máximo 5 MB. Se guarda en storage público.'),
                 Forms\Components\Textarea::make('value')
                     ->columnSpanFull()
                     ->visible(fn (Get $get): bool => $get('type') !== 'image'),
