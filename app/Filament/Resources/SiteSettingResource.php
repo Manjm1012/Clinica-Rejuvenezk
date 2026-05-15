@@ -44,6 +44,9 @@ class SiteSettingResource extends Resource
                     ->disk('public')
                     ->directory('branding/banners')
                     ->visibility('public')
+                    ->imageResizeMode('cover')
+                    ->imageResizeTargetWidth(1600)
+                    ->imageResizeTargetHeight(700)
                     ->acceptedFileTypes([
                         'image/jpeg',
                         'image/png',
