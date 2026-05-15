@@ -52,6 +52,9 @@ class HomeController extends Controller
             'topbar_cta_label' => 'Agenda ahora',
             'cta_whatsapp_label' => 'WhatsApp',
             'cta_email_label' => 'Solicitar información',
+            'home_banner_1_image' => '',
+            'home_banner_2_image' => '',
+            'home_banner_3_image' => '',
         ], SiteSetting::group('branding'));
 
         $contact = array_merge([

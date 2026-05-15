@@ -6,6 +6,7 @@ use App\Filament\Resources\SiteSettingResource\Pages;
 use App\Models\SiteSetting;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -32,8 +33,23 @@ class SiteSettingResource extends Resource
                     'boolean' => 'Booleano',
                     'integer' => 'Número',
                     'json' => 'JSON',
-                ])->required(),
-                Forms\Components\Textarea::make('value')->columnSpanFull(),
+                    'image' => 'Imagen',
+                ])->required()->live(),
+                Forms\Components\FileUpload::make('value')
+                    ->label('Imagen')
+                    ->image()
+                    ->disk('public')
+                    ->directory('branding/banners')
+                    ->visibility('public')
+                    ->imageEditor()
+                    ->openable()
+                    ->downloadable()
+                    ->columnSpanFull()
+                    ->visible(fn (Get $get): bool => $get('type') === 'image')
+                    ->helperText('Sube banners o imágenes de marca. Se guardará la ruta en este ajuste.'),
+                Forms\Components\Textarea::make('value')
+                    ->columnSpanFull()
+                    ->visible(fn (Get $get): bool => $get('type') !== 'image'),
             ]);
     }
 
