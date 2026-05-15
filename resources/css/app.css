@@ -826,7 +826,7 @@ button {
 .banners-carousel {
     position: relative;
     width: 100%;
-    height: clamp(220px, 30vw, 390px);
+    height: clamp(180px, 24vw, 300px);
     overflow: hidden;
     background: linear-gradient(135deg, #f5f0ea 0%, #f9f7f3 100%);
 }
@@ -871,8 +871,8 @@ button {
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center;
+    object-fit: contain;
+    object-position: center center;
     display: block;
     z-index: 1;
     filter: saturate(1.02) contrast(0.98);
@@ -993,11 +993,11 @@ button {
 /* Responsive: Tablet */
 @media (max-width: 980px) {
     .banners-carousel {
-        height: clamp(210px, 34vw, 320px);
+        height: clamp(160px, 28vw, 230px);
     }
 
     .banner-slide {
-        padding: 22px 24px;
+        padding: 16px 18px 38px;
     }
 
     .banner-control {
@@ -1020,18 +1020,24 @@ button {
     }
 
     .banner-slide-overlay p {
-        max-width: 49ch;
+        max-width: 44ch;
+        font-size: 0.84rem;
+        line-height: 1.4;
+    }
+
+    .banner-slide-overlay strong {
+        font-size: clamp(1.05rem, 1.95vw, 1.45rem);
     }
 }
 
 /* Responsive: Mobile */
 @media (max-width: 640px) {
     .banners-carousel {
-        height: clamp(220px, 62vw, 320px);
+        height: clamp(130px, 42vw, 185px);
     }
 
     .banner-slide {
-        padding: 16px 14px 46px;
+        padding: 12px 12px 30px;
     }
 
     .banner-slide::after {
@@ -1040,40 +1046,50 @@ button {
 
     .banner-slide-overlay {
         width: 100%;
-        gap: 7px;
+        gap: 5px;
     }
 
     .banner-slide-overlay span {
-        font-size: 0.6rem;
-        padding: 5px 9px;
+        font-size: 0.52rem;
+        padding: 4px 7px;
+        letter-spacing: 0.12em;
+    }
+
+    .banner-slide-overlay strong {
+        font-size: clamp(0.88rem, 3.2vw, 1.05rem);
+        line-height: 1.1;
     }
 
     .banner-slide-overlay p {
-        font-size: 0.82rem;
-        line-height: 1.48;
+        display: none;
     }
 
     .banner-control {
-        width: 40px;
-        height: 40px;
-        font-size: 1.4rem;
+        width: 30px;
+        height: 30px;
+        font-size: 1rem;
     }
 
     .banner-prev {
-        left: 12px;
+        left: 8px;
     }
 
     .banner-next {
-        right: 12px;
+        right: 8px;
     }
 
     .banner-indicators {
-        bottom: 12px;
-        gap: 6px;
+        bottom: 7px;
+        gap: 4px;
+    }
+
+    .banner-indicator {
+        width: 7px;
+        height: 7px;
     }
 
     .banner-indicator.active {
-        width: 24px;
+        width: 16px;
     }
 }
 
