@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\HomeBannersUploadController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\PublicMediaController;
 use App\Http\Controllers\ServiceController;
@@ -18,3 +19,5 @@ Route::get('/procedimientos/{service:slug}', [ServiceController::class, 'show'])
 Route::post('/contacto', [LeadController::class, 'store'])->name('leads.store');
 
 Route::post('/webhooks/tayrai', TayraiWebhookController::class)->name('webhooks.tayrai');
+
+Route::middleware('auth')->post('/admin/home-banners/upload', HomeBannersUploadController::class)->name('admin.home-banners.upload');

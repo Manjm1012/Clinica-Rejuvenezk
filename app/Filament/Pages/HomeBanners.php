@@ -3,22 +3,11 @@
 namespace App\Filament\Pages;
 
 use App\Models\SiteSetting;
-use Filament\Forms\Components\BaseFileUpload;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
-use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
-class HomeBanners extends Page implements HasForms
+class HomeBanners extends Page
 {
-    use InteractsWithForms;
-
     protected static ?string $navigationIcon = 'heroicon-o-photo';
 
     protected static ?string $navigationGroup = 'Configuración';
@@ -31,155 +20,25 @@ class HomeBanners extends Page implements HasForms
 
     protected static string $view = 'filament.pages.home-banners';
 
-    public ?array $data = [];
+    public ?string $banner1Path = null;
+
+    public ?string $banner2Path = null;
+
+    public ?string $banner3Path = null;
 
     public function mount(): void
     {
-        $this->form->fill([
-            'home_banner_1_image' => SiteSetting::get('branding', 'home_banner_1_image', ''),
-            'home_banner_2_image' => SiteSetting::get('branding', 'home_banner_2_image', ''),
-            'home_banner_3_image' => SiteSetting::get('branding', 'home_banner_3_image', ''),
-        ]);
+        $this->banner1Path = SiteSetting::get('branding', 'home_banner_1_image', '');
+        $this->banner2Path = SiteSetting::get('branding', 'home_banner_2_image', '');
+        $this->banner3Path = SiteSetting::get('branding', 'home_banner_3_image', '');
     }
 
-    public function form(Form $form): Form
+    public function getBannerUrl(?string $path): ?string
     {
-        return $form
-            ->schema([
-                Section::make('Carrusel de banners')
-                    ->description('Sube 3 imágenes para el carrusel de inicio. Recomendado: 1600x700 px o relación 16:7.')
-                    ->schema([
-                        FileUpload::make('home_banner_1_image')
-                            ->label('Banner 1')
-                            ->image()
-                            ->disk('public')
-                            ->directory('branding/banners')
-                            ->visibility('public')
-                            ->imageResizeMode('cover')
-                            ->imageResizeTargetWidth(1200)
-                            ->imageResizeTargetHeight(525)
-                            ->imageResizeUpscale(false)
-                            ->acceptedFileTypes([
-                                'image/jpeg',
-                                'image/png',
-                                'image/webp',
-                            ])
-                            ->maxSize(900)
-                            ->maxParallelUploads(1)
-                            ->openable()
-                            ->downloadable()
-                            ->saveUploadedFileUsing(function (BaseFileUpload $component, TemporaryUploadedFile $file): ?string {
-                                $extension = $file->getClientOriginalExtension() ?: $file->guessExtension() ?: 'bin';
-                                $path = trim('branding/banners/' . Str::ulid() . '.' . $extension, '/');
-                                $stream = fopen($file->getRealPath(), 'r');
+        if (!$path) {
+            return null;
+        }
 
-                                if ($stream === false) {
-                                    return null;
-                                }
-
-                                try {
-                                    Storage::disk('public')->put($path, $stream, [
-                                        'visibility' => 'public',
-                                    ]);
-                                } finally {
-                                    fclose($stream);
-                                }
-
-                                return Storage::disk('public')->exists($path) ? $path : null;
-                            })
-                            ->helperText('JPG, PNG o WebP. Máximo 900 KB. Se optimiza a 1200x525 y se sube de un archivo a la vez.'),
-                        FileUpload::make('home_banner_2_image')
-                            ->label('Banner 2')
-                            ->image()
-                            ->disk('public')
-                            ->directory('branding/banners')
-                            ->visibility('public')
-                            ->imageResizeMode('cover')
-                            ->imageResizeTargetWidth(1200)
-                            ->imageResizeTargetHeight(525)
-                            ->imageResizeUpscale(false)
-                            ->acceptedFileTypes([
-                                'image/jpeg',
-                                'image/png',
-                                'image/webp',
-                            ])
-                            ->maxSize(900)
-                            ->maxParallelUploads(1)
-                            ->openable()
-                            ->downloadable()
-                            ->saveUploadedFileUsing(function (BaseFileUpload $component, TemporaryUploadedFile $file): ?string {
-                                $extension = $file->getClientOriginalExtension() ?: $file->guessExtension() ?: 'bin';
-                                $path = trim('branding/banners/' . Str::ulid() . '.' . $extension, '/');
-                                $stream = fopen($file->getRealPath(), 'r');
-
-                                if ($stream === false) {
-                                    return null;
-                                }
-
-                                try {
-                                    Storage::disk('public')->put($path, $stream, [
-                                        'visibility' => 'public',
-                                    ]);
-                                } finally {
-                                    fclose($stream);
-                                }
-
-                                return Storage::disk('public')->exists($path) ? $path : null;
-                            }),
-                        FileUpload::make('home_banner_3_image')
-                            ->label('Banner 3')
-                            ->image()
-                            ->disk('public')
-                            ->directory('branding/banners')
-                            ->visibility('public')
-                            ->imageResizeMode('cover')
-                            ->imageResizeTargetWidth(1200)
-                            ->imageResizeTargetHeight(525)
-                            ->imageResizeUpscale(false)
-                            ->acceptedFileTypes([
-                                'image/jpeg',
-                                'image/png',
-                                'image/webp',
-                            ])
-                            ->maxSize(900)
-                            ->maxParallelUploads(1)
-                            ->openable()
-                            ->downloadable()
-                            ->saveUploadedFileUsing(function (BaseFileUpload $component, TemporaryUploadedFile $file): ?string {
-                                $extension = $file->getClientOriginalExtension() ?: $file->guessExtension() ?: 'bin';
-                                $path = trim('branding/banners/' . Str::ulid() . '.' . $extension, '/');
-                                $stream = fopen($file->getRealPath(), 'r');
-
-                                if ($stream === false) {
-                                    return null;
-                                }
-
-                                try {
-                                    Storage::disk('public')->put($path, $stream, [
-                                        'visibility' => 'public',
-                                    ]);
-                                } finally {
-                                    fclose($stream);
-                                }
-
-                                return Storage::disk('public')->exists($path) ? $path : null;
-                            }),
-                    ]),
-            ])
-            ->statePath('data');
-    }
-
-    public function save(): void
-    {
-        $values = $this->form->getState();
-
-        SiteSetting::set('branding', 'home_banner_1_image', $values['home_banner_1_image'] ?? '', 'image', 'Imagen banner home 1');
-        SiteSetting::set('branding', 'home_banner_2_image', $values['home_banner_2_image'] ?? '', 'image', 'Imagen banner home 2');
-        SiteSetting::set('branding', 'home_banner_3_image', $values['home_banner_3_image'] ?? '', 'image', 'Imagen banner home 3');
-
-        Notification::make()
-            ->title('Banners actualizados')
-            ->success()
-            ->send();
+        return asset('storage/' . ltrim($path, '/'));
     }
 }
