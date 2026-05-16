@@ -66,8 +66,8 @@
                 </a>
 
                 <nav class="nav-links" aria-label="Navegación principal">
-                    <a href="{{ route('services.index') }}">Procedimientos</a>
-                    <a href="{{ route('about') }}">Especialista</a>
+                    <a href="{{ route('services.index') }}" class="{{ request()->routeIs('services.*') ? 'is-active' : '' }}">Procedimientos</a>
+                    <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'is-active' : '' }}">Especialista</a>
                     <a href="{{ route('home') }}#resultados">Resultados</a>
                     <a href="{{ route('home') }}#contacto">Contacto</a>
                 </nav>

@@ -55,6 +55,10 @@
                                 <figure class="media-placeholder media-placeholder-service service-media">
                                     <img src="{{ $publicDisk->url($serviceImagePath) }}" alt="{{ $service->name }}" loading="lazy">
                                 </figure>
+                            @else
+                                <figure class="media-placeholder media-placeholder-service service-media service-media-empty" aria-hidden="true">
+                                    <span>{{ mb_strtoupper(mb_substr($service->name, 0, 2)) }}</span>
+                                </figure>
                             @endif
                             <div class="service-card-copy">
                                 <h3>{{ $service->name }}</h3>
