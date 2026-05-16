@@ -455,14 +455,14 @@
                 </div>
 
                 <div class="hero-treatment-cta">
-                    <a href="{{ route('services.index') }}" class="hero-treat-btn hero-treat-btn--primary">
+                    <a href="{{ route('services.index', ['categoria' => 'facial']) }}#cat-facial" class="hero-treat-btn hero-treat-btn--primary">
                         <span class="hero-treat-label">
                             <strong>Tratamientos faciales</strong>
                             <span>Armonización y rejuvenecimiento</span>
                         </span>
                         <span class="hero-treat-arrow">↗</span>
                     </a>
-                    <a href="{{ route('services.index') }}" class="hero-treat-btn hero-treat-btn--muted">
+                    <a href="{{ route('services.index', ['categoria' => 'corporal']) }}#cat-corporal" class="hero-treat-btn hero-treat-btn--muted">
                         <span class="hero-treat-label">
                             <strong>Tratamientos corporales</strong>
                             <span>Remodelación y estética corporal</span>

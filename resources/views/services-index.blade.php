@@ -38,7 +38,7 @@
         </section>
 
         @foreach ($serviceCategories as $category)
-            <section id="cat-{{ $category->id }}" class="section-block services-catalog-block">
+            <section id="cat-{{ $category->slug ?: $category->id }}" class="section-block services-catalog-block">
                 <div class="section-head services-catalog-head">
                     <div>
                         <span class="eyebrow">Categoría</span>

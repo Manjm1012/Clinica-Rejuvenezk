@@ -162,6 +162,35 @@ document.addEventListener('DOMContentLoaded', () => {
 	closeMenu();
 });
 
+// Services catalog deep-link support via query string (e.g. /servicios?categoria=corporal)
+document.addEventListener('DOMContentLoaded', () => {
+	if (!window.location.pathname.includes('/servicios')) {
+		return;
+	}
+
+	const params = new URLSearchParams(window.location.search);
+	const categoria = (params.get('categoria') || '').trim().toLowerCase();
+
+	if (!categoria) {
+		return;
+	}
+
+	const targetId = `cat-${categoria}`;
+	const target = document.getElementById(targetId);
+
+	if (!target) {
+		return;
+	}
+
+	if (window.location.hash !== `#${targetId}`) {
+		history.replaceState(null, '', `${window.location.pathname}${window.location.search}#${targetId}`);
+	}
+
+	requestAnimationFrame(() => {
+		target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	});
+});
+
 // Banners Carousel Auto-Rotation
 document.addEventListener('DOMContentLoaded', () => {
 	const carousel = document.querySelector('.banners-carousel');
@@ -175,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	let currentSlide = 0;
 	let autoPlayInterval = null;
-	const AUTO_PLAY_DELAY = 5500; // 5.5 seconds
+	const AUTO_PLAY_DELAY = 10000; // 10 seconds
 
 	const updateSlide = (index) => {
 		// Remove active from all slides and indicators

@@ -4296,3 +4296,62 @@ button {
 .banner-slot {
     margin-bottom: 26px;
 }
+
+/* Responsive polish: prevent oversized service media and mobile-like topbar on desktop-width tablets */
+@media (min-width: 641px) and (max-width: 980px) {
+    .topbar-inner {
+        padding: 10px 14px;
+        gap: 10px;
+    }
+
+    .brand-copy {
+        display: grid;
+    }
+
+    .brand-copy strong {
+        font-size: 1rem;
+    }
+
+    .brand-copy small {
+        display: none;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 10px;
+        font-size: 0.78rem;
+        letter-spacing: 0.01em;
+    }
+
+    .topbar-cta {
+        display: none;
+    }
+
+    .nav-toggle {
+        display: none;
+    }
+
+    .services-grid-catalog {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .services-catalog-page .landing-service-card {
+        border-radius: 22px;
+    }
+
+    .services-catalog-page .service-media {
+        aspect-ratio: 4 / 3;
+        min-height: 0;
+        max-height: 260px;
+        margin-bottom: 0;
+    }
+}
+
+@media (min-width: 981px) {
+    .services-catalog-page .service-media {
+        aspect-ratio: 16 / 10;
+        min-height: 0;
+        max-height: 280px;
+    }
+}
