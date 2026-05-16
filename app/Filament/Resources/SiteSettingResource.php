@@ -45,14 +45,15 @@ class SiteSettingResource extends Resource
                     ->directory('branding/banners')
                     ->visibility('public')
                     ->imageResizeMode('cover')
-                    ->imageResizeTargetWidth(1600)
-                    ->imageResizeTargetHeight(700)
+                    ->imageResizeTargetWidth(1200)
+                    ->imageResizeTargetHeight(525)
+                    ->imageResizeUpscale(false)
                     ->acceptedFileTypes([
                         'image/jpeg',
                         'image/png',
                         'image/webp',
                     ])
-                    ->maxSize(5120)
+                    ->maxSize(900)
                     ->maxParallelUploads(1)
                     ->openable()
                     ->downloadable()
@@ -77,7 +78,7 @@ class SiteSettingResource extends Resource
                     })
                     ->columnSpanFull()
                     ->visible(fn (Get $get): bool => $get('type') === 'image')
-                    ->helperText('JPG, PNG o WebP. Máximo 5 MB. Se guarda en storage público.'),
+                    ->helperText('JPG, PNG o WebP. Máximo 900 KB. Se optimiza a 1200x525 para evitar fallos de upload.'),
                 Forms\Components\Textarea::make('value')
                     ->columnSpanFull()
                     ->visible(fn (Get $get): bool => $get('type') !== 'image'),

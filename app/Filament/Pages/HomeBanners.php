@@ -56,14 +56,15 @@ class HomeBanners extends Page implements HasForms
                             ->directory('branding/banners')
                             ->visibility('public')
                             ->imageResizeMode('cover')
-                            ->imageResizeTargetWidth(1600)
-                            ->imageResizeTargetHeight(700)
+                            ->imageResizeTargetWidth(1200)
+                            ->imageResizeTargetHeight(525)
+                            ->imageResizeUpscale(false)
                             ->acceptedFileTypes([
                                 'image/jpeg',
                                 'image/png',
                                 'image/webp',
                             ])
-                            ->maxSize(5120)
+                            ->maxSize(900)
                             ->maxParallelUploads(1)
                             ->openable()
                             ->downloadable()
@@ -86,7 +87,7 @@ class HomeBanners extends Page implements HasForms
 
                                 return Storage::disk('public')->exists($path) ? $path : null;
                             })
-                            ->helperText('JPG, PNG o WebP. Máximo 5 MB. Se sube de un archivo a la vez para mayor estabilidad.'),
+                            ->helperText('JPG, PNG o WebP. Máximo 900 KB. Se optimiza a 1200x525 y se sube de un archivo a la vez.'),
                         FileUpload::make('home_banner_2_image')
                             ->label('Banner 2')
                             ->image()
@@ -94,14 +95,15 @@ class HomeBanners extends Page implements HasForms
                             ->directory('branding/banners')
                             ->visibility('public')
                             ->imageResizeMode('cover')
-                            ->imageResizeTargetWidth(1600)
-                            ->imageResizeTargetHeight(700)
+                            ->imageResizeTargetWidth(1200)
+                            ->imageResizeTargetHeight(525)
+                            ->imageResizeUpscale(false)
                             ->acceptedFileTypes([
                                 'image/jpeg',
                                 'image/png',
                                 'image/webp',
                             ])
-                            ->maxSize(5120)
+                            ->maxSize(900)
                             ->maxParallelUploads(1)
                             ->openable()
                             ->downloadable()
@@ -131,14 +133,15 @@ class HomeBanners extends Page implements HasForms
                             ->directory('branding/banners')
                             ->visibility('public')
                             ->imageResizeMode('cover')
-                            ->imageResizeTargetWidth(1600)
-                            ->imageResizeTargetHeight(700)
+                            ->imageResizeTargetWidth(1200)
+                            ->imageResizeTargetHeight(525)
+                            ->imageResizeUpscale(false)
                             ->acceptedFileTypes([
                                 'image/jpeg',
                                 'image/png',
                                 'image/webp',
                             ])
-                            ->maxSize(5120)
+                            ->maxSize(900)
                             ->maxParallelUploads(1)
                             ->openable()
                             ->downloadable()
