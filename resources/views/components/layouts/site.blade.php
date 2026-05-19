@@ -42,6 +42,7 @@
         };
 
         $logoPath = $normalizeMediaPath($logoSourcePath);
+        $doctorName = \App\Models\Doctor::query()->where('is_active', true)->orderBy('sort_order')->value('name');
         $brandInitials = collect(preg_split('/\s+/', trim($clinicName)))
             ->filter()
             ->take(2)
@@ -61,7 +62,7 @@
                     @endif
                     <span class="brand-copy">
                         <strong>{{ $clinicName }}</strong>
-                        <small>Medicina estética avanzada</small>
+                        <small>{{ $doctorName ?: 'Medicina estética avanzada' }}</small>
                     </span>
                 </a>
 
