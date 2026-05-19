@@ -38,50 +38,53 @@ class SiteSettingResource extends Resource
                     'json' => 'JSON',
                     'image' => 'Imagen',
                 ])->required()->live(),
-                Forms\Components\FileUpload::make('value')
-                    ->label('Imagen')
-                    ->image()
-                    ->disk('public')
-                    ->directory('branding/banners')
-                    ->visibility('public')
-                    ->imageResizeMode('cover')
-                    ->imageResizeTargetWidth(1200)
-                    ->imageResizeTargetHeight(525)
-                    ->imageResizeUpscale(false)
-                    ->acceptedFileTypes([
-                        'image/jpeg',
-                        'image/png',
-                        'image/webp',
-                    ])
-                    ->maxSize(900)
-                    ->maxParallelUploads(1)
-                    ->openable()
-                    ->downloadable()
-                    ->saveUploadedFileUsing(function (Forms\Components\BaseFileUpload $component, TemporaryUploadedFile $file): ?string {
-                        $extension = $file->getClientOriginalExtension() ?: $file->guessExtension() ?: 'bin';
-                        $path = trim('branding/banners/' . Str::ulid() . '.' . $extension, '/');
-                        $stream = fopen($file->getRealPath(), 'r');
+                Forms\Components\Group::make()
+                    ->schema(fn (Get $get): array => $get('type') === 'image'
+                        ? [
+                            Forms\Components\FileUpload::make('value')
+                                ->label('Imagen')
+                                ->image()
+                                ->disk('public')
+                                ->directory('branding/banners')
+                                ->visibility('public')
+                                ->imageResizeMode('cover')
+                                ->imageResizeTargetWidth(1200)
+                                ->imageResizeTargetHeight(525)
+                                ->imageResizeUpscale(false)
+                                ->acceptedFileTypes([
+                                    'image/jpeg',
+                                    'image/png',
+                                    'image/webp',
+                                ])
+                                ->maxSize(900)
+                                ->maxParallelUploads(1)
+                                ->openable()
+                                ->downloadable()
+                                ->saveUploadedFileUsing(function (Forms\Components\BaseFileUpload $component, TemporaryUploadedFile $file): ?string {
+                                    $extension = $file->getClientOriginalExtension() ?: $file->guessExtension() ?: 'bin';
+                                    $path = trim('branding/banners/' . Str::ulid() . '.' . $extension, '/');
+                                    $stream = fopen($file->getRealPath(), 'r');
 
-                        if ($stream === false) {
-                            return null;
-                        }
+                                    if ($stream === false) {
+                                        return null;
+                                    }
 
-                        try {
-                            Storage::disk('public')->put($path, $stream, [
-                                'visibility' => 'public',
-                            ]);
-                        } finally {
-                            fclose($stream);
-                        }
+                                    try {
+                                        Storage::disk('public')->put($path, $stream, [
+                                            'visibility' => 'public',
+                                        ]);
+                                    } finally {
+                                        fclose($stream);
+                                    }
 
-                        return Storage::disk('public')->exists($path) ? $path : null;
-                    })
-                    ->columnSpanFull()
-                    ->visible(fn (Get $get): bool => $get('type') === 'image')
-                    ->helperText('JPG, PNG o WebP. Máximo 900 KB. Se optimiza a 1200x525 para evitar fallos de upload.'),
-                Forms\Components\Textarea::make('value')
-                    ->columnSpanFull()
-                    ->visible(fn (Get $get): bool => $get('type') !== 'image'),
+                                    return Storage::disk('public')->exists($path) ? $path : null;
+                                })
+                                ->helperText('JPG, PNG o WebP. Máximo 900 KB. Se optimiza a 1200x525 para evitar fallos de upload.'),
+                        ]
+                        : [
+                            Forms\Components\Textarea::make('value'),
+                        ])
+                    ->columnSpanFull(),
             ]);
     }
 
