@@ -54,15 +54,15 @@
             <div class="topbar-inner">
                 <a href="{{ route('home') }}" class="brand brand-lockup" aria-label="Ir al inicio de {{ $clinicName }}">
                     @if ($logoPath && $publicDisk->exists($logoPath))
-                        <span class="brand-logo-shell">
+                        <span class="brand-logo-shell premium-logo">
                             <img src="{{ $publicDisk->url($logoPath) }}" alt="Logo de {{ $clinicName }}" class="brand-logo-mark">
                         </span>
                     @else
-                        <span class="brand-monogram">{{ $brandInitials ?: 'CR' }}</span>
+                        <span class="brand-monogram premium-logo">{{ $brandInitials ?: 'CR' }}</span>
                     @endif
-                    <span class="brand-copy">
-                        <strong>{{ $clinicName }}</strong>
-                        <small>{{ $doctorName ?: 'Medicina estética avanzada' }}</small>
+                    <span class="brand-copy premium-copy">
+                        <span class="brand-clinic-name">{{ $clinicName }}</span>
+                        <span class="brand-doctor-name">{{ $doctorName ?: 'Medicina estética avanzada' }}</span>
                     </span>
                 </a>
 
@@ -86,9 +86,9 @@
             <div class="mobile-nav-panel" id="mobile-nav-panel" hidden>
                 <div class="mobile-nav-shell">
                     <div class="mobile-nav-head">
-                        <div class="mobile-nav-brand">
-                            <span>{{ $clinicName }}</span>
-                            <small>Navegación</small>
+                        <div class="mobile-nav-brand premium-mobile-brand">
+                            <span class="brand-clinic-name">{{ $clinicName }}</span>
+                            <span class="brand-doctor-name">{{ $doctorName ?: 'Medicina estética avanzada' }}</span>
                         </div>
                         <button type="button" class="mobile-nav-close" aria-label="Cerrar menú de navegación">×</button>
                     </div>
