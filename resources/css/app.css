@@ -461,8 +461,8 @@ a {
 
 .brand-logo-shell,
 .footer-logo-shell {
-    width: 46px;
-    height: 46px;
+    width: 50px;
+    height: 50px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -482,8 +482,8 @@ a {
 }
 
 .brand-monogram {
-    width: 52px;
-    height: 52px;
+    width: 56px;
+    height: 56px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1233,8 +1233,8 @@ button {
 
     .brand-logo-shell,
     .brand-monogram {
-        width: 46px;
-        height: 46px;
+        width: 50px;
+        height: 50px;
         border-radius: 12px;
     }
 
@@ -3237,8 +3237,8 @@ button {
 
     .brand-logo-shell,
     .brand-monogram {
-        width: 46px;
-        height: 46px;
+        width: 50px;
+        height: 50px;
         border-radius: 12px;
     }
 
@@ -3670,8 +3670,8 @@ button {
 
     .brand-logo-shell,
     .brand-monogram {
-        width: 40px;
-        height: 40px;
+        width: 46px;
+        height: 46px;
         border-radius: 12px;
     }
 
@@ -4324,8 +4324,8 @@ body.site-body:not(.landing-body) .brand-lockup {
 
 body.site-body:not(.landing-body) .brand-logo-shell,
 body.site-body:not(.landing-body) .brand-monogram {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     border-radius: 12px;
 }
 
