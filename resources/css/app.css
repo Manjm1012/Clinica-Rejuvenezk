@@ -4527,3 +4527,46 @@ body.site-body:not(.landing-body) .topbar-cta {
         max-height: 240px;
     }
 }
+
+/* Stronger topbar logo sizing so brand mark reads clearly in production */
+.topbar .brand-logo-shell,
+.topbar .brand-monogram {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+}
+
+.topbar .brand-logo-mark {
+    width: 118%;
+    height: 118%;
+    max-width: none;
+    max-height: none;
+}
+
+body.site-body:not(.landing-body) .topbar .brand-logo-shell,
+body.site-body:not(.landing-body) .topbar .brand-monogram {
+    width: 56px;
+    height: 56px;
+}
+
+@media (max-width: 980px) {
+    .topbar .brand-logo-shell,
+    .topbar .brand-monogram {
+        width: 54px;
+        height: 54px;
+        border-radius: 13px;
+    }
+}
+
+@media (max-width: 640px) {
+    .topbar .brand-logo-shell,
+    .topbar .brand-monogram {
+        width: 50px;
+        height: 50px;
+    }
+
+    .topbar .brand-logo-mark {
+        width: 114%;
+        height: 114%;
+    }
+}
