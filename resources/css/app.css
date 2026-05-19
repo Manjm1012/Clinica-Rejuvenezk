@@ -4429,6 +4429,46 @@ body.site-body:not(.landing-body) .topbar-cta {
     border: 1px solid rgba(198, 160, 98, 0.24);
 }
 
+/* Keep media fully contained inside service cards across breakpoints */
+.services-catalog-page .landing-service-card {
+    padding: 0 !important;
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.services-catalog-page .service-media {
+    width: 100%;
+    min-height: 0;
+    aspect-ratio: 16 / 10;
+    max-height: 260px;
+    overflow: hidden;
+    margin: 0;
+}
+
+.services-catalog-page .service-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.services-catalog-page .service-card-copy {
+    padding: 16px 18px 18px;
+}
+
+.services-catalog-page .service-card-copy h3 {
+    font-size: clamp(1.05rem, 1.35vw, 1.25rem);
+    line-height: 1.22;
+}
+
+.services-catalog-page .service-card-copy p {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
 /* Responsive polish: prevent oversized service media and mobile-like topbar on desktop-width tablets */
 @media (min-width: 641px) and (max-width: 980px) {
     .topbar-inner {
@@ -4475,7 +4515,7 @@ body.site-body:not(.landing-body) .topbar-cta {
     .services-catalog-page .service-media {
         aspect-ratio: 4 / 3;
         min-height: 0;
-        max-height: 260px;
+        max-height: 220px;
         margin-bottom: 0;
     }
 }
@@ -4484,6 +4524,6 @@ body.site-body:not(.landing-body) .topbar-cta {
     .services-catalog-page .service-media {
         aspect-ratio: 16 / 10;
         min-height: 0;
-        max-height: 280px;
+        max-height: 240px;
     }
 }
