@@ -1720,8 +1720,8 @@ a {
 
 .svc-card-media {
     width: 100%;
-    aspect-ratio: 4 / 3;
-    max-height: 220px;
+    aspect-ratio: 1 / 1;
+    max-height: 280px;
     overflow: hidden;
     flex-shrink: 0;
     display: grid;
@@ -2133,6 +2133,10 @@ a {
 }
 
 @media (max-width: 980px) {
+    .social-dock {
+        display: none;
+    }
+
     .hero,
     .contact-layout,
     .result-visual-band,
@@ -2231,7 +2235,8 @@ a {
     }
 
     .svc-card-media {
-        max-height: 190px;
+        aspect-ratio: 5 / 4;
+        max-height: 240px;
     }
 
     .svc-carousel-hint {
