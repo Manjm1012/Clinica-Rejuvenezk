@@ -866,8 +866,9 @@ a {
    ======================================== */
 .banners-carousel-wrap {
     --banner-media-height: clamp(310px, 37vw, 520px);
+    width: min(1180px, calc(100% - 32px));
+    margin: -8px auto 0;
     padding: 0;
-    margin-top: -8px;
     position: relative;
     z-index: 10;
     padding-bottom: 104px;
@@ -1083,20 +1084,19 @@ a {
 
     .banners-carousel-wrap {
         --banner-media-height: clamp(200px, 54vw, 320px);
-        padding-bottom: 0;
+        width: min(1180px, calc(100% - 24px));
+        margin: 0 auto;
+        padding-bottom: 152px;
     }
 
     .banners-carousel {
-        overflow: hidden;
+        overflow: visible;
         box-shadow: none;
-        border-radius: 0;
+        border-radius: 18px;
     }
 
     .banner-slide {
-        display: flex;
-        align-items: flex-end;
-        justify-content: flex-start;
-        padding: 16px;
+        padding: 0;
     }
 
     .banner-slide img {
@@ -1109,26 +1109,30 @@ a {
     }
 
     .banner-slide-overlay {
-        position: relative;
-        top: auto;
-        left: auto;
+        position: absolute;
+        top: calc(100% + 12px);
+        left: 12px;
+        right: 12px;
         transform: none;
-        width: min(680px, 100%);
-        color: #f7f2ea;
-        background: transparent;
-        border: 0;
-        border-radius: 0;
-        padding: 0;
-        box-shadow: none;
+        width: auto;
+        color: #2f2a2a;
+        background: linear-gradient(180deg, rgba(255, 253, 249, 0.98) 0%, rgba(251, 247, 240, 0.98) 100%);
+        border: 1px solid rgba(198, 160, 98, 0.3);
+        border-radius: 16px;
+        padding: 14px 16px;
+        box-shadow: 0 16px 32px rgba(35, 22, 22, 0.12);
+        gap: 8px;
     }
 
     .banner-slide-overlay span {
-        color: #f2e3c5;
+        color: #8f6e36;
     }
 
     .banner-slide-overlay p {
-        color: rgba(247, 242, 234, 0.92);
-        max-width: 56ch;
+        color: #5b5151;
+        max-width: none;
+        font-size: 0.95rem;
+        line-height: 1.58;
     }
 
     .banner-control {
@@ -1136,7 +1140,30 @@ a {
     }
 
     .banner-indicators {
-        bottom: 14px;
+        bottom: 12px;
+    }
+}
+
+@media (max-width: 640px) {
+    .banners-carousel-wrap {
+        width: min(1180px, calc(100% - 20px));
+        padding-bottom: 166px;
+    }
+
+    .banner-slide-overlay {
+        left: 10px;
+        right: 10px;
+        padding: 12px 14px;
+    }
+
+    .banner-slide-overlay strong {
+        font-size: clamp(1.2rem, 5.2vw, 1.5rem);
+        line-height: 1.16;
+    }
+
+    .banner-slide-overlay p {
+        font-size: 0.9rem;
+        line-height: 1.55;
     }
 }
 
