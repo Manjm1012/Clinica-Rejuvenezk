@@ -1727,7 +1727,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
+    padding: 18px 18px 14px 18px;
     box-sizing: border-box;
     background: linear-gradient(180deg, #f8f3ea 0%, #efe6da 100%);
     margin: 0;
@@ -1737,7 +1737,7 @@ a {
 /* Per-image-type handling for service card images */
 .svc-card-media.is-vertical {
     aspect-ratio: 3 / 4;
-    padding: 0;
+    padding: 22px 32px 18px 32px;
 }
 .svc-card-media.is-vertical img {
     object-fit: contain;
@@ -1751,7 +1751,7 @@ a {
 
 .svc-card-media.is-square {
     aspect-ratio: 1 / 1;
-    padding: 0;
+    padding: 18px 18px 14px 18px;
 }
 .svc-card-media.is-square img {
     object-fit: contain;
@@ -1765,7 +1765,7 @@ a {
 
 .svc-card-media.is-horizontal {
     aspect-ratio: 4 / 3;
-    padding: 0;
+    padding: 14px 10px 14px 10px;
 }
 .svc-card-media.is-horizontal img {
     object-fit: contain;
@@ -1786,6 +1786,11 @@ a {
     object-position: center;
     display: block;
     border-radius: 24px;
+    background: #f8f3ea;
+    box-shadow: none;
+    object-fit: contain;
+    object-position: center;
+    padding: 0;
     filter: saturate(1.02) contrast(0.98);
 }
 
