@@ -1720,16 +1720,17 @@ a {
 
 .svc-card-media {
     width: 100%;
-    aspect-ratio: 1 / 1;
-    max-height: 280px;
+    aspect-ratio: 3 / 2;
+    max-height: 220px;
     overflow: hidden;
     flex-shrink: 0;
     display: grid;
     place-items: center;
-    padding: 10px;
+    padding: 12px;
     box-sizing: border-box;
-    background: linear-gradient(180deg, #f3ece2 0%, #efe5d8 100%);
+    background: linear-gradient(180deg, #f5efe6 0%, #efe5d8 100%);
     margin: 0;
+    border-bottom: 1px solid rgba(201, 169, 110, 0.18);
 }
 
 .svc-card-media img {
@@ -1777,6 +1778,10 @@ a {
     color: #6f6061;
     font-size: 0.88rem;
     line-height: 1.72;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .svc-card-links {
@@ -2235,8 +2240,9 @@ a {
     }
 
     .svc-card-media {
-        aspect-ratio: 5 / 4;
-        max-height: 240px;
+        aspect-ratio: 4 / 3;
+        max-height: 210px;
+        padding: 10px;
     }
 
     .svc-carousel-hint {
