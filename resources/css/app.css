@@ -865,24 +865,24 @@ a {
    Banners Carousel
    ======================================== */
 .banners-carousel-wrap {
-    --banner-media-height: clamp(310px, 37vw, 520px);
+    --banner-media-height: clamp(300px, 34vw, 470px);
     width: min(1180px, calc(100% - 32px));
     margin: -8px auto 0;
     padding: 0;
     position: relative;
     z-index: 10;
-    padding-bottom: 104px;
-    overflow: clip;
+    padding-bottom: 0;
+    overflow: visible;
 }
 
 .banners-carousel {
     position: relative;
     width: 100%;
     height: var(--banner-media-height);
-    overflow: visible;
+    overflow: hidden;
     background: linear-gradient(135deg, #f5f0ea 0%, #f9f7f3 100%);
-    box-shadow: 0 26px 60px rgba(41, 29, 24, 0.14);
-    border-radius: 0 0 34px 34px;
+    box-shadow: 0 22px 50px rgba(41, 29, 24, 0.14);
+    border-radius: 22px;
 }
 
 .banners-carousel-inner {
@@ -954,19 +954,21 @@ a {
 
 .banner-slide-overlay {
     position: absolute;
-    top: calc(100% - 40px);
-    left: 50%;
-    transform: translateX(-50%);
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    transform: none;
     z-index: 3;
-    width: min(980px, calc(100% - 72px));
-    color: #2f2a2a;
+    width: min(760px, calc(100% - 40px));
+    color: #f8f4ee;
     display: grid;
     gap: 10px;
-    background: linear-gradient(180deg, rgba(255, 253, 249, 0.98) 0%, rgba(251, 247, 240, 0.98) 100%);
-    border: 1px solid rgba(198, 160, 98, 0.34);
-    border-radius: 22px;
-    padding: 24px 28px;
-    box-shadow: 0 20px 42px rgba(35, 22, 22, 0.14);
+    background: linear-gradient(180deg, rgba(26, 22, 20, 0.66) 0%, rgba(26, 22, 20, 0.52) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 18px;
+    padding: 16px 18px;
+    box-shadow: 0 14px 30px rgba(20, 14, 12, 0.24);
+    backdrop-filter: blur(12px);
 }
 
 .banner-slide-overlay span {
@@ -974,9 +976,9 @@ a {
     width: fit-content;
     padding: 6px 11px;
     border-radius: 999px;
-    background: rgba(201, 169, 110, 0.17);
-    border: 1px solid rgba(201, 169, 110, 0.4);
-    color: #8f6e36;
+    background: rgba(201, 169, 110, 0.2);
+    border: 1px solid rgba(201, 169, 110, 0.5);
+    color: #f2e1bc;
     font-size: 0.64rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -985,7 +987,7 @@ a {
 
 .banner-slide-overlay strong {
     font-family: var(--font-serif);
-    font-size: clamp(1.5rem, 1.9vw, 2.15rem);
+    font-size: clamp(1.35rem, 1.8vw, 1.95rem);
     line-height: 1.08;
     letter-spacing: 0.01em;
     font-weight: 600;
@@ -993,10 +995,10 @@ a {
 
 .banner-slide-overlay p {
     margin: 0;
-    max-width: 60ch;
-    color: #5b5151;
-    font-size: clamp(0.94rem, 1vw, 1.02rem);
-    line-height: 1.62;
+    max-width: 62ch;
+    color: rgba(248, 244, 238, 0.92);
+    font-size: clamp(0.9rem, 0.95vw, 0.98rem);
+    line-height: 1.54;
 }
 
 /* Controls: Prev/Next Buttons */
@@ -1037,7 +1039,7 @@ a {
 /* Indicators: Dots */
 .banner-indicators {
     position: absolute;
-    bottom: -40px;
+    bottom: 14px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -1122,6 +1124,7 @@ a {
         padding: 14px 16px;
         box-shadow: 0 16px 32px rgba(35, 22, 22, 0.12);
         gap: 8px;
+        backdrop-filter: none;
     }
 
     .banner-slide-overlay span {
@@ -1695,6 +1698,8 @@ a {
     flex-shrink: 0;
     display: grid;
     place-items: center;
+    padding: 10px;
+    box-sizing: border-box;
     background: linear-gradient(180deg, #f3ece2 0%, #efe5d8 100%);
     margin: 0;
 }
@@ -1702,6 +1707,8 @@ a {
 .svc-card-media img {
     width: 100%;
     height: 100%;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
     object-position: center;
     display: block;
