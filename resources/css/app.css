@@ -2468,6 +2468,7 @@ a {
 
 .about-story-visual {
     min-width: 0;
+    align-self: stretch;
 }
 
 .about-story-frame,
@@ -2481,8 +2482,9 @@ a {
 }
 
 .about-story-frame {
-    min-height: 380px;
-    max-height: 460px;
+    aspect-ratio: 4 / 5;
+    min-height: 0;
+    max-height: none;
 }
 
 .about-story-frame img,
@@ -2491,7 +2493,9 @@ a {
     height: 100%;
     display: block;
     object-fit: cover;
-    object-position: center 18%;
+    object-position: center 14%;
+    transform: scale(1.05);
+    transform-origin: center;
 }
 
 .about-profile-copy {
@@ -2540,10 +2544,6 @@ a {
     letter-spacing: 0.08em;
     text-transform: uppercase;
     font-weight: 700;
-}
-
-.about-story-actions {
-    margin-top: 4px;
 }
 
 .about-focus-actions {
@@ -2642,6 +2642,13 @@ a {
     line-height: 1.7;
 }
 
+.about-pillars-caption {
+    margin: 2px 0 2px;
+    color: #756766;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
 .about-credential-list {
     display: grid;
     gap: 8px;
@@ -2686,8 +2693,7 @@ a {
     }
 
     .about-story-frame {
-        min-height: 300px;
-        max-height: 360px;
+        aspect-ratio: 4 / 5;
     }
 
     .about-profile-copy {

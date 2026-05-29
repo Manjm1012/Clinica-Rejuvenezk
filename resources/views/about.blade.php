@@ -172,10 +172,6 @@
                         <strong>{{ $doctor?->name ?: $clinicName }}</strong>
                         <span>{{ $doctor?->specialty ?: 'Medicina estética facial y corporal' }}</span>
                     </div>
-                    <div class="hero-actions about-story-actions">
-                        <a href="{{ route('home') }}#contacto" class="btn btn-primary">Agendar valoración</a>
-                        <a href="{{ route('services.index') }}" class="btn btn-ghost">Ver tratamientos</a>
-                    </div>
                     <div class="about-focus-actions" aria-label="Accesos de misión y visión">
                         <button type="button" class="about-focus-btn is-active" data-target="mision" aria-controls="mision" aria-expanded="true">Misión</button>
                         <button type="button" class="about-focus-btn" data-target="vision" aria-controls="vision" aria-expanded="false">Visión</button>
@@ -189,8 +185,7 @@
                 <article class="about-content-card">
                     <p class="kicker">Nuestra esencia</p>
                     <h2 class="section-title">Ciencia, criterio y acompañamiento humano.</h2>
-                    <p class="section-intro about-intro">{{ $aboutLead }}</p>
-                    <p class="about-doctor-line">{{ $aboutDoctorLine }}</p>
+                    <p class="about-pillars-caption">Selecciona Misión o Visión para ver el enfoque institucional del centro.</p>
 
                     <div class="about-pillars" aria-label="Misión y visión de {{ $clinicName }}">
                         <article class="about-pillar is-open" id="mision">

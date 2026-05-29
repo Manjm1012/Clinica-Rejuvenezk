@@ -315,6 +315,9 @@ document.addEventListener('DOMContentLoaded', () => {
 			const targetId = button.dataset.target;
 			activate(targetId);
 			history.replaceState(null, '', `#${targetId}`);
+
+			const targetPanel = panelMap.get(targetId);
+			targetPanel?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 		});
 	});
 });
