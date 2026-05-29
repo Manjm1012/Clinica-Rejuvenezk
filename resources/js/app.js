@@ -275,3 +275,46 @@ document.addEventListener('DOMContentLoaded', () => {
 	updateSlide(0);
 	startAutoPlay();
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+	const toggles = Array.from(document.querySelectorAll('.about-focus-btn[data-target]'));
+	const panels = Array.from(document.querySelectorAll('.about-pillar[id]'));
+
+	if (!toggles.length || !panels.length) {
+		return;
+	}
+
+	const panelMap = new Map(panels.map((panel) => [panel.id, panel]));
+
+	const activate = (targetId) => {
+		if (!panelMap.has(targetId)) {
+			return;
+		}
+
+		toggles.forEach((button) => {
+			const isActive = button.dataset.target === targetId;
+			button.classList.toggle('is-active', isActive);
+			button.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+		});
+
+		panels.forEach((panel) => {
+			panel.classList.toggle('is-open', panel.id === targetId);
+		});
+	};
+
+	const initialHash = window.location.hash.replace('#', '').trim().toLowerCase();
+	if (initialHash && panelMap.has(initialHash)) {
+		activate(initialHash);
+	} else {
+		const defaultTarget = toggles.find((button) => button.classList.contains('is-active'))?.dataset.target || toggles[0].dataset.target;
+		activate(defaultTarget);
+	}
+
+	toggles.forEach((button) => {
+		button.addEventListener('click', () => {
+			const targetId = button.dataset.target;
+			activate(targetId);
+			history.replaceState(null, '', `#${targetId}`);
+		});
+	});
+});

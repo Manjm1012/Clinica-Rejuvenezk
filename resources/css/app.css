@@ -2576,6 +2576,13 @@ a {
     border-color: rgba(201, 169, 110, 0.58);
 }
 
+.about-focus-btn.is-active {
+    background: linear-gradient(135deg, #b89a5f 0%, #9c7d45 100%);
+    color: #fff8ee;
+    border-color: transparent;
+    box-shadow: 0 10px 24px rgba(156, 125, 69, 0.3);
+}
+
 .about-layout {
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
@@ -2599,10 +2606,28 @@ a {
 }
 
 .about-pillar {
+    display: none;
     padding: 16px 18px;
     border-radius: 18px;
     border: 1px solid rgba(201, 169, 110, 0.22);
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 243, 236, 0.9));
+}
+
+.about-pillar.is-open {
+    display: block;
+    animation: aboutPillarFade 0.24s ease;
+}
+
+@keyframes aboutPillarFade {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .about-pillar h3 {

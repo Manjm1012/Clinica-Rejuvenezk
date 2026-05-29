@@ -177,8 +177,8 @@
                         <a href="{{ route('services.index') }}" class="btn btn-ghost">Ver tratamientos</a>
                     </div>
                     <div class="about-focus-actions" aria-label="Accesos de misión y visión">
-                        <a href="#mision" class="about-focus-btn">Misión</a>
-                        <a href="#vision" class="about-focus-btn">Visión</a>
+                        <button type="button" class="about-focus-btn is-active" data-target="mision" aria-controls="mision" aria-expanded="true">Misión</button>
+                        <button type="button" class="about-focus-btn" data-target="vision" aria-controls="vision" aria-expanded="false">Visión</button>
                     </div>
                 </article>
             </div>
@@ -193,7 +193,7 @@
                     <p class="about-doctor-line">{{ $aboutDoctorLine }}</p>
 
                     <div class="about-pillars" aria-label="Misión y visión de {{ $clinicName }}">
-                        <article class="about-pillar" id="mision">
+                        <article class="about-pillar is-open" id="mision">
                             <h3>Misión</h3>
                             <p>{{ $aboutMission }}</p>
                         </article>
