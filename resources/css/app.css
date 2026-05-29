@@ -2469,24 +2469,28 @@ a {
 .about-story-visual {
     min-width: 0;
     align-self: center;
+    display: flex;
+    justify-content: center;
 }
 
 .about-story-frame,
 .about-media-fallback {
-    border-radius: 24px;
+    border-radius: 30px;
     overflow: hidden;
-    border: 1px solid rgba(201, 169, 110, 0.24);
-    box-shadow: 0 20px 48px rgba(35, 22, 22, 0.12);
-    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(201, 169, 110, 0.3);
+    box-shadow: 0 24px 56px rgba(35, 22, 22, 0.14);
+    background: linear-gradient(180deg, #f6efe3 0%, #efe4d4 100%);
     height: 100%;
 }
 
 .about-story-frame {
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 5 / 6;
     min-height: 0;
     max-height: none;
-    max-width: 340px;
+    width: min(100%, 390px);
+    max-width: 390px;
     margin: 0 auto;
+    padding: 10px;
 }
 
 .about-story-frame img,
@@ -2494,9 +2498,10 @@ a {
     width: 100%;
     height: 100%;
     display: block;
+    border-radius: 22px;
     object-fit: cover;
-    object-position: center 14%;
-    transform: scale(1.01);
+    object-position: center 18%;
+    transform: scale(1.14);
     transform-origin: center;
 }
 
@@ -2697,7 +2702,14 @@ a {
 
     .about-story-frame {
         aspect-ratio: 4 / 5;
-        max-width: min(80vw, 340px);
+        width: min(84vw, 360px);
+        max-width: 360px;
+        padding: 8px;
+    }
+
+    .about-story-frame img,
+    .about-media-image {
+        transform: scale(1.08);
     }
 
     .about-profile-copy {
