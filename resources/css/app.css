@@ -2453,3 +2453,232 @@ a {
         padding: 18px;
     }
 }
+
+.about-main {
+    position: relative;
+    z-index: 1;
+}
+
+.about-story-grid {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.52fr) minmax(0, 1fr);
+    gap: 26px;
+    align-items: stretch;
+}
+
+.about-story-visual {
+    min-width: 0;
+}
+
+.about-story-frame,
+.about-media-fallback {
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid rgba(201, 169, 110, 0.24);
+    box-shadow: 0 20px 48px rgba(35, 22, 22, 0.12);
+    background: rgba(255, 255, 255, 0.92);
+    height: 100%;
+}
+
+.about-story-frame {
+    min-height: 380px;
+    max-height: 460px;
+}
+
+.about-story-frame img,
+.about-media-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center 18%;
+}
+
+.about-profile-copy {
+    border-radius: 28px;
+    padding: 28px;
+    border: 1px solid rgba(201, 169, 110, 0.24);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(246, 241, 233, 0.95));
+    box-shadow: 0 18px 46px rgba(35, 22, 22, 0.1);
+    display: grid;
+    gap: 14px;
+}
+
+.about-profile-copy h1 {
+    margin: 6px 0 8px;
+    font-size: clamp(2rem, 3.4vw, 3.2rem);
+    line-height: 0.98;
+}
+
+.about-profile-copy .lead {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+.about-profile-copy .hero-editorial-note {
+    margin-top: 0;
+}
+
+.about-profile-meta {
+    display: grid;
+    gap: 3px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(201, 169, 110, 0.24);
+}
+
+.about-profile-meta strong {
+    font-size: 1.04rem;
+    color: #2f2a2a;
+}
+
+.about-profile-meta span {
+    font-size: 0.84rem;
+    color: #8f6e36;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.about-story-actions {
+    margin-top: 4px;
+}
+
+.about-focus-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding-top: 4px;
+}
+
+.about-focus-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 20px;
+    border-radius: 999px;
+    border: 1px solid rgba(201, 169, 110, 0.36);
+    background: rgba(255, 255, 255, 0.94);
+    color: #7f6536;
+    font-size: 0.84rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.about-focus-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(201, 169, 110, 0.18);
+    border-color: rgba(201, 169, 110, 0.58);
+}
+
+.about-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+    gap: 22px;
+    align-items: start;
+}
+
+.about-content-card,
+.about-credibility-card {
+    border-radius: 28px;
+    border: 1px solid rgba(201, 169, 110, 0.2);
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 18px 44px rgba(35, 22, 22, 0.08);
+    padding: 24px;
+}
+
+.about-pillars {
+    display: grid;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.about-pillar {
+    padding: 16px 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(201, 169, 110, 0.22);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 243, 236, 0.9));
+}
+
+.about-pillar h3 {
+    margin: 0 0 8px;
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+}
+
+.about-pillar p {
+    margin: 0;
+    color: #63595a;
+    line-height: 1.7;
+}
+
+.about-credential-list {
+    display: grid;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.about-credential-list span {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba(245, 239, 229, 0.85);
+    border: 1px solid rgba(201, 169, 110, 0.2);
+    font-size: 0.92rem;
+}
+
+.about-specialist-card {
+    margin-top: 14px;
+    padding: 14px;
+    border-radius: 14px;
+    background: rgba(39, 32, 28, 0.94);
+    color: #f6efe4;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.about-specialist-card strong {
+    display: block;
+    font-size: 1.02rem;
+}
+
+.about-specialist-card span {
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #dcc082;
+    font-weight: 700;
+}
+
+@media (max-width: 980px) {
+    .about-story-grid,
+    .about-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .about-story-frame {
+        min-height: 300px;
+        max-height: 360px;
+    }
+
+    .about-profile-copy {
+        padding: 22px;
+    }
+}
+
+@media (max-width: 640px) {
+    .about-profile-copy,
+    .about-content-card,
+    .about-credibility-card {
+        padding: 18px;
+        border-radius: 20px;
+    }
+
+    .about-focus-btn {
+        width: 100%;
+    }
+}

@@ -150,17 +150,6 @@
     <main class="about-main" id="quienes-somos">
         <section class="section container about-story-hero">
             <div class="about-story-grid reveal reveal-2">
-                <article class="about-story-copy">
-                    <p class="kicker">{{ $aboutKicker }}</p>
-                    <h1>{{ $aboutTitle }}</h1>
-                    <p class="lead">{{ $aboutLead }}</p>
-                    <p class="hero-editorial-note">{{ $aboutDoctorLine }}</p>
-                    <div class="hero-actions about-story-actions">
-                        <a href="{{ route('home') }}#contacto" class="btn btn-primary">Agendar valoración</a>
-                        <a href="{{ route('services.index') }}" class="btn btn-ghost">Ver tratamientos</a>
-                    </div>
-                </article>
-
                 <aside class="about-story-visual" aria-label="Imagen institucional de {{ $clinicName }}">
                     @if ($aboutImageUrl)
                         <figure class="about-media-frame about-story-frame">
@@ -173,6 +162,25 @@
                         </div>
                     @endif
                 </aside>
+
+                <article class="about-story-copy about-profile-copy">
+                    <p class="kicker">{{ $aboutKicker }}</p>
+                    <h1>{{ $aboutTitle }}</h1>
+                    <p class="lead">{{ $aboutLead }}</p>
+                    <p class="hero-editorial-note">{{ $aboutDoctorLine }}</p>
+                    <div class="about-profile-meta">
+                        <strong>{{ $doctor?->name ?: $clinicName }}</strong>
+                        <span>{{ $doctor?->specialty ?: 'Medicina estética facial y corporal' }}</span>
+                    </div>
+                    <div class="hero-actions about-story-actions">
+                        <a href="{{ route('home') }}#contacto" class="btn btn-primary">Agendar valoración</a>
+                        <a href="{{ route('services.index') }}" class="btn btn-ghost">Ver tratamientos</a>
+                    </div>
+                    <div class="about-focus-actions" aria-label="Accesos de misión y visión">
+                        <a href="#mision" class="about-focus-btn">Misión</a>
+                        <a href="#vision" class="about-focus-btn">Visión</a>
+                    </div>
+                </article>
             </div>
         </section>
 
@@ -185,11 +193,11 @@
                     <p class="about-doctor-line">{{ $aboutDoctorLine }}</p>
 
                     <div class="about-pillars" aria-label="Misión y visión de {{ $clinicName }}">
-                        <article class="about-pillar">
+                        <article class="about-pillar" id="mision">
                             <h3>Misión</h3>
                             <p>{{ $aboutMission }}</p>
                         </article>
-                        <article class="about-pillar">
+                        <article class="about-pillar" id="vision">
                             <h3>Visión</h3>
                             <p>{{ $aboutVision }}</p>
                         </article>
@@ -206,11 +214,6 @@
                     </div>
 
                     <div class="about-specialist-card">
-                        @if ($doctorPhotoUrl)
-                            <img src="{{ $doctorPhotoUrl }}" alt="Foto del doctor {{ $doctor?->name ?: $clinicName }}" loading="lazy">
-                        @elseif ($clinicLogoUrl)
-                            <img src="{{ $clinicLogoUrl }}" alt="Logo de {{ $clinicName }}" loading="lazy">
-                        @endif
                         <div>
                             <strong>{{ $doctor?->name ?: $clinicName }}</strong>
                             <span>{{ $doctor?->specialty ?: 'Medicina estética facial y corporal' }}</span>
