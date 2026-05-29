@@ -30,8 +30,16 @@
     --shadow: 0 22px 68px rgba(35, 31, 32, 0.1);
 }
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 html {
     scroll-behavior: smooth;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 body {
@@ -39,6 +47,15 @@ body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+img,
+video,
+canvas,
+svg {
+    max-width: 100%;
 }
 
 h1,
@@ -444,6 +461,7 @@ a {
     justify-content: space-between;
     gap: 20px;
     padding: 12px 24px;
+    min-width: 0;
 }
 
 .brand {
@@ -533,6 +551,7 @@ a {
     flex-direction: column;
     gap: 2px;
     justify-content: center;
+    min-width: 0;
 }
 .brand-clinic-name {
     font-family: var(--font-serif);
@@ -542,6 +561,9 @@ a {
     color: var(--text-primary);
     letter-spacing: 0.01em;
     text-shadow: 0 2px 8px rgba(198,160,98,0.08);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .brand-doctor-name {
     font-family: var(--font-sans);
@@ -677,6 +699,53 @@ a {
 .mobile-nav-overlay,
 .mobile-nav-panel {
     display: none;
+}
+
+.mobile-nav-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 38;
+    background: rgba(22, 18, 16, 0.42);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    transition: opacity 0.24s ease;
+}
+
+.mobile-nav-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(88vw, 360px);
+    z-index: 40;
+    background: linear-gradient(180deg, rgba(255, 252, 248, 0.99), rgba(250, 245, 236, 0.99));
+    border-left: 1px solid rgba(201, 169, 110, 0.26);
+    box-shadow: -22px 0 44px rgba(25, 20, 17, 0.2);
+    transform: translateX(100%);
+    transition: transform 0.28s ease;
+}
+
+.mobile-nav-overlay.is-open {
+    opacity: 1;
+}
+
+.mobile-nav-panel.is-open {
+    transform: translateX(0);
+}
+
+.mobile-nav-shell {
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 20px;
+    padding: 18px 16px 20px;
+}
+
+.mobile-nav-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
 }
 
 .mobile-nav-brand,
@@ -1173,6 +1242,31 @@ a {
     .banner-indicators {
         bottom: 12px;
     }
+
+    .hero-grid,
+    .split-section,
+    .contact-section,
+    .detail-hero {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .stats-grid,
+    .card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .testimonial-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .doctor-profile {
+        grid-template-columns: 1fr;
+    }
+
+    .doctor-photo {
+        max-width: 100%;
+    }
 }
 
 @media (max-width: 640px) {
@@ -1195,6 +1289,19 @@ a {
     .banner-slide-overlay p {
         font-size: 0.9rem;
         line-height: 1.55;
+    }
+
+    .stats-grid,
+    .card-grid,
+    .testimonial-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .site-shell,
+    .container,
+    .topbar,
+    .banners-carousel-wrap {
+        width: min(100%, calc(100% - 20px));
     }
 }
 
@@ -2262,6 +2369,32 @@ a {
 
     .svc-carousel {
         grid-auto-columns: minmax(300px, 62vw);
+    }
+
+    .mobile-nav-overlay,
+    .mobile-nav-panel {
+        display: block;
+    }
+}
+
+@media (max-width: 1240px) {
+    .brand-clinic-name {
+        font-size: clamp(1.5rem, 2.2vw, 2.05rem);
+    }
+
+    .brand-doctor-name {
+        font-size: clamp(0.8rem, 1vw, 1rem);
+        letter-spacing: 0.08em;
+    }
+
+    .topbar-inner {
+        gap: 12px;
+        padding: 10px 14px;
+    }
+
+    .nav-links {
+        gap: clamp(10px, 1.2vw, 16px);
+        font-size: 0.9rem;
     }
 }
 
