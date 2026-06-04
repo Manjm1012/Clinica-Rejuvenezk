@@ -313,20 +313,20 @@
         <div class="container topbar-inner">
             <a href="#inicio" class="brand brand-lockup" aria-label="Ir al inicio de {{ $clinicName }}">
                 @if ($clinicLogoUrl)
-                    <span class="brand-logo-shell">
+                    <span class="brand-logo-shell premium-logo">
                         <img src="{{ $clinicLogoUrl }}" alt="Logo de {{ $clinicName }}" class="brand-logo-mark">
                     </span>
                 @else
-                    <span class="brand-monogram">{{ $brandInitials ?: 'CR' }}</span>
+                    <span class="brand-monogram premium-logo">{{ $brandInitials ?: 'CR' }}</span>
                 @endif
-                <span class="brand-copy">
-                    <strong>{{ $clinicName }}</strong>
-                    <small>{{ $doctor?->name ?: 'Medicina estética facial y corporal' }}</small>
+                <span class="brand-copy premium-copy">
+                    <span class="brand-clinic-name">{{ $clinicName }}</span>
+                    <span class="brand-doctor-name">{{ $doctor?->name ?: 'Medicina estética avanzada' }}</span>
                 </span>
             </a>
             <nav class="nav-links" aria-label="Navegación principal">
                 <a href="{{ route('about') }}">Quiénes somos</a>
-                <a href="#servicios">Servicios</a>
+                <a href="{{ route('services.index') }}">Servicios</a>
                 <a href="#resultados">Resultados</a>
                 <a href="#contacto">Contacto</a>
             </nav>
@@ -342,9 +342,9 @@
         <div class="mobile-nav-panel" id="mobile-nav-panel" hidden>
             <div class="mobile-nav-shell">
                 <div class="mobile-nav-head">
-                    <div class="mobile-nav-brand">
-                        <span>{{ $clinicName }}</span>
-                        <small>Navegación</small>
+                    <div class="mobile-nav-brand premium-mobile-brand">
+                        <span class="brand-clinic-name">{{ $clinicName }}</span>
+                        <span class="brand-doctor-name">{{ $doctor?->name ?: 'Medicina estética avanzada' }}</span>
                     </div>
                     <button type="button" class="mobile-nav-close" aria-label="Cerrar menú de navegación">×</button>
                 </div>
