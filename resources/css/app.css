@@ -1182,14 +1182,14 @@ a {
     }
 
     .banners-carousel-wrap {
-        --banner-media-height: clamp(200px, 54vw, 320px);
+        --banner-media-height: clamp(240px, 56vw, 340px);
         width: min(1180px, calc(100% - 24px));
         margin: 0 auto;
-        padding-bottom: 190px;
+        padding-bottom: 0;
     }
 
     .banners-carousel {
-        overflow: visible;
+        overflow: hidden;
         box-shadow: none;
         border-radius: 18px;
     }
@@ -1209,30 +1209,31 @@ a {
 
     .banner-slide-overlay {
         position: absolute;
-        top: calc(100% + 12px);
+        top: auto;
+        bottom: 12px;
         left: 12px;
         right: 12px;
         transform: none;
         width: auto;
-        color: #2f2a2a;
-        background: linear-gradient(180deg, rgba(255, 253, 249, 0.98) 0%, rgba(251, 247, 240, 0.98) 100%);
-        border: 1px solid rgba(198, 160, 98, 0.3);
+        color: #f8f4ee;
+        background: linear-gradient(180deg, rgba(20, 16, 14, 0.72) 0%, rgba(20, 16, 14, 0.58) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.18);
         border-radius: 16px;
-        padding: 14px 16px;
-        box-shadow: 0 16px 32px rgba(35, 22, 22, 0.12);
-        gap: 8px;
-        backdrop-filter: none;
+        padding: 12px 14px;
+        box-shadow: 0 8px 20px rgba(10, 6, 4, 0.28);
+        gap: 6px;
+        backdrop-filter: blur(10px);
     }
 
     .banner-slide-overlay span {
-        color: #8f6e36;
+        color: #f2e1bc;
     }
 
     .banner-slide-overlay p {
-        color: #5b5151;
+        color: rgba(248, 244, 238, 0.9);
         max-width: none;
-        font-size: 0.95rem;
-        line-height: 1.58;
+        font-size: 0.88rem;
+        line-height: 1.5;
     }
 
     .banner-control {
@@ -1272,23 +1273,24 @@ a {
 @media (max-width: 640px) {
     .banners-carousel-wrap {
         width: min(1180px, calc(100% - 20px));
-        padding-bottom: 230px;
+        padding-bottom: 0;
     }
 
     .banner-slide-overlay {
         left: 10px;
         right: 10px;
-        padding: 12px 14px;
+        bottom: 10px;
+        padding: 10px 12px;
     }
 
     .banner-slide-overlay strong {
-        font-size: clamp(1.2rem, 5.2vw, 1.5rem);
-        line-height: 1.16;
+        font-size: clamp(1.1rem, 5.2vw, 1.4rem);
+        line-height: 1.18;
     }
 
     .banner-slide-overlay p {
-        font-size: 0.9rem;
-        line-height: 1.55;
+        font-size: 0.84rem;
+        line-height: 1.5;
     }
 
     .stats-grid,
@@ -1306,12 +1308,12 @@ a {
 }
 
 @media (max-width: 420px) {
-    .banners-carousel-wrap {
-        padding-bottom: 270px;
+    .banner-slide-overlay strong {
+        font-size: clamp(1rem, 5vw, 1.2rem);
     }
 
-    .banner-slide-overlay strong {
-        font-size: clamp(1.1rem, 5vw, 1.3rem);
+    .banner-slide-overlay p {
+        font-size: 0.8rem;
     }
 }
 
