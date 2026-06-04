@@ -1182,7 +1182,7 @@ a {
     }
 
     .banners-carousel-wrap {
-        --banner-media-height: clamp(240px, 56vw, 340px);
+        --banner-media-height: clamp(300px, 65vw, 420px);
         width: min(1180px, calc(100% - 24px));
         margin: 0 auto;
         padding-bottom: 0;
@@ -1219,21 +1219,18 @@ a {
         background: linear-gradient(180deg, rgba(20, 16, 14, 0.72) 0%, rgba(20, 16, 14, 0.58) 100%);
         border: 1px solid rgba(255, 255, 255, 0.18);
         border-radius: 16px;
-        padding: 12px 14px;
+        padding: 10px 14px;
         box-shadow: 0 8px 20px rgba(10, 6, 4, 0.28);
-        gap: 6px;
+        gap: 5px;
         backdrop-filter: blur(10px);
+    }
+
+    .banner-slide-overlay p {
+        display: none;
     }
 
     .banner-slide-overlay span {
         color: #f2e1bc;
-    }
-
-    .banner-slide-overlay p {
-        color: rgba(248, 244, 238, 0.9);
-        max-width: none;
-        font-size: 0.88rem;
-        line-height: 1.5;
     }
 
     .banner-control {
@@ -1280,17 +1277,12 @@ a {
         left: 10px;
         right: 10px;
         bottom: 10px;
-        padding: 10px 12px;
+        padding: 8px 12px;
     }
 
     .banner-slide-overlay strong {
-        font-size: clamp(1.1rem, 5.2vw, 1.4rem);
-        line-height: 1.18;
-    }
-
-    .banner-slide-overlay p {
-        font-size: 0.84rem;
-        line-height: 1.5;
+        font-size: clamp(1.05rem, 5vw, 1.3rem);
+        line-height: 1.2;
     }
 
     .stats-grid,
@@ -1310,10 +1302,6 @@ a {
 @media (max-width: 420px) {
     .banner-slide-overlay strong {
         font-size: clamp(1rem, 5vw, 1.2rem);
-    }
-
-    .banner-slide-overlay p {
-        font-size: 0.8rem;
     }
 }
 
