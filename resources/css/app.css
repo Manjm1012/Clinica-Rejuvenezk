@@ -1185,7 +1185,7 @@ a {
         --banner-media-height: clamp(200px, 54vw, 320px);
         width: min(1180px, calc(100% - 24px));
         margin: 0 auto;
-        padding-bottom: 152px;
+        padding-bottom: 190px;
     }
 
     .banners-carousel {
@@ -1272,7 +1272,7 @@ a {
 @media (max-width: 640px) {
     .banners-carousel-wrap {
         width: min(1180px, calc(100% - 20px));
-        padding-bottom: 166px;
+        padding-bottom: 230px;
     }
 
     .banner-slide-overlay {
@@ -1302,6 +1302,16 @@ a {
     .topbar,
     .banners-carousel-wrap {
         width: min(100%, calc(100% - 20px));
+    }
+}
+
+@media (max-width: 420px) {
+    .banners-carousel-wrap {
+        padding-bottom: 270px;
+    }
+
+    .banner-slide-overlay strong {
+        font-size: clamp(1.1rem, 5vw, 1.3rem);
     }
 }
 
