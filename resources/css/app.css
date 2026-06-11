@@ -448,13 +448,13 @@ a {
 .topbar {
     position: sticky;
     top: 10px;
-    z-index: 20;
+    z-index: 80;
     margin: 12px auto 0;
     width: min(1180px, calc(100% - 32px));
     border-radius: 16px;
-    background: rgba(250, 246, 240, 0.97);
-    border: 1px solid rgba(198, 160, 98, 0.3);
-    box-shadow: 0 4px 20px rgba(35, 22, 22, 0.08), 0 1px 0 rgba(198, 160, 98, 0.15);
+    background: linear-gradient(180deg, #fffdf9 0%, #f6ecdf 100%);
+    border: 1px solid rgba(198, 160, 98, 0.34);
+    box-shadow: 0 14px 34px rgba(35, 22, 22, 0.14), 0 1px 0 rgba(198, 160, 98, 0.18);
     backdrop-filter: blur(20px);
 }
 
@@ -731,7 +731,7 @@ a {
     bottom: 0;
     width: min(88vw, 360px);
     z-index: 60;
-    background: linear-gradient(180deg, #fffdfa 0%, #f7efe3 100%);
+    background: #fbf3e7;
     border-left: 1px solid rgba(201, 169, 110, 0.36);
     box-shadow: -24px 0 50px rgba(25, 20, 17, 0.24);
     transform: translateX(100%);
@@ -1909,62 +1909,53 @@ a {
 
 .svc-card-media {
     width: 100%;
-    aspect-ratio: 3 / 4;
-    min-height: 210px;
-    max-height: 290px;
+    aspect-ratio: 4 / 5;
+    min-height: 240px;
+    max-height: 340px;
     overflow: hidden;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 14px;
+    padding: 0;
     box-sizing: border-box;
-    background: linear-gradient(180deg, #f8f3ea 0%, #efe6da 100%);
+    background: linear-gradient(180deg, #f2e9dc 0%, #e7d9c5 100%);
     margin: 0;
     border-bottom: 1px solid rgba(201, 169, 110, 0.18);
 }
 
 /* Per-image-type handling for service card images */
 .svc-card-media.is-vertical {
-    aspect-ratio: 3 / 4;
-    padding: 22px 32px 18px 32px;
+    aspect-ratio: 4 / 5;
+    padding: 0;
 }
 .svc-card-media.is-vertical img {
-    object-fit: contain;
-    object-position: center top;
-    width: 80%;
+    object-fit: cover;
+    object-position: center 20%;
+    width: 100%;
     height: 100%;
-    max-width: 100%;
-    max-height: 100%;
-    margin: 0 auto;
 }
 
 .svc-card-media.is-square {
-    aspect-ratio: 1 / 1;
-    padding: 18px 18px 14px 18px;
+    aspect-ratio: 4 / 5;
+    padding: 0;
 }
 .svc-card-media.is-square img {
-    object-fit: contain;
+    object-fit: cover;
     object-position: center center;
-    width: 90%;
-    height: 90%;
-    max-width: 100%;
-    max-height: 100%;
-    margin: 0 auto;
+    width: 100%;
+    height: 100%;
 }
 
 .svc-card-media.is-horizontal {
-    aspect-ratio: 4 / 3;
-    padding: 14px 10px 14px 10px;
+    aspect-ratio: 4 / 5;
+    padding: 0;
 }
 .svc-card-media.is-horizontal img {
-    object-fit: contain;
-    object-position: center center;
+    object-fit: cover;
+    object-position: center 22%;
     width: 100%;
-    height: 80%;
-    max-width: 100%;
-    max-height: 100%;
-    margin: 0 auto;
+    height: 100%;
 }
 
 .svc-card-media img {
@@ -1972,14 +1963,19 @@ a {
     height: 100%;
     max-width: 100%;
     max-height: 100%;
-    object-fit: contain;
-    object-position: center;
+    object-fit: cover;
+    object-position: center 18%;
     display: block;
-    border-radius: 18px;
-    background: #f8f3ea;
+    border-radius: 0;
+    background: #efe4d3;
     box-shadow: none;
     padding: 0;
     filter: saturate(1.02) contrast(0.98);
+    transition: transform 0.35s ease;
+}
+
+.svc-card:hover .svc-card-media img {
+    transform: scale(1.04);
 }
 
 .svc-card-media-empty {
@@ -2505,10 +2501,10 @@ a {
     }
 
     .svc-card-media {
-        aspect-ratio: 3 / 4;
-        min-height: 180px;
-        max-height: 220px;
-        padding: 8px;
+        aspect-ratio: 4 / 5;
+        min-height: 210px;
+        max-height: 270px;
+        padding: 0;
     }
 
     .svc-carousel-hint {
@@ -2866,23 +2862,28 @@ a {
     margin: 0;
     width: 100%;
     aspect-ratio: 4 / 5;
-    min-height: 220px;
-    max-height: 300px;
-    background: linear-gradient(180deg, #f8f2e8 0%, #ede2d4 100%);
+    min-height: 240px;
+    max-height: 340px;
+    background: linear-gradient(180deg, #f2e8d8 0%, #e7d8c3 100%);
     border-bottom: 1px solid rgba(201, 169, 110, 0.2);
     overflow: hidden;
     display: grid;
     place-items: center;
-    padding: 12px;
+    padding: 0;
 }
 
 .service-media img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    object-position: center;
+    object-fit: cover;
+    object-position: center 18%;
     display: block;
-    border-radius: 16px;
+    border-radius: 0;
+    transition: transform 0.35s ease;
+}
+
+.landing-service-card:hover .service-media img {
+    transform: scale(1.035);
 }
 
 .service-media-empty span {
@@ -2950,7 +2951,8 @@ a {
 
     .service-media {
         aspect-ratio: 3 / 4;
-        min-height: 200px;
+        min-height: 220px;
+        max-height: 300px;
     }
 
     .services-catalog-head {
@@ -2970,9 +2972,9 @@ a {
 
     .service-media {
         aspect-ratio: 4 / 5;
-        min-height: 190px;
-        max-height: 240px;
-        padding: 10px;
+        min-height: 210px;
+        max-height: 270px;
+        padding: 0;
     }
 
     .service-card-copy p {
