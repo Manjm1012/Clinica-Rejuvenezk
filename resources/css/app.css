@@ -118,7 +118,10 @@ a {
     border-radius: 22px;
     position: sticky;
     top: 14px;
-    z-index: 10;
+    z-index: 50;
+    background: linear-gradient(180deg, rgba(255, 254, 251, 0.98), rgba(248, 242, 233, 0.96));
+    border-color: rgba(201, 169, 110, 0.28);
+    box-shadow: 0 18px 42px rgba(35, 22, 22, 0.12);
 }
 
 .brand-mark {
@@ -657,6 +660,7 @@ a {
     height: auto;
     width: auto;
     position: relative;
+    touch-action: manipulation;
 }
 
 .nav-toggle:hover {
@@ -707,14 +711,15 @@ a {
 .mobile-nav-overlay,
 .mobile-nav-panel {
     display: none;
+    pointer-events: none;
 }
 
 .mobile-nav-overlay {
     position: fixed;
     inset: 0;
-    z-index: 38;
-    background: rgba(22, 18, 16, 0.42);
-    backdrop-filter: blur(2px);
+    z-index: 55;
+    background: rgba(20, 16, 14, 0.54);
+    backdrop-filter: blur(3px);
     opacity: 0;
     transition: opacity 0.24s ease;
 }
@@ -725,20 +730,22 @@ a {
     right: 0;
     bottom: 0;
     width: min(88vw, 360px);
-    z-index: 40;
-    background: linear-gradient(180deg, rgba(255, 252, 248, 0.99), rgba(250, 245, 236, 0.99));
-    border-left: 1px solid rgba(201, 169, 110, 0.26);
-    box-shadow: -22px 0 44px rgba(25, 20, 17, 0.2);
+    z-index: 60;
+    background: linear-gradient(180deg, #fffdfa 0%, #f7efe3 100%);
+    border-left: 1px solid rgba(201, 169, 110, 0.36);
+    box-shadow: -24px 0 50px rgba(25, 20, 17, 0.24);
     transform: translateX(100%);
     transition: transform 0.28s ease;
 }
 
 .mobile-nav-overlay.is-open {
     opacity: 1;
+    pointer-events: auto;
 }
 
 .mobile-nav-panel.is-open {
     transform: translateX(0);
+    pointer-events: auto;
 }
 
 .mobile-nav-shell {
@@ -1209,6 +1216,7 @@ a {
     .topbar {
         top: 8px;
         border-radius: 16px;
+        background: linear-gradient(180deg, rgba(255, 253, 249, 0.99), rgba(246, 238, 227, 0.98));
     }
 
     .topbar-inner {
@@ -1229,6 +1237,13 @@ a {
     .nav-toggle {
         display: inline-flex;
         min-height: 40px;
+        background: rgba(255, 255, 255, 0.84);
+        border-color: rgba(201, 169, 110, 0.55);
+    }
+
+    .mobile-nav-overlay,
+    .mobile-nav-panel {
+        display: block;
     }
 
     .mobile-nav-panel {
@@ -1330,6 +1345,11 @@ a {
 
     .mobile-nav-panel {
         width: min(92vw, 360px);
+    }
+
+    .mobile-nav-shell {
+        padding: 16px 14px 18px;
+        gap: 16px;
     }
 
     .banners-carousel-wrap {
