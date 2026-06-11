@@ -51,24 +51,24 @@
     @endphp
     <div class="site-shell">
         <header class="topbar">
-            <div class="topbar-inner">
-                <a href="{{ route('home') }}" class="brand brand-lockup" aria-label="Ir al inicio de {{ $clinicName }}">
+            <div class="container topbar-inner">
+                <a href="{{ route('home') }}#inicio" class="brand brand-lockup" aria-label="Ir al inicio de {{ $clinicName }}">
                     @if ($logoPath && $publicDisk->exists($logoPath))
-                        <span class="brand-logo-shell premium-logo">
+                        <span class="brand-logo-shell">
                             <img src="{{ $publicDisk->url($logoPath) }}" alt="Logo de {{ $clinicName }}" class="brand-logo-mark">
                         </span>
                     @else
-                        <span class="brand-monogram premium-logo">{{ $brandInitials ?: 'CR' }}</span>
+                        <span class="brand-monogram">{{ $brandInitials ?: 'CR' }}</span>
                     @endif
-                    <span class="brand-copy premium-copy">
+                    <span class="brand-copy">
                         <span class="brand-clinic-name">{{ $clinicName }}</span>
                         <span class="brand-doctor-name">{{ $doctorName ?: 'Medicina estética avanzada' }}</span>
                     </span>
                 </a>
 
                 <nav class="nav-links" aria-label="Navegación principal">
-                    <a href="{{ route('services.index') }}" class="{{ request()->routeIs('services.*') ? 'is-active' : '' }}">Procedimientos</a>
-                    <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'is-active' : '' }}">Especialista</a>
+                    <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'is-active' : '' }}">Quiénes somos</a>
+                    <a href="{{ route('services.index') }}" class="{{ request()->routeIs('services.*') ? 'is-active' : '' }}">Servicios</a>
                     <a href="{{ route('home') }}#resultados">Resultados</a>
                     <a href="{{ route('home') }}#contacto">Contacto</a>
                 </nav>
@@ -86,16 +86,16 @@
             <div class="mobile-nav-panel" id="mobile-nav-panel" hidden>
                 <div class="mobile-nav-shell">
                     <div class="mobile-nav-head">
-                        <div class="mobile-nav-brand premium-mobile-brand">
-                            <span class="brand-clinic-name">{{ $clinicName }}</span>
-                            <span class="brand-doctor-name">{{ $doctorName ?: 'Medicina estética avanzada' }}</span>
+                        <div class="mobile-nav-brand">
+                            <span>{{ $clinicName }}</span>
+                            <small>Navegación</small>
                         </div>
                         <button type="button" class="mobile-nav-close" aria-label="Cerrar menú de navegación">×</button>
                     </div>
                     <nav class="mobile-nav-links" aria-label="Navegación móvil">
-                        <a href="{{ route('home') }}">Inicio</a>
-                        <a href="{{ route('services.index') }}">Procedimientos</a>
-                        <a href="{{ route('about') }}">Especialista</a>
+                        <a href="{{ route('home') }}#inicio" class="{{ request()->routeIs('home') ? 'is-active' : '' }}">Inicio</a>
+                        <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'is-active' : '' }}">Quiénes somos</a>
+                        <a href="{{ route('services.index') }}" class="{{ request()->routeIs('services.*') ? 'is-active' : '' }}">Servicios</a>
                         <a href="{{ route('home') }}#resultados">Resultados</a>
                         <a href="{{ route('home') }}#contacto">Contacto</a>
                     </nav>

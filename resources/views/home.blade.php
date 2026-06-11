@@ -325,10 +325,10 @@
                 </span>
             </a>
             <nav class="nav-links" aria-label="Navegación principal">
-                <a href="{{ route('about') }}">Quiénes somos</a>
-                <a href="#servicios">Servicios</a>
-                <a href="#resultados">Resultados</a>
-                <a href="#contacto">Contacto</a>
+                <a href="{{ route('about') }}" data-nav-external="about">Quiénes somos</a>
+                <a href="#servicios" class="is-active" data-nav-section="servicios">Servicios</a>
+                <a href="#resultados" data-nav-section="resultados">Resultados</a>
+                <a href="#contacto" data-nav-section="contacto">Contacto</a>
             </nav>
             <div class="topbar-actions">
                 <a href="{{ $whatsappUrl }}" class="btn btn-outline topbar-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
@@ -349,11 +349,11 @@
                     <button type="button" class="mobile-nav-close" aria-label="Cerrar menú de navegación">×</button>
                 </div>
                 <nav class="mobile-nav-links" aria-label="Navegación móvil">
-                    <a href="#inicio">Inicio</a>
-                    <a href="{{ route('about') }}">Quiénes somos</a>
-                    <a href="#servicios">Servicios</a>
-                    <a href="#resultados">Resultados</a>
-                    <a href="#contacto">Contacto</a>
+                    <a href="#inicio" data-nav-section="inicio">Inicio</a>
+                    <a href="{{ route('about') }}" data-nav-external="about">Quiénes somos</a>
+                    <a href="#servicios" class="is-active" data-nav-section="servicios">Servicios</a>
+                    <a href="#resultados" data-nav-section="resultados">Resultados</a>
+                    <a href="#contacto" data-nav-section="contacto">Contacto</a>
                 </nav>
                 <a href="{{ $whatsappUrl }}" class="btn btn-primary mobile-nav-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
             </div>

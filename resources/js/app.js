@@ -162,6 +162,118 @@ document.addEventListener('DOMContentLoaded', () => {
 	closeMenu();
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+	const sectionLinks = Array.from(document.querySelectorAll('.nav-links a[data-nav-section], .mobile-nav-links a[data-nav-section]'));
+	const aboutLinks = Array.from(document.querySelectorAll('.nav-links a[data-nav-external="about"], .mobile-nav-links a[data-nav-external="about"]'));
+
+	if (!sectionLinks.length) {
+		return;
+	}
+
+	const sections = sectionLinks
+		.map((link) => link.dataset.navSection)
+		.filter(Boolean)
+		.filter((value, index, all) => all.indexOf(value) === index)
+		.map((id) => document.getElementById(id))
+		.filter(Boolean);
+
+	if (!sections.length) {
+		return;
+	}
+
+	const setAboutActive = () => {
+		sectionLinks.forEach((link) => {
+			link.classList.remove('is-active');
+			link.setAttribute('aria-current', 'false');
+		});
+
+		aboutLinks.forEach((link) => {
+			link.classList.add('is-active');
+			link.setAttribute('aria-current', 'true');
+		});
+	};
+
+	const setActiveSection = (id) => {
+		aboutLinks.forEach((link) => {
+			link.classList.remove('is-active');
+			link.setAttribute('aria-current', 'false');
+		});
+
+		sectionLinks.forEach((link) => {
+			const isActive = link.dataset.navSection === id;
+			link.classList.toggle('is-active', isActive);
+			link.setAttribute('aria-current', isActive ? 'true' : 'false');
+		});
+	};
+
+	const observer = new IntersectionObserver((entries) => {
+		const visible = entries
+			.filter((entry) => entry.isIntersecting)
+			.sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+		if (!visible?.target?.id) {
+			return;
+		}
+
+		setActiveSection(visible.target.id);
+	}, {
+		root: null,
+		threshold: [0.2, 0.4, 0.6],
+		rootMargin: '-30% 0px -45% 0px',
+	});
+
+	sections.forEach((section) => observer.observe(section));
+
+	const applyStateFromHash = () => {
+		const hashId = window.location.hash.replace('#', '');
+		if (!hashId) {
+			return false;
+		}
+
+		const hasMatchingSection = sections.some((section) => section.id === hashId);
+		if (!hasMatchingSection) {
+			return false;
+		}
+
+		setActiveSection(hashId);
+		return true;
+	};
+
+	sectionLinks.forEach((link) => {
+		link.addEventListener('click', () => {
+			if (link.dataset.navSection) {
+				setActiveSection(link.dataset.navSection);
+			}
+		});
+	});
+
+	aboutLinks.forEach((link) => {
+		link.addEventListener('click', () => {
+			sessionStorage.setItem('navReturnFromAbout', '1');
+		});
+	});
+
+	window.addEventListener('hashchange', () => {
+		if (applyStateFromHash()) {
+			return;
+		}
+
+		const fallback = sections.find((section) => section.id === 'servicios') ?? sections[0];
+		setActiveSection(fallback.id);
+	});
+
+	const defaultActive = sections.find((section) => section.id === 'servicios') ?? sections[0];
+	const cameFromAbout = document.referrer.includes('/about') || sessionStorage.getItem('navReturnFromAbout') === '1';
+
+	if (!applyStateFromHash() && cameFromAbout) {
+		setAboutActive();
+		sessionStorage.removeItem('navReturnFromAbout');
+		return;
+	}
+
+	setActiveSection(defaultActive.id);
+});
+
 // Services catalog deep-link support via query string (e.g. /servicios?categoria=corporal)
 document.addEventListener('DOMContentLoaded', () => {
 	if (!window.location.pathname.includes('/servicios')) {

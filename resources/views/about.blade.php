@@ -113,9 +113,9 @@
                 </span>
             </a>
             <nav class="nav-links" aria-label="Navegación principal">
-                <a href="{{ route('home') }}">Inicio</a>
                 <a href="{{ route('about') }}" class="is-active">Quiénes somos</a>
                 <a href="{{ route('services.index') }}">Servicios</a>
+                <a href="{{ route('home') }}#resultados">Resultados</a>
                 <a href="{{ route('home') }}#contacto">Contacto</a>
             </nav>
             <div class="topbar-actions">
@@ -137,9 +137,10 @@
                     <button type="button" class="mobile-nav-close" aria-label="Cerrar menú de navegación">×</button>
                 </div>
                 <nav class="mobile-nav-links" aria-label="Navegación móvil">
-                    <a href="{{ route('home') }}">Inicio</a>
-                    <a href="{{ route('about') }}">Quiénes somos</a>
+                    <a href="{{ route('home') }}#inicio">Inicio</a>
+                    <a href="{{ route('about') }}" class="is-active">Quiénes somos</a>
                     <a href="{{ route('services.index') }}">Servicios</a>
+                    <a href="{{ route('home') }}#resultados">Resultados</a>
                     <a href="{{ route('home') }}#contacto">Contacto</a>
                 </nav>
                 <a href="{{ $whatsappUrl }}" class="btn btn-primary mobile-nav-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
