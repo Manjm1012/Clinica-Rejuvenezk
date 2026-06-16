@@ -1,23 +1,78 @@
+@php
+    $clinicName = $settings['clinic_name'] ?? 'Clinica Rejuvenezk';
+    $doctorLine = $settings['doctor_name'] ?? 'Medicina estetica facial y corporal';
+    $topbarCtaLabel = $settings['topbar_cta_label'] ?? 'Agenda ahora';
+    $whatsappRawUrl = trim((string) ($settings['whatsapp_url'] ?? ''));
+    $whatsappDigits = preg_replace('/[^0-9]/', '', $settings['whatsapp_number'] ?? '');
+    $hasWhatsappLink = $whatsappRawUrl !== '' || $whatsappDigits !== '';
+    $whatsappUrl = $whatsappRawUrl !== ''
+        ? $whatsappRawUrl
+        : ($whatsappDigits ? 'https://wa.me/' . $whatsappDigits : route('home') . '#contacto');
+    $brandInitials = collect(preg_split('/\s+/', trim($clinicName)))
+        ->filter()
+        ->take(2)
+        ->map(fn ($segment) => strtoupper(substr($segment, 0, 1)))
+        ->implode('');
+@endphp
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $title ?? ($settings['clinic_name'] ?? 'Clínica Rejuvenezk') }}</title>
+    <title>{{ $title ?? $clinicName }}</title>
     <meta name="description" content="Plataforma web comercializable para clínica estética con CRM y WhatsApp integrados.">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="site-body">
     <div class="site-shell">
-        <header class="topbar">
-            <a href="{{ route('home') }}" class="brand-mark">{{ $settings['clinic_name'] ?? 'Clínica Rejuvenezk' }}</a>
-            <nav class="topnav">
-                <a href="#procedimientos">Procedimientos</a>
-                <a href="#doctor">Especialista</a>
-                <a href="#testimonios">Testimonios</a>
-                <a href="#contacto">Contacto</a>
-                <a href="{{ !empty($settings['whatsapp_url']) ? $settings['whatsapp_url'] : ('https://wa.me/' . preg_replace('/[^0-9]/', '', $settings['whatsapp_number'] ?? '')) }}" class="cta-nav" target="_blank" rel="noreferrer">WhatsApp</a>
-            </nav>
+        <header class="topbar reveal reveal-1">
+            <div class="container topbar-inner">
+                <a href="{{ route('home') }}" class="brand brand-lockup" aria-label="Ir al inicio de {{ $clinicName }}">
+                    <span class="brand-monogram">{{ $brandInitials ?: 'CR' }}</span>
+                    <span class="brand-copy">
+                        <strong>{{ $clinicName }}</strong>
+                        <small>{{ $doctorLine }}</small>
+                    </span>
+                </a>
+
+                <nav class="nav-links" aria-label="Navegacion principal">
+                    <a href="{{ route('home') }}#inicio">Inicio</a>
+                    <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'is-active' : '' }}">Quienes somos</a>
+                    <a href="{{ route('services.index') }}" class="{{ request()->routeIs('services.*') ? 'is-active' : '' }}">Servicios</a>
+                    <a href="{{ route('home') }}#resultados">Resultados</a>
+                    <a href="{{ route('home') }}#contacto">Contacto</a>
+                </nav>
+
+                <div class="topbar-actions">
+                    <a href="{{ $whatsappUrl }}" class="btn btn-outline topbar-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
+                    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav-panel" aria-label="Abrir menu de navegacion">
+                        <span class="nav-toggle-icon"><span></span><span></span><span></span></span>
+                        <span class="nav-toggle-label">Menu</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="mobile-nav-overlay" hidden></div>
+            <div class="mobile-nav-panel" id="mobile-nav-panel" hidden>
+                <div class="mobile-nav-shell">
+                    <div class="mobile-nav-head">
+                        <div class="mobile-nav-brand">
+                            <span>{{ $clinicName }}</span>
+                            <small>Navegacion</small>
+                        </div>
+                        <button type="button" class="mobile-nav-close" aria-label="Cerrar menu de navegacion">&times;</button>
+                    </div>
+                    <nav class="mobile-nav-links" aria-label="Navegacion movil">
+                        <a href="{{ route('home') }}#inicio">Inicio</a>
+                        <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'is-active' : '' }}">Quienes somos</a>
+                        <a href="{{ route('services.index') }}" class="{{ request()->routeIs('services.*') ? 'is-active' : '' }}">Servicios</a>
+                        <a href="{{ route('home') }}#resultados">Resultados</a>
+                        <a href="{{ route('home') }}#contacto">Contacto</a>
+                    </nav>
+                    <a href="{{ $whatsappUrl }}" class="btn btn-primary mobile-nav-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
+                </div>
+            </div>
         </header>
 
         @if (session('success'))
