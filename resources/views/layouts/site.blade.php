@@ -31,7 +31,7 @@
 </head>
 <body class="site-body">
     <div class="site-shell">
-        <header class="topbar reveal reveal-1">
+        <header class="topbar">
             <div class="container topbar-inner">
                 <a href="{{ route('home') }}" class="brand brand-lockup" aria-label="Ir al inicio de {{ $clinicName }}">
                     <span class="brand-monogram">{{ $brandInitials ?: 'CR' }}</span>

@@ -97,7 +97,7 @@
     <div class="ambient ambient-left"></div>
     <div class="ambient ambient-right"></div>
 
-    <header class="topbar reveal reveal-1">
+    <header class="topbar">
         <div class="container topbar-inner">
             <a href="{{ route('home') }}" class="brand brand-lockup" aria-label="Ir al inicio de {{ $clinicName }}">
                 @if ($clinicLogoUrl)
