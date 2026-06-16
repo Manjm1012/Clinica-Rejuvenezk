@@ -58,27 +58,28 @@
                 </div>
             </div>
 
-            <div class="mobile-nav-overlay" hidden></div>
-            <div class="mobile-nav-panel" id="mobile-nav-panel" hidden>
-                <div class="mobile-nav-shell">
-                    <div class="mobile-nav-head">
-                        <div class="mobile-nav-brand">
-                            <span>{{ $clinicName }}</span>
-                            <small>Navegación</small>
-                        </div>
-                        <button type="button" class="mobile-nav-close" aria-label="Cerrar menú de navegación">&times;</button>
-                    </div>
-                    <nav class="mobile-nav-links" aria-label="Navegación móvil">
-                        <a href="{{ route('home') }}#inicio">Inicio</a>
-                        <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'is-active' : '' }}">Quiénes somos</a>
-                        <a href="{{ route('services.index') }}" class="{{ request()->routeIs('services.*') ? 'is-active' : '' }}">Servicios</a>
-                        <a href="{{ route('home') }}#resultados">Resultados</a>
-                        <a href="{{ route('home') }}#contacto">Contacto</a>
-                    </nav>
-                    <a href="{{ $whatsappUrl }}" class="btn btn-primary mobile-nav-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
-                </div>
-            </div>
         </header>
+
+        <div class="mobile-nav-overlay" hidden></div>
+        <div class="mobile-nav-panel" id="mobile-nav-panel" hidden>
+            <div class="mobile-nav-shell">
+                <div class="mobile-nav-head">
+                    <div class="mobile-nav-brand">
+                        <span>{{ $clinicName }}</span>
+                        <small>Navegación</small>
+                    </div>
+                    <button type="button" class="mobile-nav-close" aria-label="Cerrar menú de navegación">&times;</button>
+                </div>
+                <nav class="mobile-nav-links" aria-label="Navegación móvil">
+                    <a href="{{ route('home') }}#inicio">Inicio</a>
+                    <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'is-active' : '' }}">Quiénes somos</a>
+                    <a href="{{ route('services.index') }}" class="{{ request()->routeIs('services.*') ? 'is-active' : '' }}">Servicios</a>
+                    <a href="{{ route('home') }}#resultados">Resultados</a>
+                    <a href="{{ route('home') }}#contacto">Contacto</a>
+                </nav>
+                <a href="{{ $whatsappUrl }}" class="btn btn-primary mobile-nav-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
+            </div>
+        </div>
 
         @if (session('success'))
             <div class="flash-success">{{ session('success') }}</div>

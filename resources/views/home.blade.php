@@ -338,27 +338,28 @@
                 </button>
             </div>
         </div>
-        <div class="mobile-nav-overlay" hidden></div>
-        <div class="mobile-nav-panel" id="mobile-nav-panel" hidden>
-            <div class="mobile-nav-shell">
-                <div class="mobile-nav-head">
-                    <div class="mobile-nav-brand">
-                        <span>{{ $clinicName }}</span>
-                        <small>Navegación</small>
-                    </div>
-                    <button type="button" class="mobile-nav-close" aria-label="Cerrar menú de navegación">×</button>
-                </div>
-                <nav class="mobile-nav-links" aria-label="Navegación móvil">
-                    <a href="#inicio" data-nav-section="inicio">Inicio</a>
-                    <a href="{{ route('about') }}" data-nav-external="about">Quiénes somos</a>
-                    <a href="#servicios" class="is-active" data-nav-section="servicios">Servicios</a>
-                    <a href="#resultados" data-nav-section="resultados">Resultados</a>
-                    <a href="#contacto" data-nav-section="contacto">Contacto</a>
-                </nav>
-                <a href="{{ $whatsappUrl }}" class="btn btn-primary mobile-nav-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
-            </div>
-        </div>
     </header>
+
+    <div class="mobile-nav-overlay" hidden></div>
+    <div class="mobile-nav-panel" id="mobile-nav-panel" hidden>
+        <div class="mobile-nav-shell">
+            <div class="mobile-nav-head">
+                <div class="mobile-nav-brand">
+                    <span>{{ $clinicName }}</span>
+                    <small>Navegación</small>
+                </div>
+                <button type="button" class="mobile-nav-close" aria-label="Cerrar menú de navegación">×</button>
+            </div>
+            <nav class="mobile-nav-links" aria-label="Navegación móvil">
+                <a href="#inicio" data-nav-section="inicio">Inicio</a>
+                <a href="{{ route('about') }}" data-nav-external="about">Quiénes somos</a>
+                <a href="#servicios" class="is-active" data-nav-section="servicios">Servicios</a>
+                <a href="#resultados" data-nav-section="resultados">Resultados</a>
+                <a href="#contacto" data-nav-section="contacto">Contacto</a>
+            </nav>
+            <a href="{{ $whatsappUrl }}" class="btn btn-primary mobile-nav-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
+        </div>
+    </div>
 
     @if (session('success'))
         <div class="container landing-flash-wrap">
