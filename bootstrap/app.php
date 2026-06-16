@@ -15,6 +15,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->trustProxies(at: '*');
 
+        // Webhook endpoint is authenticated by HMAC signature instead of CSRF token.
+        $middleware->validateCsrfTokens(except: [
+            'webhooks/tayrai',
+        ]);
+
         $middleware->web(append: [
             ResolveClinic::class,
         ]);

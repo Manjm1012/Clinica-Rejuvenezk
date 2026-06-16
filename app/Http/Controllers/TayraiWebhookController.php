@@ -14,7 +14,11 @@ class TayraiWebhookController extends Controller
         $signature = (string) $request->header('X-Tayrai-Signature', '');
         $payload = $request->getContent();
 
-        if ($signature && ! $tayraiService->verifyWebhookSignature($payload, $signature)) {
+        if ($signature === '') {
+            return response()->json(['message' => 'Missing signature'], 401);
+        }
+
+        if (! $tayraiService->verifyWebhookSignature($payload, $signature)) {
             return response()->json(['message' => 'Invalid signature'], 401);
         }
 

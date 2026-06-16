@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/home', [PublicContentController::class, 'home']);
 Route::get('/services/{service:slug}', [PublicContentController::class, 'service']);
-Route::post('/leads', [LeadApiController::class, 'store']);
+Route::post('/leads', [LeadApiController::class, 'store'])->middleware('throttle:api-leads');
 
-Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/login', [AuthController::class, 'login'])->middleware('throttle:auth-login');
 
 Route::middleware('auth:sanctum')->group(function () {
 	Route::get('/auth/me', [AuthController::class, 'me']);

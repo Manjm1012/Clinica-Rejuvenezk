@@ -16,8 +16,12 @@ Route::get('/', HomeController::class)->name('home');
 Route::get('/quienes-somos', [HomeController::class, 'about'])->name('about');
 Route::get('/servicios', [ServiceController::class, 'index'])->name('services.index');
 Route::get('/procedimientos/{service:slug}', [ServiceController::class, 'show'])->name('services.show');
-Route::post('/contacto', [LeadController::class, 'store'])->name('leads.store');
+Route::post('/contacto', [LeadController::class, 'store'])
+	->middleware('throttle:contact-form')
+	->name('leads.store');
 
-Route::post('/webhooks/tayrai', TayraiWebhookController::class)->name('webhooks.tayrai');
+Route::post('/webhooks/tayrai', TayraiWebhookController::class)
+	->middleware('throttle:tayrai-webhook')
+	->name('webhooks.tayrai');
 
 Route::middleware('auth')->post('/admin/home-banners/upload', HomeBannersUploadController::class)->name('admin.home-banners.upload');
