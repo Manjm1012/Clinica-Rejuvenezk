@@ -1,6 +1,6 @@
 @php
-    $clinicName = $settings['clinic_name'] ?? 'Clinica Rejuvenezk';
-    $doctorLine = $settings['doctor_name'] ?? 'Medicina estetica facial y corporal';
+    $clinicName = $settings['clinic_name'] ?? 'Clínica Rejuvenezk';
+    $doctorLine = $settings['doctor_name'] ?? 'Medicina estética facial y corporal';
     $topbarCtaLabel = $settings['topbar_cta_label'] ?? 'Agenda ahora';
     $whatsappRawUrl = trim((string) ($settings['whatsapp_url'] ?? ''));
     $whatsappDigits = preg_replace('/[^0-9]/', '', $settings['whatsapp_number'] ?? '');
@@ -22,6 +22,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ?? $clinicName }}</title>
     <meta name="description" content="Plataforma web comercializable para clínica estética con CRM y WhatsApp integrados.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@300;400;500;700&display=swap" rel="stylesheet">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="site-body">
@@ -36,9 +41,9 @@
                     </span>
                 </a>
 
-                <nav class="nav-links" aria-label="Navegacion principal">
+                <nav class="nav-links" aria-label="Navegación principal">
                     <a href="{{ route('home') }}#inicio">Inicio</a>
-                    <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'is-active' : '' }}">Quienes somos</a>
+                    <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'is-active' : '' }}">Quiénes somos</a>
                     <a href="{{ route('services.index') }}" class="{{ request()->routeIs('services.*') ? 'is-active' : '' }}">Servicios</a>
                     <a href="{{ route('home') }}#resultados">Resultados</a>
                     <a href="{{ route('home') }}#contacto">Contacto</a>
@@ -46,9 +51,9 @@
 
                 <div class="topbar-actions">
                     <a href="{{ $whatsappUrl }}" class="btn btn-outline topbar-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
-                    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav-panel" aria-label="Abrir menu de navegacion">
+                    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav-panel" aria-label="Abrir menú de navegación">
                         <span class="nav-toggle-icon"><span></span><span></span><span></span></span>
-                        <span class="nav-toggle-label">Menu</span>
+                        <span class="nav-toggle-label">Menú</span>
                     </button>
                 </div>
             </div>
@@ -59,13 +64,13 @@
                     <div class="mobile-nav-head">
                         <div class="mobile-nav-brand">
                             <span>{{ $clinicName }}</span>
-                            <small>Navegacion</small>
+                            <small>Navegación</small>
                         </div>
-                        <button type="button" class="mobile-nav-close" aria-label="Cerrar menu de navegacion">&times;</button>
+                        <button type="button" class="mobile-nav-close" aria-label="Cerrar menú de navegación">&times;</button>
                     </div>
-                    <nav class="mobile-nav-links" aria-label="Navegacion movil">
+                    <nav class="mobile-nav-links" aria-label="Navegación móvil">
                         <a href="{{ route('home') }}#inicio">Inicio</a>
-                        <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'is-active' : '' }}">Quienes somos</a>
+                        <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'is-active' : '' }}">Quiénes somos</a>
                         <a href="{{ route('services.index') }}" class="{{ request()->routeIs('services.*') ? 'is-active' : '' }}">Servicios</a>
                         <a href="{{ route('home') }}#resultados">Resultados</a>
                         <a href="{{ route('home') }}#contacto">Contacto</a>

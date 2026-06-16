@@ -2510,8 +2510,8 @@ a {
 
     .svc-card-media {
         aspect-ratio: 4 / 5;
-        min-height: 210px;
-        max-height: 270px;
+        min-height: 240px;
+        max-height: 300px;
         padding: 0;
     }
 

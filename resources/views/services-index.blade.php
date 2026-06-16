@@ -25,7 +25,7 @@
 @endphp
 
 <x-layouts.site :settings="$settings" :title="'Tratamientos | ' . $clinicName">
-    <main class="site-shell services-catalog-page">
+    <main class="services-catalog-page">
         <section class="detail-hero services-catalog-hero">
             <div>
                 <span class="eyebrow">Catálogo de tratamientos</span>
