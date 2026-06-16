@@ -752,8 +752,8 @@ a {
     height: 100%;
     display: grid;
     grid-template-rows: auto 1fr auto;
-    gap: 20px;
-    padding: 18px 16px 20px;
+    gap: 14px;
+    padding: 20px 18px 22px;
 }
 
 .mobile-nav-head {
@@ -823,7 +823,9 @@ a {
 
 .mobile-nav-links {
     display: grid;
-    gap: 8px;
+    gap: 0;
+    align-content: start;
+    grid-auto-rows: min-content;
     position: relative;
     z-index: 1;
 }
@@ -832,8 +834,8 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 48px;
-    padding: 0 4px;
+    min-height: 56px;
+    padding: 0 8px;
     border-radius: 0;
     background: transparent;
     border: 0;
@@ -870,8 +872,8 @@ a {
 }
 
 .mobile-nav-cta {
-    min-height: 46px;
-    margin-top: 6px;
+    min-height: 48px;
+    margin-top: 8px;
     font-size: 0.9rem;
     box-shadow: 0 14px 28px rgba(201, 169, 110, 0.24);
 }
@@ -1346,8 +1348,8 @@ a {
     }
 
     .mobile-nav-panel {
-        width: 100vw;
-        border-left: 0;
+        width: min(92vw, 390px);
+        border-left: 1px solid rgba(201, 169, 110, 0.32);
     }
 
     .mobile-nav-shell {
