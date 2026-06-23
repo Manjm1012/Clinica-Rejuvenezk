@@ -726,15 +726,16 @@ a {
 
 .mobile-nav-panel {
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
+    top: var(--mobile-nav-offset, 86px);
+    right: 10px;
+    bottom: 10px;
     width: min(90vw, 420px);
     z-index: 130;
     background: linear-gradient(180deg, #fdf6eb 0%, #f4e4cd 100%);
+    border-radius: 18px;
     border-left: 1px solid rgba(201, 169, 110, 0.36);
-    box-shadow: -24px 0 50px rgba(25, 20, 17, 0.24);
-    transform: translateX(100%);
+    box-shadow: -10px 16px 44px rgba(25, 20, 17, 0.24);
+    transform: translateX(calc(100% + 16px));
     transition: transform 0.28s ease;
 }
 
@@ -1348,7 +1349,9 @@ a {
     }
 
     .mobile-nav-panel {
-        width: min(92vw, 390px);
+        width: min(94vw, 382px);
+        right: 8px;
+        bottom: 8px;
         border-left: 1px solid rgba(201, 169, 110, 0.32);
     }
 
