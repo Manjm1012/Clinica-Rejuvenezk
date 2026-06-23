@@ -2257,19 +2257,24 @@ a {
 
 .results-video-card {
     scroll-snap-align: start;
-    border-radius: 22px;
+    border-radius: 24px;
     overflow: hidden;
-    border: 1px solid rgba(201, 169, 110, 0.26);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 241, 233, 0.95));
-    box-shadow: 0 14px 36px rgba(43, 43, 43, 0.08);
+    border: 1px solid rgba(201, 169, 110, 0.2);
+    background: #fff;
+    box-shadow: 0 12px 40px rgba(43, 43, 43, 0.12);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .results-video-media {
     position: relative;
     aspect-ratio: 16 / 9;
-    background: #111;
+    background: #000;
     min-height: 240px;
     max-height: 500px;
+    flex: 1;
+    overflow: hidden;
 }
 
 .results-video-media video,
@@ -2278,6 +2283,35 @@ a {
     height: 100%;
     border: 0;
     display: block;
+    object-fit: cover;
+}
+
+.results-video-media video::-webkit-media-controls {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+}
+
+.results-video-media video::-webkit-media-controls-panel {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    height: 42px;
+}
+
+.results-video-media video::-webkit-media-controls-play-button,
+.results-video-media video::-webkit-media-controls-mute-button,
+.results-video-media video::-webkit-media-controls-fullscreen-button {
+    color: white;
+}
+
+.results-video-media video::-webkit-media-controls-volume-slider {
+    accent-color: #c9a96e;
+}
+
+.results-video-media video::-moz-media-controls {
+    background: rgba(0, 0, 0, 0.6) !important;
+}
+
+.results-video-media video::-moz-media-controls-play-button {
+    color: white !important;
 }
 
 .results-video-play-overlay {
@@ -2335,20 +2369,25 @@ a {
 
 .results-video-meta {
     display: grid;
-    gap: 2px;
-    padding: 12px 14px;
+    gap: 4px;
+    padding: 14px 16px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.98), rgba(250, 248, 244, 0.98));
+    border-top: 1px solid rgba(201, 169, 110, 0.12);
 }
 
 .results-video-meta strong {
-    font-size: 0.95rem;
-    color: #2f2b2b;
+    font-size: 0.96rem;
+    font-weight: 600;
+    color: #1a1618;
+    line-height: 1.3;
 }
 
 .results-video-meta span {
-    font-size: 0.78rem;
-    letter-spacing: 0.08em;
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: #92784a;
+    color: #9b8860;
+    font-weight: 600;
 }
 
 .result-visual-band {
