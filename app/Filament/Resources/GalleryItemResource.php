@@ -68,7 +68,6 @@ class GalleryItemResource extends Resource
                         'video/quicktime',
                     ])
                     ->maxSize(102400)
-                    ->storeFileNamesIn('video_url')
                     ->openable()
                     ->downloadable()
                     ->helperText('Sube videos MP4/WEBM/MOV (máx. 100 MB). Estos videos se muestran en la sección Resultados del Home.')
