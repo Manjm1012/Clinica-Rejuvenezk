@@ -710,9 +710,10 @@
                                             allowfullscreen
                                         ></iframe>
                                     @else
-                                        <video controls preload="metadata" playsinline>
+                                        <video controls preload="auto" playsinline>
                                             <source src="{{ $video['url'] }}">
                                         </video>
+                                        <div class="results-video-play-overlay"></div>
                                     @endif
                                 </div>
                                 <div class="results-video-meta">

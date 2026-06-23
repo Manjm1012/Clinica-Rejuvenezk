@@ -2235,7 +2235,7 @@ a {
 .results-video-carousel {
     display: grid;
     grid-auto-flow: column;
-    grid-auto-columns: minmax(280px, 42vw);
+    grid-auto-columns: minmax(320px, 42vw);
     gap: 16px;
     overflow-x: auto;
     overflow-y: hidden;
@@ -2268,6 +2268,8 @@ a {
     position: relative;
     aspect-ratio: 16 / 9;
     background: #111;
+    min-height: 240px;
+    max-height: 500px;
 }
 
 .results-video-media video,
@@ -2276,6 +2278,34 @@ a {
     height: 100%;
     border: 0;
     display: block;
+}
+
+.results-video-play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.25);
+    pointer-events: none;
+}
+
+.results-video-play-overlay::before {
+    content: '';
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    position: relative;
+}
+
+.results-video-play-overlay::after {
+    content: '▶';
+    position: absolute;
+    font-size: 36px;
+    color: #c9a96e;
+    margin-left: 10px;
 }
 
 .results-video-meta {
@@ -2793,7 +2823,12 @@ a {
     }
 
     .results-video-carousel {
-        grid-auto-columns: minmax(320px, 74vw);
+        grid-auto-columns: minmax(300px, 60vw);
+    }
+
+    .results-video-media {
+        min-height: 200px;
+        max-height: 450px;
     }
 
     .svc-carousel {
@@ -2889,6 +2924,41 @@ a {
 
     .result-visual-grid {
         grid-template-columns: 1fr;
+    }
+
+    .results-video-carousel {
+        grid-auto-columns: minmax(280px, 85vw);
+    }
+
+    .results-video-media {
+        min-height: 180px;
+        max-height: 380px;
+    }
+
+    .results-video-play-overlay::before {
+        width: 68px;
+        height: 68px;
+    }
+
+    .results-video-play-overlay::after {
+        font-size: 28px;
+        margin-left: 7px;
+    }
+
+    .results-video-card {
+        border-radius: 16px;
+    }
+
+    .results-video-meta {
+        padding: 10px 12px;
+    }
+
+    .results-video-meta strong {
+        font-size: 0.88rem;
+    }
+
+    .results-video-meta span {
+        font-size: 0.72rem;
     }
 
     .results-video-carousel {
