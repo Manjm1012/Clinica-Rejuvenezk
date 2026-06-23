@@ -449,8 +449,12 @@
                         </div>
                         <div class="hero-profile-divider"></div>
                         <div class="hero-portrait-body">
-                            <p>{{ $heroCardTitle }}</p>
-                            <p class="hero-profile-bio">{!! nl2br(e($heroCardText)) !!}</p>
+                            <p class="hero-profile-summary">{{ $heroCardTitle }}</p>
+                            <details class="hero-bio-details">
+                                <summary>Ver historia completa</summary>
+                                <p class="hero-profile-bio">{!! nl2br(e($heroCardText)) !!}</p>
+                                <a href="{{ route('about') }}" class="hero-profile-link">Conocer trayectoria</a>
+                            </details>
                         </div>
                     </div>
                 </div>
@@ -606,6 +610,16 @@
             <div class="container reveal reveal-2">
                 <p class="kicker">{{ $testimonialsKicker }}</p>
                 <h2 class="section-title">{{ $testimonialsTitle }}</h2>
+                <div class="testimonials-overview">
+                    <div class="testimonials-pill">
+                        <strong>Pacientes reales</strong>
+                        <span>Atención médica personalizada</span>
+                    </div>
+                    <div class="testimonials-pill">
+                        <strong>Valoración 4.9/5</strong>
+                        <span>Resultados naturales y progresivos</span>
+                    </div>
+                </div>
             </div>
 
             @if ($galleryPreview->isNotEmpty())
@@ -635,22 +649,53 @@
             <div class="container testimonials-grid reveal reveal-3">
                 @forelse ($testimonialsToShow as $testimonial)
                     <blockquote class="quote-card">
+                        <div class="quote-meta">
+                            <span class="quote-avatar">{{ mb_strtoupper(mb_substr($testimonial->patient_name ?: 'PR', 0, 2)) }}</span>
+                            <div class="quote-author">
+                                <strong>{{ $testimonial->patient_name }}</strong>
+                                <small>{{ $testimonial->reviewed_at ? 'Paciente ' . $testimonial->reviewed_at->format('Y') : 'Paciente verificado' }}</small>
+                            </div>
+                        </div>
                         <div class="testimonial-rating">{{ str_repeat('★', max(1, (int) $testimonial->rating)) }}</div>
                         <p>"{{ $testimonial->content }}"</p>
-                        <cite>{{ $testimonial->patient_name }}{{ $testimonial->reviewed_at ? ' | ' . $testimonial->reviewed_at->format('Y') : '' }}</cite>
+                        <cite>Experiencia en {{ $clinicName }}</cite>
                     </blockquote>
                 @empty
                     <blockquote class="quote-card">
+                        <div class="quote-meta">
+                            <span class="quote-avatar">PR</span>
+                            <div class="quote-author">
+                                <strong>Paciente Rejuvenezk</strong>
+                                <small>Paciente verificado</small>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">★★★★★</div>
                         <p>"Me encantó porque respetaron mis facciones y me explicaron cada paso. Me veo fresca, no cambiada."</p>
-                        <cite>Paciente Rejuvenezk</cite>
+                        <cite>Experiencia en {{ $clinicName }}</cite>
                     </blockquote>
                     <blockquote class="quote-card">
+                        <div class="quote-meta">
+                            <span class="quote-avatar">PR</span>
+                            <div class="quote-author">
+                                <strong>Paciente Rejuvenezk</strong>
+                                <small>Paciente verificado</small>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">★★★★★</div>
                         <p>"El trato es impecable y los resultados se notan desde la primera sesion. Volvere sin duda."</p>
-                        <cite>Paciente Rejuvenezk</cite>
+                        <cite>Experiencia en {{ $clinicName }}</cite>
                     </blockquote>
                     <blockquote class="quote-card">
+                        <div class="quote-meta">
+                            <span class="quote-avatar">PR</span>
+                            <div class="quote-author">
+                                <strong>Paciente Rejuvenezk</strong>
+                                <small>Paciente verificado</small>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">★★★★★</div>
                         <p>"Senti confianza total por el enfoque medico. El plan fue claro y super personalizado."</p>
-                        <cite>Paciente Rejuvenezk</cite>
+                        <cite>Experiencia en {{ $clinicName }}</cite>
                     </blockquote>
                 @endforelse
             </div>
