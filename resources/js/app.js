@@ -477,3 +477,78 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	});
 });
+
+// Video player interactive overlay
+document.addEventListener('DOMContentLoaded', () => {
+	const videoCards = document.querySelectorAll('.results-video-card');
+
+	videoCards.forEach((card) => {
+		const video = card.querySelector('video');
+		const overlay = card.querySelector('.results-video-play-overlay');
+
+		if (!video || !overlay) return;
+
+		// Extract first frame as poster when video loads
+		video.addEventListener('loadedmetadata', () => {
+			const canvas = document.createElement('canvas');
+			canvas.width = video.videoWidth;
+			canvas.height = video.videoHeight;
+			
+			const ctx = canvas.getContext('2d');
+			if (ctx) {
+				video.currentTime = 0.1;
+				video.addEventListener('seeked', () => {
+					ctx.drawImage(video, 0, 0);
+					const frameDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+					video.poster = frameDataUrl;
+					video.currentTime = 0;
+				}, { once: true });
+			}
+		});
+
+		// Make overlay clickable
+		overlay.style.cursor = 'pointer';
+		overlay.style.pointerEvents = 'auto';
+
+		overlay.addEventListener('click', (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+			
+			// Play video
+			video.play();
+			
+			// Hide overlay on play
+			video.addEventListener('play', () => {
+				overlay.style.opacity = '0';
+				overlay.style.pointerEvents = 'none';
+			}, { once: true });
+
+			// Show overlay again on pause/end
+			const showOverlay = () => {
+				overlay.style.opacity = '1';
+				overlay.style.pointerEvents = 'auto';
+			};
+
+			video.addEventListener('pause', showOverlay);
+			video.addEventListener('ended', showOverlay);
+		});
+
+		// Hide overlay when clicking play control
+		video.addEventListener('play', () => {
+			overlay.style.opacity = '0';
+			overlay.style.pointerEvents = 'none';
+		});
+
+		video.addEventListener('pause', () => {
+			if (video.currentTime > 0 && video.currentTime < video.duration) {
+				overlay.style.opacity = '1';
+				overlay.style.pointerEvents = 'auto';
+			}
+		});
+
+		video.addEventListener('ended', () => {
+			overlay.style.opacity = '1';
+			overlay.style.pointerEvents = 'auto';
+		});
+	});
+});
