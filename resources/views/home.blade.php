@@ -16,8 +16,11 @@
     $benefitsKicker = $settings['benefits_kicker'] ?? 'Nuestra promesa';
     $benefitsTitle = $settings['benefits_title'] ?? 'Una experiencia estética pensada para verse bien y sentirse bien.';
     $benefitsLead = $settings['benefits_lead'] ?? 'Combinamos precisión médica, criterio facial y acompañamiento cercano para que cada decisión se tome con confianza.';
-    $testimonialsKicker = $settings['testimonials_kicker'] ?? 'Testimonios';
-    $testimonialsTitle = $settings['testimonials_title'] ?? 'Pacientes que ya viven su cambio';
+    $rawResultsKicker = trim((string) ($settings['testimonials_kicker'] ?? ''));
+    $testimonialsKicker = in_array(mb_strtolower($rawResultsKicker), ['testimonios', 'testimonio'])
+        ? 'Resultados'
+        : ($rawResultsKicker !== '' ? $rawResultsKicker : 'Resultados');
+    $testimonialsTitle = $settings['testimonials_title'] ?? 'Resultados y testimonios reales';
     $socialKicker = $settings['social_kicker'] ?? ('Comunidad ' . $clinicName);
     $socialTitle = $settings['social_title'] ?? 'Conecta con nuestras redes y canales';
     $socialLead = $settings['social_lead'] ?? 'Comparte resultados, conoce casos reales y recibe novedades de nuestros tratamientos en tiempo real.';
@@ -288,6 +291,75 @@
 
         return null;
     })->filter()->take(4)->values();
+
+    $resolveVideoItem = function ($item) {
+        $raw = trim((string) ($item->video_url ?? ''));
+
+        if ($raw === '') {
+            return null;
+        }
+
+        $title = $item->title ?: ($item->service?->name ?? 'Video de resultado');
+        $label = $item->service?->name ?: 'Caso real';
+
+        if (! filter_var($raw, FILTER_VALIDATE_URL)) {
+            return [
+                'url' => \Illuminate\Support\Facades\Storage::disk('public')->url(ltrim($raw, '/')),
+                'is_iframe' => false,
+                'title' => $title,
+                'label' => $label,
+            ];
+        }
+
+        $host = strtolower((string) parse_url($raw, PHP_URL_HOST));
+
+        if (str_contains($host, 'youtu.be') || str_contains($host, 'youtube.com')) {
+            $videoId = null;
+
+            if (str_contains($host, 'youtu.be')) {
+                $videoId = trim((string) parse_url($raw, PHP_URL_PATH), '/');
+            } else {
+                parse_str((string) parse_url($raw, PHP_URL_QUERY), $queryParts);
+                $videoId = $queryParts['v'] ?? null;
+            }
+
+            if ($videoId) {
+                return [
+                    'url' => 'https://www.youtube.com/embed/' . $videoId,
+                    'is_iframe' => true,
+                    'title' => $title,
+                    'label' => $label,
+                ];
+            }
+        }
+
+        if (str_contains($host, 'vimeo.com')) {
+            $videoId = trim((string) parse_url($raw, PHP_URL_PATH), '/');
+
+            if ($videoId) {
+                return [
+                    'url' => 'https://player.vimeo.com/video/' . $videoId,
+                    'is_iframe' => true,
+                    'title' => $title,
+                    'label' => $label,
+                ];
+            }
+        }
+
+        return [
+            'url' => $raw,
+            'is_iframe' => false,
+            'title' => $title,
+            'label' => $label,
+        ];
+    };
+
+    $videoResultsPreview = $galleryItems
+        ->filter(fn ($item) => $item->type === 'video' && ! empty($item->video_url))
+        ->map($resolveVideoItem)
+        ->filter()
+        ->take(6)
+        ->values();
 @endphp
 
 <!DOCTYPE html>
@@ -622,10 +694,42 @@
                 </div>
             </div>
 
+            @if ($videoResultsPreview->isNotEmpty())
+                <div class="container results-video-band reveal reveal-2">
+                    <div class="results-video-carousel" id="videoResultsCarousel" aria-label="Videos de resultados de {{ $clinicName }}">
+                        @foreach ($videoResultsPreview as $video)
+                            <article class="results-video-card">
+                                <div class="results-video-media">
+                                    @if ($video['is_iframe'])
+                                        <iframe
+                                            src="{{ $video['url'] }}"
+                                            title="{{ $video['title'] }}"
+                                            loading="lazy"
+                                            referrerpolicy="strict-origin-when-cross-origin"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            allowfullscreen
+                                        ></iframe>
+                                    @else
+                                        <video controls preload="metadata" playsinline>
+                                            <source src="{{ $video['url'] }}">
+                                        </video>
+                                    @endif
+                                </div>
+                                <div class="results-video-meta">
+                                    <strong>{{ $video['title'] }}</strong>
+                                    <span>{{ $video['label'] }}</span>
+                                </div>
+                            </article>
+                        @endforeach
+                    </div>
+                    <div class="result-visual-dots" id="videoResultsDots" aria-hidden="true"></div>
+                </div>
+            @endif
+
             @if ($galleryPreview->isNotEmpty())
                 <div class="container result-visual-band reveal reveal-2">
                     <article class="result-visual-copy">
-                        <p class="kicker">{{ $resultsKicker }}</p>
+                        <p class="kicker">Galería visual</p>
                         <h3>{{ $resultsTitle }}</h3>
                         <p>{{ $resultsLead }}</p>
                         <span class="result-visual-hint">Desliza para ver más casos</span>

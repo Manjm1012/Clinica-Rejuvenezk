@@ -41,8 +41,8 @@ class HomeController extends Controller
             'hero_stack_secondary_label' => 'Especialista',
             'services_kicker' => 'Nuestros tratamientos',
             'services_title' => 'Tecnología, precisión y naturalidad',
-            'testimonials_kicker' => 'Testimonios',
-            'testimonials_title' => 'Pacientes que ya viven su cambio',
+            'testimonials_kicker' => 'Resultados',
+            'testimonials_title' => 'Resultados y testimonios reales',
             'social_kicker' => 'Comunidad Rejuvenezk',
             'social_title' => 'Conecta con nuestras redes y canales',
             'social_lead' => 'Comparte resultados, conoce casos reales y recibe novedades de nuestros tratamientos en tiempo real.',
@@ -91,11 +91,12 @@ class HomeController extends Controller
                 ->where(function ($query) {
                     $query->whereNotNull('image_path')
                         ->orWhereNotNull('before_image_path')
-                        ->orWhereNotNull('after_image_path');
+                        ->orWhereNotNull('after_image_path')
+                        ->orWhereNotNull('video_url');
                 })
                 ->orderByDesc('is_featured')
                 ->orderBy('sort_order')
-                ->limit(6)
+                ->limit(12)
                 ->get(),
             'stats' => Stat::query()->where('is_active', true)->orderBy('sort_order')->get(),
             'technologies' => Technology::query()->where('is_active', true)->orderBy('sort_order')->get(),

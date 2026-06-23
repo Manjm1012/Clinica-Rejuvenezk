@@ -48,13 +48,31 @@ class GalleryItemResource extends Resource
                     ->directory('gallery/single')
                     ->imageEditor(),
                 Forms\Components\Select::make('type')
+                    ->label('Formato')
                     ->required()
+                    ->default('single')
+                    ->live()
                     ->options([
                         'before_after' => 'Antes / Después',
                         'single' => 'Imagen única',
                         'video' => 'Video',
                     ]),
-                Forms\Components\TextInput::make('video_url'),
+                Forms\Components\FileUpload::make('video_url')
+                    ->label('Video para resultados')
+                    ->disk('public')
+                    ->visibility('public')
+                    ->directory('gallery/videos')
+                    ->acceptedFileTypes([
+                        'video/mp4',
+                        'video/webm',
+                        'video/quicktime',
+                    ])
+                    ->maxSize(102400)
+                    ->openable()
+                    ->downloadable()
+                    ->helperText('Sube videos MP4/WEBM/MOV (máx. 100 MB). Estos videos se muestran en la sección Resultados del Home.')
+                    ->visible(fn (Forms\Get $get): bool => $get('type') === 'video')
+                    ->required(fn (Forms\Get $get): bool => $get('type') === 'video'),
                 Forms\Components\Toggle::make('is_featured')
                     ->required(),
                 Forms\Components\Toggle::make('is_active')
