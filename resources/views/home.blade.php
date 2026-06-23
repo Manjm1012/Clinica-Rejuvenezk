@@ -301,6 +301,7 @@
 
         $title = $item->title ?: ($item->service?->name ?? 'Video de resultado');
         $label = $item->service?->name ?: 'Caso real';
+        $poster = 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 1920 1080%27%3E%3Cdefs%3E%3ClinearGradient id=%27g%27 x1=%270%25%27 y1=%270%25%27 x2=%27100%25%27 y2=%27100%25%27%3E%3Cstop offset=%270%25%27 stop-color=%27%230f0f10%27/%3E%3Cstop offset=%2745%25%27 stop-color=%27%23221b1a%27/%3E%3Cstop offset=%27100%25%27 stop-color=%27%239b8860%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%271920%27 height=%271080%27 fill=%27url(%23g)%27/%3E%3Ccircle cx=%27960%27 cy=%27540%27 r=%27170%27 fill=%27white%27 opacity=%270.12%27/%3E%3Cpolygon points=%27924,466 924,614 1044,540%27 fill=%27white%27 opacity=%270.85%27/%3E%3C/svg%3E';
 
         if (! filter_var($raw, FILTER_VALIDATE_URL)) {
             return [
@@ -308,6 +309,7 @@
                 'is_iframe' => false,
                 'title' => $title,
                 'label' => $label,
+                'poster' => $poster,
             ];
         }
 
@@ -351,6 +353,7 @@
             'is_iframe' => false,
             'title' => $title,
             'label' => $label,
+            'poster' => $poster,
         ];
     };
 
@@ -710,10 +713,13 @@
                                             allowfullscreen
                                         ></iframe>
                                     @else
-                                        <video controls preload="none" playsinline poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23222;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23111;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1920' height='1080' fill='url(%23grad)'/%3E%3Ccircle cx='960' cy='540' r='140' fill='white' opacity='0.15'/%3E%3Cpolygon points='920,480 920,600 1020,540' fill='white' opacity='0.25'/%3E%3C/svg%3E">
+                                        <video controls preload="metadata" playsinline poster="{{ $video['poster'] ?? '' }}">
                                             <source src="{{ $video['url'] }}">
                                         </video>
-                                        <div class="results-video-play-overlay"></div>
+                                        <button type="button" class="results-video-play-overlay" aria-label="Reproducir video {{ $video['title'] }}">
+                                            <span class="results-video-play-badge" aria-hidden="true"></span>
+                                            <span class="results-video-play-copy">Reproducir</span>
+                                        </button>
                                     @endif
                                 </div>
                                 <div class="results-video-meta">
