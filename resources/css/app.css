@@ -2544,8 +2544,15 @@ a {
     }
 
     .hero-portrait-media {
-        min-height: 220px;
+        min-height: 0;
+        aspect-ratio: 5 / 4;
+        max-height: 340px;
         border-radius: 28px 28px 0 0;
+    }
+
+    .hero-portrait-image {
+        transform: scale(1);
+        object-position: center 18%;
     }
 
     .hero-portrait-copy {
@@ -2633,8 +2640,8 @@ a {
 
     .svc-card-media {
         aspect-ratio: 1 / 1;
-        min-height: 220px;
-        max-height: 220px;
+        min-height: 0;
+        max-height: none;
         padding: 0;
     }
 
@@ -3117,8 +3124,8 @@ a {
 
     .service-media {
         aspect-ratio: 1 / 1;
-        min-height: 220px;
-        max-height: 220px;
+        min-height: 0;
+        max-height: none;
         padding: 0;
     }
 
