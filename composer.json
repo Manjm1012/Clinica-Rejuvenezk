@@ -44,6 +44,7 @@
             "npm run build"
         ],
         "deploy": [
+            "@php -r \"foreach (['bootstrap/cache','storage/framework/cache','storage/framework/sessions','storage/framework/views'] as $dir) { if (!is_dir($dir)) { mkdir($dir, 0775, true); } @chmod($dir, 0775); }\"",
             "@php artisan migrate --force",
             "@php -r \"if (file_exists('public/storage')) { echo 'public/storage already exists'.PHP_EOL; } else { passthru(PHP_BINARY . ' artisan storage:link', $exitCode); exit($exitCode); }\"",
             "@php artisan config:clear",
