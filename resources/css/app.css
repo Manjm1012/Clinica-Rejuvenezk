@@ -1160,16 +1160,34 @@ a {
 }
 
 .banner-indicator {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.6);
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
     border: none;
+    border-radius: 999px;
+    padding: 0;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
+.banner-indicator::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
+}
+
 .banner-indicator.active {
+    width: 34px;
+    border-radius: 999px;
+}
+
+.banner-indicator.active::before {
     background: rgba(255, 255, 255, 0.95);
     width: 28px;
     border-radius: 5px;
@@ -1869,6 +1887,10 @@ a {
 }
 
 .hero-profile-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 8px 0;
     color: #8c6f3f;
     font-size: 0.8rem;
     font-weight: 700;
@@ -2018,6 +2040,7 @@ a {
 
 .services-panel {
     display: none;
+    overflow-x: clip;
 }
 
 .services-panel.is-active {
@@ -2032,6 +2055,7 @@ a {
 
 .svc-carousel-wrap {
     margin-top: 10px;
+    overflow-x: clip;
 }
 
 .svc-carousel {
@@ -2194,6 +2218,11 @@ a {
 }
 
 .svc-card-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 8px 12px;
+    border-radius: 10px;
     color: #8d7446;
     font-size: 0.86rem;
     font-weight: 700;
@@ -2573,17 +2602,33 @@ a {
 }
 
 .result-visual-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #d6c8a8;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
     border: none;
     padding: 0;
     cursor: pointer;
     transition: background 0.25s ease, transform 0.25s ease;
 }
 
+.result-visual-dot::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d6c8a8;
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
 .result-visual-dot.is-active {
+    transform: none;
+}
+
+.result-visual-dot.is-active::before {
     background: #8d7446;
     transform: scale(1.35);
 }
