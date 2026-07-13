@@ -513,12 +513,22 @@ document.addEventListener('DOMContentLoaded', () => {
 	videoCards.forEach((card) => {
 		const video = card.querySelector('video');
 		const overlay = card.querySelector('.results-video-play-overlay');
+		const toggleButton = card.querySelector('.results-video-toggle');
+		const fullscreenButton = card.querySelector('.results-video-fullscreen');
 
 		if (!video || !overlay) return;
 
 		const syncOverlay = () => {
 			const shouldShow = video.paused || video.ended;
 			overlay.classList.toggle('is-hidden', !shouldShow);
+		};
+
+		const updateToggleState = () => {
+			if (!toggleButton) {
+				return;
+			}
+
+			toggleButton.classList.toggle('is-playing', !video.paused && !video.ended);
 		};
 
 		const playVideo = async () => {
@@ -541,11 +551,47 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 		});
 
-		video.addEventListener('play', syncOverlay);
-		video.addEventListener('pause', syncOverlay);
-		video.addEventListener('ended', syncOverlay);
+		if (toggleButton) {
+			toggleButton.addEventListener('click', () => {
+				if (video.paused || video.ended) {
+					playVideo();
+				} else {
+					video.pause();
+				}
+			});
+		}
+
+		if (fullscreenButton) {
+			fullscreenButton.addEventListener('click', () => {
+				const target = video.closest('.results-video-media') || video;
+
+				if (target.requestFullscreen) {
+					target.requestFullscreen();
+				} else if (video.webkitEnterFullscreen) {
+					video.webkitEnterFullscreen();
+				}
+			});
+		}
+
+		video.addEventListener('playing', () => {
+			syncOverlay();
+			updateToggleState();
+		});
+
+		video.addEventListener('pause', () => {
+			syncOverlay();
+			updateToggleState();
+		});
+
+		video.addEventListener('ended', () => {
+			syncOverlay();
+			updateToggleState();
+		});
+
+		video.addEventListener('loadedmetadata', updateToggleState);
 
 		syncOverlay();
+		updateToggleState();
 		observer.observe(card);
 	});
 });

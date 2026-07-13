@@ -720,6 +720,10 @@
                                             <span class="results-video-play-badge" aria-hidden="true"></span>
                                             <span class="results-video-play-copy">Reproducir</span>
                                         </button>
+                                        <div class="results-video-player-controls" aria-hidden="true">
+                                            <button type="button" class="results-video-toggle" aria-label="Alternar reproducción"></button>
+                                            <button type="button" class="results-video-fullscreen" aria-label="Pantalla completa"></button>
+                                        </div>
                                     @endif
                                 </div>
                                 <div class="results-video-meta">

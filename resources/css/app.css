@@ -2271,7 +2271,6 @@ a {
 .results-video-media {
     position: absolute;
     inset: 0;
-    aspect-ratio: 16 / 9;
     background: #000;
     overflow: hidden;
 }
@@ -2280,9 +2279,58 @@ a {
 .results-video-media iframe {
     width: 100%;
     height: 100%;
+    min-width: 100%;
+    min-height: 100%;
     border: 0;
     display: block;
     object-fit: cover;
+    object-position: center center;
+}
+
+.results-video-player-controls {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    display: flex;
+    gap: 12px;
+    z-index: 20;
+    pointer-events: none;
+}
+
+.results-video-player-controls button {
+    pointer-events: auto;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    background: rgba(11, 11, 11, 0.42);
+    color: #fff;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.results-video-player-controls button:hover {
+    background: rgba(255, 255, 255, 0.16);
+    transform: translateY(-1px);
+}
+
+.results-video-toggle::before {
+    content: '▶';
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
+
+.results-video-toggle.is-playing::before {
+    content: '▌▌';
+    font-size: 1rem;
+}
+
+.results-video-fullscreen::before {
+    content: '⛶';
+    font-size: 1rem;
 }
 
 .results-video-media video::-webkit-media-controls {
