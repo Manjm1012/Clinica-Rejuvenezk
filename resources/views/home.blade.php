@@ -704,8 +704,14 @@
                             <article class="results-video-card">
                                 <div class="results-video-media">
                                     @if ($video['is_iframe'])
+                                        @php
+                                            $iframeUrl = $video['url'];
+                                            $iframeUrl .= \Illuminate\Support\Str::contains($iframeUrl, '?')
+                                                ? '&autoplay=1&mute=1&playsinline=1&controls=0'
+                                                : '?autoplay=1&mute=1&playsinline=1&controls=0';
+                                        @endphp
                                         <iframe
-                                            src="{{ $video['url'] }}"
+                                            src="{{ $iframeUrl }}"
                                             title="{{ $video['title'] }}"
                                             loading="lazy"
                                             referrerpolicy="strict-origin-when-cross-origin"

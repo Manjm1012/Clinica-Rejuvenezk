@@ -99,6 +99,13 @@ a {
     padding: 24px 0 48px;
 }
 
+#inicio,
+#servicios,
+#resultados,
+#contacto {
+    scroll-margin-top: 110px;
+}
+
 .topbar,
 .hero-card-panel,
 .stat-card,
@@ -1304,6 +1311,10 @@ a {
 
     .mobile-nav-panel {
         width: min(90vw, 420px);
+    }
+
+    .results-video-card {
+        min-height: 280px;
     }
 
     .banners-carousel-wrap {
