@@ -6,8 +6,10 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
     --font-serif: 'Cormorant Garamond', serif;
+    --font-heading: var(--font-serif);
+    --font-body: var(--font-sans);
 }
 
 :root {
@@ -49,7 +51,7 @@ html {
 }
 
 body {
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -66,13 +68,13 @@ svg {
 
 h1,
 h2 {
-    font-family: var(--font-serif);
+    font-family: var(--font-heading);
     font-weight: 600;
     letter-spacing: 0.5px;
 }
 
 p {
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
     font-weight: 300;
 }
 
