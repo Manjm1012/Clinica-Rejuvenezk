@@ -608,7 +608,9 @@
                         <div class="svc-carousel-wrap">
                             <div class="svc-carousel" aria-label="Tratamientos de {{ $category->name }}">
                                 @foreach ($category->services as $service)
-                                    @php($serviceImagePath = $normalizeMediaPath($service->image_path))
+                                    @php
+                                        $serviceImagePath = $normalizeMediaPath($service->image_path);
+                                    @endphp
                                     <article class="svc-card">
                                         @if ($serviceImagePath && $publicDisk->exists($serviceImagePath))
                                             <figure class="svc-card-media">
@@ -647,7 +649,9 @@
                         <div class="svc-carousel-wrap">
                             <div class="svc-carousel" aria-label="Tratamientos">
                                 @foreach ($featuredServices as $service)
-                                    @php($serviceImagePath = $normalizeMediaPath($service->image_path))
+                                    @php
+                                        $serviceImagePath = $normalizeMediaPath($service->image_path);
+                                    @endphp
                                     <article class="svc-card">
                                         @if ($serviceImagePath && $publicDisk->exists($serviceImagePath))
                                             <figure class="svc-card-media">
