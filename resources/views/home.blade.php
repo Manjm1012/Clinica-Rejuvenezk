@@ -327,7 +327,7 @@
 
             if ($videoId) {
                 return [
-                    'url' => 'https://www.youtube.com/embed/' . $videoId,
+                    'url' => 'https://www.youtube.com/embed/' . $videoId . '?autoplay=1&mute=1&playsinline=1&controls=1&rel=0',
                     'is_iframe' => true,
                     'title' => $title,
                     'label' => $label,
@@ -340,7 +340,7 @@
 
             if ($videoId) {
                 return [
-                    'url' => 'https://player.vimeo.com/video/' . $videoId,
+                    'url' => 'https://player.vimeo.com/video/' . $videoId . '?autoplay=1&muted=1&title=0&byline=0&portrait=0&playsinline=1',
                     'is_iframe' => true,
                     'title' => $title,
                     'label' => $label,
@@ -713,7 +713,7 @@
                                             allowfullscreen
                                         ></iframe>
                                     @else
-                                        <video controls preload="metadata" playsinline poster="{{ $video['poster'] ?? '' }}">
+                                        <video controls preload="metadata" playsinline muted autoplay loop poster="{{ $video['poster'] ?? '' }}">
                                             <source src="{{ $video['url'] }}">
                                         </video>
                                         <button type="button" class="results-video-play-overlay" aria-label="Reproducir video {{ $video['title'] }}">

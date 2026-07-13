@@ -482,6 +482,34 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
 	const videoCards = document.querySelectorAll('.results-video-card');
 
+	if (!videoCards.length) {
+		return;
+	}
+
+	const observer = new IntersectionObserver((entries) => {
+		entries.forEach((entry) => {
+			const card = entry.target;
+			const video = card.querySelector('video');
+
+			if (!video) {
+				return;
+			}
+
+			const isVisible = entry.intersectionRatio >= 0.55;
+
+			if (isVisible) {
+				if (video.paused && video.muted) {
+					video.play().catch(() => {});
+				}
+			} else if (!video.paused) {
+				video.pause();
+			}
+		});
+	}, {
+		threshold: [0.15, 0.55, 0.85],
+		rootMargin: '0px 0px -20% 0px',
+	});
+
 	videoCards.forEach((card) => {
 		const video = card.querySelector('video');
 		const overlay = card.querySelector('.results-video-play-overlay');
@@ -518,5 +546,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		video.addEventListener('ended', syncOverlay);
 
 		syncOverlay();
+		observer.observe(card);
 	});
 });
