@@ -326,7 +326,7 @@
             }
 
             if ($videoId) {
-                $youtubeUrl = 'https://www.youtube.com/embed/' . $videoId . '?autoplay=1&mute=1&playsinline=1&controls=1&rel=0';
+                $youtubeUrl = 'https://www.youtube.com/embed/' . $videoId . '?controls=1&rel=0&playsinline=1';
                 return [
                     'url' => $youtubeUrl,
                     'is_iframe' => true,
@@ -340,7 +340,7 @@
             $videoId = trim((string) parse_url($raw, PHP_URL_PATH), '/');
 
             if ($videoId) {
-                $vimeoUrl = 'https://player.vimeo.com/video/' . $videoId . '?autoplay=1&muted=1&title=0&byline=0&portrait=0&playsinline=1';
+                $vimeoUrl = 'https://player.vimeo.com/video/' . $videoId . '?autoplay=0&muted=0&title=0&byline=0&portrait=0&playsinline=1';
                 return [
                     'url' => $vimeoUrl,
                     'is_iframe' => true,
@@ -710,14 +710,8 @@
                             <article class="results-video-card">
                                 <div class="results-video-media">
                                     @if ($video['is_iframe'])
-                                        @php
-                                            $iframeUrl = $video['url'];
-                                            $iframeUrl .= \Illuminate\Support\Str::contains($iframeUrl, '?')
-                                                ? '&autoplay=1&mute=1&playsinline=1&controls=0'
-                                                : '?autoplay=1&mute=1&playsinline=1&controls=0';
-                                        @endphp
                                         <iframe
-                                            src="{{ $iframeUrl }}"
+                                            src="{{ $video['url'] }}"
                                             title="{{ $video['title'] }}"
                                             loading="lazy"
                                             referrerpolicy="strict-origin-when-cross-origin"
@@ -725,7 +719,7 @@
                                             allowfullscreen
                                         ></iframe>
                                     @else
-                                        <video controls preload="metadata" playsinline muted autoplay loop poster="{{ $video['poster'] ?? '' }}">
+                                        <video controls preload="metadata" playsinline poster="{{ $video['poster'] ?? '' }}">
                                             <source src="{{ $video['url'] }}">
                                         </video>
                                         <button type="button" class="results-video-play-overlay" aria-label="Reproducir video {{ $video['title'] }}">
