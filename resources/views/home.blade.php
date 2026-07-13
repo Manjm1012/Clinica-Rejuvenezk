@@ -326,8 +326,9 @@
             }
 
             if ($videoId) {
+                $youtubeUrl = 'https://www.youtube.com/embed/' . $videoId . '?autoplay=1&mute=1&playsinline=1&controls=1&rel=0';
                 return [
-                    'url' => 'https://www.youtube.com/embed/' . $videoId . '?autoplay=1&mute=1&playsinline=1&controls=1&rel=0',
+                    'url' => $youtubeUrl,
                     'is_iframe' => true,
                     'title' => $title,
                     'label' => $label,
@@ -339,8 +340,9 @@
             $videoId = trim((string) parse_url($raw, PHP_URL_PATH), '/');
 
             if ($videoId) {
+                $vimeoUrl = 'https://player.vimeo.com/video/' . $videoId . '?autoplay=1&muted=1&title=0&byline=0&portrait=0&playsinline=1';
                 return [
-                    'url' => 'https://player.vimeo.com/video/' . $videoId . '?autoplay=1&muted=1&title=0&byline=0&portrait=0&playsinline=1',
+                    'url' => $vimeoUrl,
                     'is_iframe' => true,
                     'title' => $title,
                     'label' => $label,
