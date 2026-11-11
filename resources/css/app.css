@@ -3694,16 +3694,34 @@ a {
     overflow-wrap: break-word;
 }
 
-/* Escritorio (layout de componentes): permite 2 líneas en lugar de recortar con "…" */
+/* Escritorio (layout de componentes): nombre y lema compactos para que quepan junto al menú */
 @media (min-width: 981px) {
     .brand-lockup .brand-clinic-name {
         white-space: normal;
+        font-size: clamp(1.5rem, 2.2vw, 2.1rem);
         line-height: 1.05;
+    }
+
+    .brand-lockup .brand-doctor-name {
+        font-size: clamp(0.72rem, 0.8vw, 0.85rem);
+        letter-spacing: 0.1em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
 
 @media (max-width: 980px) {
     .brand-lockup .brand-copy strong {
         line-height: 1.1;
+    }
+}
+
+/* Móvil: el nombre cabe en su caja sin montarse sobre el botón de menú */
+@media (max-width: 640px) {
+    .brand-lockup .brand-clinic-name {
+        font-size: clamp(0.98rem, 4.4vw, 1.15rem);
+        line-height: 1.1;
+        overflow-wrap: anywhere;
     }
 }
