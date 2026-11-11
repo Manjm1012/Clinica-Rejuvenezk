@@ -16,6 +16,7 @@ use App\Models\PatientTreatment;
 use App\Models\Service;
 use App\Models\User;
 use App\Support\PatientCsvExport;
+use App\Support\Renewals;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
@@ -179,7 +180,7 @@ class PatientAdminTest extends TestCase
         $viejo = $this->makeTreatment($ana, ['performed_at' => '2026-01-01', 'next_due_at' => '2026-11-01']); // vencido
         $nuevo = $this->makeTreatment($ana, ['performed_at' => '2026-10-01', 'next_due_at' => '2026-11-20']); // próximo
 
-        $currentIds = \App\Support\Renewals::currentTreatments($this->clinic->id)->pluck('id')->all();
+        $currentIds = Renewals::currentTreatments($this->clinic->id)->pluck('id')->all();
         $this->assertEqualsCanonicalizing([$viejo->id, $nuevo->id], $currentIds);
 
         Livewire::test(RenewalsWidget::class)->assertCanSeeTableRecords([$viejo, $nuevo]);
@@ -189,7 +190,7 @@ class PatientAdminTest extends TestCase
         $a = $this->makeTreatment($ana, ['service_id' => $service->id, 'performed_at' => '2026-01-01']);
         $b = $this->makeTreatment($ana, ['service_id' => $service->id, 'performed_at' => '2026-02-01']);
 
-        $currentIds = \App\Support\Renewals::currentTreatments($this->clinic->id)->pluck('id')->all();
+        $currentIds = Renewals::currentTreatments($this->clinic->id)->pluck('id')->all();
         $this->assertContains($b->id, $currentIds);
         $this->assertNotContains($a->id, $currentIds);
     }
