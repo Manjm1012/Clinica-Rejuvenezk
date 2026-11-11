@@ -28,7 +28,7 @@ class HomeController extends Controller
     private function pageData(): array
     {
         $branding = array_merge([
-            'clinic_name' => 'Clínica Rejuvenezk',
+            'clinic_name' => 'Doctor Kevin Rejuvenezk',
             'hero_kicker' => 'Medicina estética avanzada',
             'hero_title' => 'Cirugía y medicina estética premium',
             'hero_subtitle' => 'Sitio administrable y comercializable para clínicas.',

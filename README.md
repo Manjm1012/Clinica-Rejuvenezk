@@ -1,6 +1,6 @@
-# Clinica Rejuvenezk
+# Doctor Kevin Rejuvenezk
 
-Aplicacion web para Clinica Rejuvenezk construida con Laravel 12, Filament 3 y Vite.
+Aplicacion web para Doctor Kevin Rejuvenezk construida con Laravel 12, Filament 3 y Vite.
 
 ## Stack
 

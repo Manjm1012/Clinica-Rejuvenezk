@@ -1,5 +1,5 @@
 @php
-    $clinicName = $settings['clinic_name'] ?? 'Clínica Rejuvenezk';
+    $clinicName = $settings['clinic_name'] ?? 'Doctor Kevin Rejuvenezk';
     $publicDisk = \Illuminate\Support\Facades\Storage::disk('public');
     $normalizeMediaPath = function (?string $path): ?string {
         if ($path === null || trim($path) === '') {
@@ -105,7 +105,7 @@
                         <img src="{{ $clinicLogoUrl }}" alt="Logo de {{ $clinicName }}" class="brand-logo-mark">
                     </span>
                 @else
-                    <span class="brand-monogram">{{ $brandInitials ?: 'CR' }}</span>
+                    <span class="brand-monogram">{{ $brandInitials ?: 'DK' }}</span>
                 @endif
                 <span class="brand-copy">
                     <strong>{{ $clinicName }}</strong>
@@ -159,7 +159,7 @@
                         </figure>
                     @else
                         <div class="about-media-fallback about-story-fallback">
-                            <span>{{ $brandInitials ?: 'CR' }}</span>
+                            <span>{{ $brandInitials ?: 'DK' }}</span>
                             <small>{{ $clinicName }}</small>
                         </div>
                     @endif

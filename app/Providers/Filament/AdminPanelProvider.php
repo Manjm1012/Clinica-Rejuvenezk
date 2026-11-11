@@ -45,7 +45,7 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
-            ->brandName('Rejuvenezk Admin')
+            ->brandName('Doctor Kevin Rejuvenezk')
             ->brandLogo(fn (): ?string => $this->getBrandLogo())
             ->darkModeBrandLogo(fn (): ?string => $this->getBrandLogo())
             ->brandLogoHeight('2.5rem')

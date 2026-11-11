@@ -16,7 +16,7 @@ Para produccion en Dokploy no uses SQLite dentro del contenedor si esperas conse
 Configura al menos estas variables en `.env`:
 
 ```dotenv
-APP_NAME="Clinica Rejuvenezk"
+APP_NAME="Doctor Kevin Rejuvenezk"
 APP_ENV=production
 APP_DEBUG=false
 APP_URL=https://tu-dominio.com

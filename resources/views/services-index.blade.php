@@ -1,5 +1,5 @@
 @php
-    $clinicName = $settings['clinic_name'] ?? 'Clínica Rejuvenezk';
+    $clinicName = $settings['clinic_name'] ?? 'Doctor Kevin Rejuvenezk';
     $publicDisk = \Illuminate\Support\Facades\Storage::disk('public');
     $normalizeMediaPath = function (?string $path): ?string {
         if ($path === null || trim($path) === '') {

@@ -13,7 +13,7 @@ class ServiceController extends Controller
     {
         return view('services-index', [
             'settings' => [
-                'clinic_name' => SiteSetting::get('branding', 'clinic_name', 'Clínica Rejuvenezk'),
+                'clinic_name' => SiteSetting::get('branding', 'clinic_name', 'Doctor Kevin Rejuvenezk'),
                 'whatsapp_url' => SiteSetting::get('contact', 'whatsapp_url', ''),
                 'whatsapp_number' => SiteSetting::get('contact', 'whatsapp_number', ''),
                 'phone' => SiteSetting::get('contact', 'phone', ''),
@@ -36,7 +36,7 @@ class ServiceController extends Controller
         return view('service-show', [
             'service' => $service->load(['category', 'faqs', 'galleryItems']),
             'settings' => [
-                'clinic_name' => SiteSetting::get('branding', 'clinic_name', 'Clínica Rejuvenezk'),
+                'clinic_name' => SiteSetting::get('branding', 'clinic_name', 'Doctor Kevin Rejuvenezk'),
                 'whatsapp_url' => SiteSetting::get('contact', 'whatsapp_url', ''),
                 'whatsapp_number' => SiteSetting::get('contact', 'whatsapp_number', ''),
                 'phone' => SiteSetting::get('contact', 'phone', ''),

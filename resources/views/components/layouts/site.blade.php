@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $title ?? ($settings['clinic_name'] ?? 'Clínica Rejuvenezk') }}</title>
+    <title>{{ $title ?? ($settings['clinic_name'] ?? 'Doctor Kevin Rejuvenezk') }}</title>
     <meta name="description" content="Plataforma web comercializable para clínica estética con CRM y WhatsApp integrados.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +15,7 @@
 <body class="site-body">
     @php
         $publicDisk = \Illuminate\Support\Facades\Storage::disk('public');
-        $clinicName = $settings['clinic_name'] ?? 'Clínica Rejuvenezk';
+        $clinicName = $settings['clinic_name'] ?? 'Doctor Kevin Rejuvenezk';
         $topbarCtaLabel = $settings['topbar_cta_label'] ?? 'Agenda ahora';
         $whatsappRawUrl = trim((string) ($settings['whatsapp_url'] ?? ''));
         $whatsappDigits = preg_replace('/[^0-9]/', '', $settings['whatsapp_number'] ?? '');
@@ -63,7 +63,7 @@
                             <img src="{{ $publicDisk->url($logoPath) }}" alt="Logo de {{ $clinicName }}" class="brand-logo-mark">
                         </span>
                     @else
-                        <span class="brand-monogram">{{ $brandInitials ?: 'CR' }}</span>
+                        <span class="brand-monogram">{{ $brandInitials ?: 'DK' }}</span>
                     @endif
                     <span class="brand-copy">
                         <span class="brand-clinic-name">{{ $clinicName }}</span>
@@ -118,7 +118,7 @@
 
         <footer class="site-footer">
             <div>
-                <strong>{{ $settings['clinic_name'] ?? 'Clínica Rejuvenezk' }}</strong>
+                <strong>{{ $settings['clinic_name'] ?? 'Doctor Kevin Rejuvenezk' }}</strong>
                 <p>{{ $settings['address'] ?? '' }}</p>
             </div>
             <div>

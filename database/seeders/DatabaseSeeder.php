@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         $clinic = Clinic::query()->updateOrCreate([
             'slug' => 'clinica-rejuvenezk',
         ], [
-            'name' => 'Clinica Rejuvenezk',
+            'name' => 'Doctor Kevin Rejuvenezk',
             'logo_path' => 'branding/logos/logo-clinica.webp',
             'domain' => null,
             'timezone' => 'America/Bogota',
@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         foreach ([
-            ['group' => 'branding', 'key' => 'clinic_name', 'value' => 'Clínica Rejuvenezk', 'type' => 'string', 'label' => 'Nombre clínica'],
+            ['group' => 'branding', 'key' => 'clinic_name', 'value' => 'Doctor Kevin Rejuvenezk', 'type' => 'string', 'label' => 'Nombre clínica'],
             ['group' => 'branding', 'key' => 'hero_kicker', 'value' => 'Medicina estética avanzada', 'type' => 'string', 'label' => 'Etiqueta hero'],
             ['group' => 'branding', 'key' => 'hero_title', 'value' => 'Medicina estética y cirugía con enfoque premium', 'type' => 'string', 'label' => 'Título principal'],
             ['group' => 'branding', 'key' => 'hero_subtitle', 'value' => 'Una plataforma comercializable para clínicas estéticas con sitio web, CRM y WhatsApp integrados.', 'type' => 'text', 'label' => 'Subtítulo principal'],

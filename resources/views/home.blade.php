@@ -1,5 +1,5 @@
 @php
-    $clinicName = $settings['clinic_name'] ?? 'Clínica Rejuvenezk';
+    $clinicName = $settings['clinic_name'] ?? 'Doctor Kevin Rejuvenezk';
     $heroKicker = $settings['hero_kicker'] ?? 'Medicina estética avanzada';
     $heroTitle = $settings['hero_title'] ?? 'Rejuvenecimiento facial con resultados naturales.';
     $heroSubtitle = $settings['hero_subtitle'] ?? 'Tecnología avanzada, criterio médico y protocolos personalizados para armonizar tu rostro sin perder expresión.';
@@ -394,7 +394,7 @@
                         <img src="{{ $clinicLogoUrl }}" alt="Logo de {{ $clinicName }}" class="brand-logo-mark">
                     </span>
                 @else
-                    <span class="brand-monogram">{{ $brandInitials ?: 'CR' }}</span>
+                    <span class="brand-monogram">{{ $brandInitials ?: 'DK' }}</span>
                 @endif
                 <span class="brand-copy">
                     <strong>{{ $clinicName }}</strong>
@@ -512,7 +512,7 @@
                             </div>
                         @else
                             <div class="hero-portrait-fallback">
-                                <span>{{ $brandInitials ?: 'CR' }}</span>
+                                <span>{{ $brandInitials ?: 'DK' }}</span>
                             </div>
                         @endif
                     </div>

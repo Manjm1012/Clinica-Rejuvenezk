@@ -28,6 +28,6 @@ class Login extends BaseLogin
         return Clinic::query()
             ->where('is_active', true)
             ->orderBy('id')
-            ->value('name') ?? 'Clínica Rejuvenezk';
+            ->value('name') ?? 'Doctor Kevin Rejuvenezk';
     }
 }

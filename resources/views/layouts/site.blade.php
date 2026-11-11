@@ -1,5 +1,5 @@
 @php
-    $clinicName = $settings['clinic_name'] ?? 'Clínica Rejuvenezk';
+    $clinicName = $settings['clinic_name'] ?? 'Doctor Kevin Rejuvenezk';
     $doctorLine = $settings['doctor_name'] ?? 'Medicina estética facial y corporal';
     $topbarCtaLabel = $settings['topbar_cta_label'] ?? 'Agenda ahora';
     $whatsappRawUrl = trim((string) ($settings['whatsapp_url'] ?? ''));
@@ -34,7 +34,7 @@
         <header class="topbar">
             <div class="container topbar-inner">
                 <a href="{{ route('home') }}" class="brand brand-lockup" aria-label="Ir al inicio de {{ $clinicName }}">
-                    <span class="brand-monogram">{{ $brandInitials ?: 'CR' }}</span>
+                    <span class="brand-monogram">{{ $brandInitials ?: 'DK' }}</span>
                     <span class="brand-copy">
                         <strong>{{ $clinicName }}</strong>
                         <small>{{ $doctorLine }}</small>
@@ -89,7 +89,7 @@
 
         <footer class="site-footer">
             <div>
-                <strong>{{ $settings['clinic_name'] ?? 'Clínica Rejuvenezk' }}</strong>
+                <strong>{{ $settings['clinic_name'] ?? 'Doctor Kevin Rejuvenezk' }}</strong>
                 <p>{{ $settings['address'] ?? '' }}</p>
             </div>
             <div>
