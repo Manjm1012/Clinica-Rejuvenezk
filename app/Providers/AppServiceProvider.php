@@ -35,6 +35,30 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by(mb_strtolower((string) $request->input('email')) . '|' . $request->ip());
         });
 
+        // Portal del paciente: 5 intentos/min por IP y 5/min por identificador (correo o teléfono).
+        RateLimiter::for('patient-auth', function (Request $request) {
+            $response = fn () => back()
+                ->withInput($request->except('password', 'password_confirmation'))
+                ->withErrors(['login' => 'Demasiados intentos. Espera un minuto e inténtalo de nuevo.']);
+
+            $identifiers = array_filter([
+                $request->input('login'),
+                \App\Models\Patient::normalizeEmail($request->input('email')),
+                \App\Models\Patient::normalizePhone($request->input('phone')) ?: null,
+            ]);
+
+            $limits = [Limit::perMinute(5)->by('patient-auth-ip:' . $request->ip())->response($response)];
+
+            foreach ($identifiers as $identifier) {
+                $key = str_contains((string) $identifier, '@')
+                    ? \App\Models\Patient::normalizeEmail($identifier)
+                    : (\App\Models\Patient::normalizePhone($identifier) ?: mb_strtolower(trim((string) $identifier)));
+                $limits[] = Limit::perMinute(5)->by('patient-auth-id:' . sha1((string) $key))->response($response);
+            }
+
+            return $limits;
+        });
+
         RateLimiter::for('tayrai-webhook', function (Request $request) {
             return Limit::perMinute(60)->by($request->ip());
         });

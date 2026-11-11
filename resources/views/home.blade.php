@@ -402,7 +402,7 @@
         ];
     })->filter()->take(4)->values();
 
-    $dkDataPolicyUrl = \Illuminate\Support\Facades\Route::has('legal.data-policy') ? route('legal.data-policy') : '#';
+    $dkDataPolicyUrl = route('legal.data-policy');
 @endphp
 
 <!DOCTYPE html>
@@ -1003,7 +1003,10 @@
                     @endforeach
                 </div>
             @endif
-            <p>{{ $settings['phone'] ?: 'Atención comercial premium' }}</p>
+            <div class="dk-footer-meta">
+                <p>{{ $settings['phone'] ?: 'Atención comercial premium' }}</p>
+                <a href="{{ route('legal.data-policy') }}" class="dk-footer-legal">Política de datos</a>
+            </div>
         </div>
     </footer>
 </body>

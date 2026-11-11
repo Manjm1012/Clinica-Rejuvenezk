@@ -7,10 +7,10 @@ use App\Models\Doctor;
 use App\Models\GalleryItem;
 use App\Models\Service;
 use App\Models\ServiceCategory;
-use App\Models\SiteSetting;
 use App\Models\Stat;
 use App\Models\Technology;
 use App\Models\Testimonial;
+use App\Support\PublicSettings;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -27,53 +27,8 @@ class HomeController extends Controller
 
     private function pageData(): array
     {
-        $branding = array_merge([
-            'clinic_name' => 'Doctor Kevin Rejuvenezk',
-            'hero_kicker' => 'Medicina estética avanzada',
-            'hero_title' => 'Cirugía y medicina estética premium',
-            'hero_subtitle' => 'Valoración personalizada con médico certificado y resultados naturales, sin perder tu expresión.',
-            'hero_primary_cta' => 'Reservar valoración',
-            'hero_secondary_cta' => 'Ver tratamientos',
-            'hero_card_kicker' => 'Primera cita',
-            'hero_card_title' => 'Diagnóstico inteligente de piel',
-            'hero_card_text' => 'Análisis de calidad cutánea y plan estético por etapas para resultados armónicos y progresivos.',
-            'hero_stack_primary_label' => 'Protocolo estrella',
-            'hero_stack_secondary_label' => 'Especialista',
-            'services_kicker' => 'Nuestros tratamientos',
-            'services_title' => 'Tecnología, precisión y naturalidad',
-            'testimonials_kicker' => 'Resultados',
-            'testimonials_title' => 'Resultados y testimonios reales',
-            'social_kicker' => 'Comunidad Rejuvenezk',
-            'social_title' => 'Conecta con nuestras redes y canales',
-            'social_lead' => 'Comparte resultados, conoce casos reales y recibe novedades de nuestros tratamientos en tiempo real.',
-            'cta_kicker' => 'Agenda tu cita',
-            'cta_title' => 'Empieza hoy tu protocolo personalizado.',
-            'cta_body' => 'Atención presencial y seguimiento digital para una experiencia comercial ordenada.',
-            'topbar_cta_label' => 'Agenda ahora',
-            'cta_whatsapp_label' => 'WhatsApp',
-            'cta_email_label' => 'Solicitar información',
-            'home_banner_1_image' => '',
-            'home_banner_2_image' => '',
-            'home_banner_3_image' => '',
-        ], SiteSetting::group('branding'));
-
-        $contact = array_merge([
-            'whatsapp_url' => '',
-            'whatsapp_number' => '',
-            'phone' => '',
-            'email' => '',
-            'address' => '',
-        ], SiteSetting::group('contact'));
-
-        $social = array_merge([
-            'instagram_url' => '',
-            'facebook_url' => '',
-            'tiktok_url' => '',
-            'youtube_url' => '',
-        ], SiteSetting::group('social'));
-
         return [
-            'settings' => array_merge($branding, $contact, $social),
+            'settings' => PublicSettings::all(),
             'clinic' => Clinic::query()->where('is_active', true)->orderBy('id')->first(),
             'services' => Service::query()->where('is_active', true)->orderBy('sort_order')->get(),
             'serviceCategories' => ServiceCategory::query()

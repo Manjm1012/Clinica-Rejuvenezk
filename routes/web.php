@@ -3,6 +3,11 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\HomeBannersUploadController;
 use App\Http\Controllers\LeadController;
+use App\Http\Controllers\LegalController;
+use App\Http\Controllers\Patient\AuthController as PatientAuthController;
+use App\Http\Controllers\Patient\DashboardController as PatientDashboardController;
+use App\Http\Controllers\Patient\ProfileController as PatientProfileController;
+use App\Http\Middleware\AuthenticatePatient;
 use App\Http\Controllers\PublicMediaController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\TayraiWebhookController;
@@ -25,3 +30,19 @@ Route::post('/webhooks/tayrai', TayraiWebhookController::class)
 	->name('webhooks.tayrai');
 
 Route::middleware('auth')->post('/admin/home-banners/upload', HomeBannersUploadController::class)->name('admin.home-banners.upload');
+
+// Política de tratamiento de datos (Ley 1581 de 2012)
+Route::get('/politica-de-datos', LegalController::class)->name('legal.data-policy');
+
+// Portal del paciente (guard "patient")
+Route::get('/ingresar', [PatientAuthController::class, 'showLogin'])->name('patient.login');
+Route::post('/ingresar', [PatientAuthController::class, 'login'])->middleware('throttle:patient-auth')->name('patient.login.attempt');
+Route::get('/registro', [PatientAuthController::class, 'showRegister'])->name('patient.register');
+Route::post('/registro', [PatientAuthController::class, 'register'])->middleware('throttle:patient-auth')->name('patient.register.store');
+Route::post('/salir', [PatientAuthController::class, 'logout'])->name('patient.logout');
+
+Route::middleware(AuthenticatePatient::class)->group(function () {
+	Route::get('/mi-cuenta', PatientDashboardController::class)->name('patient.dashboard');
+	Route::get('/mi-cuenta/perfil', [PatientProfileController::class, 'edit'])->name('patient.profile');
+	Route::put('/mi-cuenta/perfil', [PatientProfileController::class, 'update'])->name('patient.profile.update');
+});

@@ -239,7 +239,10 @@
                     <small>{{ $doctor?->name ?: 'Direccion medica estetica' }}</small>
                 </div>
             </div>
-            <p>{{ $settings['phone'] ?: 'Atencion comercial premium' }}</p>
+            <div class="dk-footer-meta">
+                <p>{{ $settings['phone'] ?: 'Atencion comercial premium' }}</p>
+                <a href="{{ route('legal.data-policy') }}" class="dk-footer-legal">Política de datos</a>
+            </div>
         </div>
     </footer>
 

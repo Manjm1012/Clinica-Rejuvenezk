@@ -14,10 +14,11 @@ class Service extends Model
     protected $fillable = [
         'clinic_id', 'service_category_id', 'name', 'slug', 'short_description', 'description',
         'image_path', 'banner_path', 'whatsapp_text', 'is_featured', 'is_premium',
-        'is_active', 'sort_order', 'meta',
+        'is_active', 'sort_order', 'meta', 'renewal_interval_days',
     ];
 
     protected $casts = [
+        'renewal_interval_days' => 'integer',
         'is_featured' => 'boolean',
         'is_premium'  => 'boolean',
         'is_active'   => 'boolean',

@@ -132,6 +132,7 @@
             <div>
                 <p>{{ $settings['phone'] ?? '' }}</p>
                 <p>{{ $settings['email'] ?? '' }}</p>
+                <p><a href="{{ route('legal.data-policy') }}" class="dk-footer-legal">Política de datos</a></p>
             </div>
         </footer>
     </div>
