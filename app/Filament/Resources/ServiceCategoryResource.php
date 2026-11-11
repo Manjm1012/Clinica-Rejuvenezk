@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ServiceCategoryResource\Pages;
 use App\Models\ServiceCategory;
+use App\Support\AdminClinic;
+use Illuminate\Validation\Rules\Unique;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -24,7 +26,7 @@ class ServiceCategoryResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')->required()->maxLength(150),
-                Forms\Components\TextInput::make('slug')->required()->unique(ServiceCategory::class, 'slug', ignoreRecord: true)->maxLength(160),
+                Forms\Components\TextInput::make('slug')->required()->unique(ServiceCategory::class, 'slug', ignoreRecord: true, modifyRuleUsing: fn (Unique $rule) => $rule->where('clinic_id', AdminClinic::idOrNone()))->maxLength(160),
                 Forms\Components\TextInput::make('icon')->maxLength(100),
                 Forms\Components\Textarea::make('description')->columnSpanFull(),
                 Forms\Components\FileUpload::make('image_path')

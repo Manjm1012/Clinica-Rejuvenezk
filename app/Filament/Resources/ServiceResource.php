@@ -11,7 +11,9 @@ use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use App\Support\AdminClinic;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Unique;
 
 class ServiceResource extends Resource
 {
@@ -39,7 +41,8 @@ class ServiceResource extends Resource
                     Forms\Components\TextInput::make('slug')
                         ->label('URL amigable (slug)')
                         ->required()
-                        ->unique(Service::class, 'slug', ignoreRecord: true)
+                        // Único por clínica (el índice de BD es clinic_id + slug).
+                        ->unique(Service::class, 'slug', ignoreRecord: true, modifyRuleUsing: fn (Unique $rule) => $rule->where('clinic_id', AdminClinic::idOrNone()))
                         ->maxLength(220),
                     Forms\Components\Select::make('service_category_id')
                         ->label('Categoría')

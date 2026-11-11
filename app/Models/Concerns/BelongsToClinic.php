@@ -12,7 +12,8 @@ trait BelongsToClinic
     public static function bootBelongsToClinic(): void
     {
         static::addGlobalScope('clinic', function (Builder $builder): void {
-            if (app()->runningInConsole() || ! app()->bound(CurrentClinic::class)) {
+            // En consola (artisan, colas, seeders) no se filtra; en las pruebas sí, para validar el aislamiento.
+            if ((app()->runningInConsole() && ! app()->runningUnitTests()) || ! app()->bound(CurrentClinic::class)) {
                 return;
             }
 
