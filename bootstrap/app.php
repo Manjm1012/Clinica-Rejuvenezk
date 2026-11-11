@@ -24,6 +24,10 @@ return Application::configure(basePath: dirname(__DIR__))
             ResolveClinic::class,
         ]);
 
+        // No existe la ruta 'login' del guard web: los invitados van al login del panel Filament.
+        // (Las peticiones JSON siguen recibiendo 401; el portal del paciente usa AuthenticatePatient.)
+        $middleware->redirectGuestsTo(fn () => route('filament.admin.auth.login'));
+
         $middleware->api(append: [
             ResolveClinic::class,
         ]);
