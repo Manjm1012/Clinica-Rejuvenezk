@@ -76,6 +76,9 @@
         $settings['credential_badge_2'] ?? 'Protocolos estandarizados y trazables',
         $settings['credential_badge_3'] ?? 'Tecnología con enfoque médico-estético',
     ])->filter();
+    $dkWhatsappBookingUrl = $hasWhatsappLink
+        ? $whatsappUrl . (str_contains($whatsappUrl, '?') ? '&' : '?') . 'text=' . rawurlencode($settings['whatsapp_booking_text'] ?? 'Hola, quiero agendar una valoración')
+        : route('home') . '#formulario';
 @endphp
 
 <!DOCTYPE html>
@@ -93,7 +96,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="site-body landing-body about-page-body">
+<body class="site-body landing-body about-page-body dk-has-mobilebar">
     <div class="ambient ambient-left"></div>
     <div class="ambient ambient-right"></div>
 
@@ -117,6 +120,7 @@
                 <a href="{{ route('services.index') }}">Servicios</a>
                 <a href="{{ route('home') }}#resultados">Resultados</a>
                 <a href="{{ route('home') }}#contacto">Contacto</a>
+                @include('partials.dk-patient-nav-link')
             </nav>
             <div class="topbar-actions">
                 <a href="{{ $whatsappUrl }}" class="btn btn-outline topbar-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
@@ -144,6 +148,7 @@
                 <a href="{{ route('services.index') }}">Servicios</a>
                 <a href="{{ route('home') }}#resultados">Resultados</a>
                 <a href="{{ route('home') }}#contacto">Contacto</a>
+                @include('partials.dk-patient-nav-link')
             </nav>
             <a href="{{ $whatsappUrl }}" class="btn btn-primary mobile-nav-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
         </div>
@@ -237,5 +242,7 @@
             <p>{{ $settings['phone'] ?: 'Atencion comercial premium' }}</p>
         </div>
     </footer>
+
+    @include('partials.dk-contact-actions', ['clinicName' => $clinicName, 'bookingUrl' => $dkWhatsappBookingUrl, 'hasWhatsapp' => $hasWhatsappLink, 'phone' => $settings['phone'] ?? ''])
 </body>
 </html>

@@ -19,6 +19,13 @@ class LeadController extends Controller
             'message' => ['nullable', 'string', 'max:2000'],
             'service_id' => ['nullable', 'exists:services,id'],
             'source' => ['nullable', 'string', 'max:100'],
+        ], [
+            'name.required' => 'Escribe tu nombre.',
+            'name.max' => 'El nombre es demasiado largo.',
+            'phone.required' => 'Escribe tu número de WhatsApp o teléfono.',
+            'phone.max' => 'El teléfono es demasiado largo.',
+            'email.email' => 'Escribe un correo válido.',
+            'service_id.exists' => 'Selecciona un tratamiento de la lista.',
         ]);
 
         $service = isset($validated['service_id']) ? Service::find($validated['service_id']) : null;

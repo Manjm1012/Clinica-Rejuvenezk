@@ -12,7 +12,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="site-body">
+<body class="site-body dk-has-mobilebar">
     @php
         $publicDisk = \Illuminate\Support\Facades\Storage::disk('public');
         $clinicName = $settings['clinic_name'] ?? 'Doctor Kevin Rejuvenezk';
@@ -53,6 +53,12 @@
             ->take(2)
             ->map(fn ($segment) => strtoupper(substr($segment, 0, 1)))
             ->implode('');
+
+        // DK · WhatsApp con mensaje prellenado (o el formulario si no hay WhatsApp configurado).
+        $dkWhatsappText = $settings['whatsapp_booking_text'] ?? 'Hola, quiero agendar una valoración';
+        $dkWhatsappBookingUrl = $hasWhatsappLink
+            ? $whatsappUrl . (str_contains($whatsappUrl, '?') ? '&' : '?') . 'text=' . rawurlencode($dkWhatsappText)
+            : route('home') . '#formulario';
     @endphp
     <div class="site-shell">
         <header class="topbar">
@@ -76,6 +82,7 @@
                     <a href="{{ route('services.index') }}" class="{{ request()->routeIs('services.*') ? 'is-active' : '' }}">Servicios</a>
                     <a href="{{ route('home') }}#resultados">Resultados</a>
                     <a href="{{ route('home') }}#contacto">Contacto</a>
+                    @include('partials.dk-patient-nav-link')
                 </nav>
 
                 <div class="topbar-actions">
@@ -105,6 +112,7 @@
                     <a href="{{ route('services.index') }}" class="{{ request()->routeIs('services.*') ? 'is-active' : '' }}">Servicios</a>
                     <a href="{{ route('home') }}#resultados">Resultados</a>
                     <a href="{{ route('home') }}#contacto">Contacto</a>
+                    @include('partials.dk-patient-nav-link')
                 </nav>
                 <a href="{{ $whatsappUrl }}" class="btn btn-primary mobile-nav-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
             </div>
@@ -127,5 +135,7 @@
             </div>
         </footer>
     </div>
+
+    @include('partials.dk-contact-actions', ['clinicName' => $clinicName, 'bookingUrl' => $dkWhatsappBookingUrl, 'hasWhatsapp' => $hasWhatsappLink, 'phone' => $settings['phone'] ?? ''])
 </body>
 </html>

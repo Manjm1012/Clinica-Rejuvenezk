@@ -365,6 +365,44 @@
         ->filter()
         ->take(6)
         ->values();
+
+    // ===== DK · Rediseño (Fase 1) =====
+    $dkWhatsappText = $settings['whatsapp_booking_text'] ?? 'Hola, quiero agendar una valoración';
+    $dkWhatsappBookingUrl = $hasWhatsappLink
+        ? $whatsappUrl . (str_contains($whatsappUrl, '?') ? '&' : '?') . 'text=' . rawurlencode($dkWhatsappText)
+        : '#formulario';
+    $dkWhatsappLinkAttrs = $hasWhatsappLink ? 'target="_blank" rel="noopener noreferrer"' : '';
+
+    // Franja de confianza: estadísticas reales si existen; si no, textos editables en Ajustes (branding.trust_item_N).
+    $dkTrustIcons = ['shield', 'doctor', 'spark', 'heart'];
+    $dkTrustItems = $stats->isNotEmpty()
+        ? $stats->take(4)->values()->map(fn ($stat, $i) => ['value' => $stat->value, 'label' => $stat->label, 'icon' => $dkTrustIcons[$i % 4]])
+        : collect([
+            $settings['trust_item_1'] ?? 'Valoración sin costo',
+            $settings['trust_item_2'] ?? 'Atención por médico certificado',
+            $settings['trust_item_3'] ?? 'Resultados naturales',
+            $settings['trust_item_4'] ?? 'Seguimiento personalizado',
+        ])->filter(fn ($text) => trim((string) $text) !== '')->values()
+            ->map(fn ($text, $i) => ['value' => null, 'label' => $text, 'icon' => $dkTrustIcons[$i % 4]]);
+
+    // Antes/después: solo pares completos cuyas dos imágenes existen en el disco público.
+    $beforeAfter = $galleryItems->map(function ($item) use ($normalizeMediaPath, $publicDisk) {
+        $before = $normalizeMediaPath($item->before_image_path);
+        $after = $normalizeMediaPath($item->after_image_path);
+
+        if (! $before || ! $after || ! $publicDisk->exists($before) || ! $publicDisk->exists($after)) {
+            return null;
+        }
+
+        return [
+            'before' => $publicDisk->url($before),
+            'after' => $publicDisk->url($after),
+            'title' => $item->title ?: ($item->service?->name ?? 'Resultado'),
+            'label' => $item->service?->name,
+        ];
+    })->filter()->take(4)->values();
+
+    $dkDataPolicyUrl = \Illuminate\Support\Facades\Route::has('legal.data-policy') ? route('legal.data-policy') : '#';
 @endphp
 
 <!DOCTYPE html>
@@ -382,7 +420,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="site-body landing-body">
+<body class="site-body landing-body dk-has-mobilebar">
     <div class="ambient ambient-left"></div>
     <div class="ambient ambient-right"></div>
 
@@ -406,6 +444,7 @@
                 <a href="#servicios" class="is-active" data-nav-section="servicios">Servicios</a>
                 <a href="#resultados" data-nav-section="resultados">Resultados</a>
                 <a href="#contacto" data-nav-section="contacto">Contacto</a>
+                @include('partials.dk-patient-nav-link')
             </nav>
             <div class="topbar-actions">
                 <a href="{{ $whatsappUrl }}" class="btn btn-outline topbar-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
@@ -433,6 +472,7 @@
                 <a href="#servicios" class="is-active" data-nav-section="servicios">Servicios</a>
                 <a href="#resultados" data-nav-section="resultados">Resultados</a>
                 <a href="#contacto" data-nav-section="contacto">Contacto</a>
+                @include('partials.dk-patient-nav-link')
             </nav>
             <a href="{{ $whatsappUrl }}" class="btn btn-primary mobile-nav-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
         </div>
@@ -452,127 +492,90 @@
         @endforeach
     </aside>
 
-    <a href="{{ $whatsappUrl }}" class="whatsapp-fab" aria-label="Abrir WhatsApp de {{ $clinicName }}" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>
-        <span aria-hidden="true">WA</span>
-        <strong>WhatsApp</strong>
-    </a>
+    @include('partials.dk-contact-actions', ['clinicName' => $clinicName, 'bookingUrl' => $dkWhatsappBookingUrl, 'hasWhatsapp' => $hasWhatsappLink, 'phone' => $settings['phone'] ?? ''])
 
     <main id="inicio">
-        <!-- Banners Carousel -->
-        <section class="banners-carousel-wrap section">
-            <div class="banners-carousel" role="region" aria-label="Banners promocionales">
-                <div class="banners-carousel-inner">
-                    @foreach ($heroBanners as $index => $banner)
-                        <article class="banner-slide tone-{{ $index % 3 }}" data-slide="{{ $index }}">
-                            @if (!empty($banner['image']))
-                                <img src="{{ $banner['image'] }}" alt="{{ $banner['title'] }}" loading="{{ $index === 0 ? 'eager' : 'lazy' }}" onerror="this.remove()">
+        <section class="dk-hero" aria-labelledby="dk-hero-title">
+            <div class="container dk-hero-grid">
+                <div class="dk-hero-copy">
+                    <p class="kicker dk-hero-kicker">{{ $heroKicker }}</p>
+                    <h1 id="dk-hero-title" class="dk-hero-title">{{ $heroTitle }}</h1>
+                    <p class="dk-hero-subtitle">{{ $heroSubtitle }}</p>
+
+                    <div class="dk-hero-actions">
+                        <a href="#formulario" class="dk-btn-primary">{{ $heroPrimaryCta }}</a>
+                        <a href="{{ $dkWhatsappBookingUrl }}" class="dk-hero-wa" {!! $dkWhatsappLinkAttrs !!}>
+                            @if ($hasWhatsappLink)
+                                <span class="dk-hero-wa-icon">{!! $socialIcons['whatsapp'] !!}</span>
+                                Escríbenos por WhatsApp
+                            @else
+                                Déjanos tus datos y te llamamos
                             @endif
+                        </a>
+                    </div>
 
-                            <div class="banner-slide-overlay">
-                                <span>{{ $banner['kicker'] }}</span>
-                                <strong>{{ $banner['title'] }}</strong>
-                                <p>{{ $banner['text'] }}</p>
-                            </div>
-                        </article>
-                    @endforeach
+                    <a href="{{ route('about') }}" class="dk-doctor-chip">
+                        <span class="dk-doctor-chip-avatar" aria-hidden="true">
+                            @if ($doctorPhotoUrl)
+                                <img src="{{ $doctorPhotoUrl }}" alt="" loading="lazy">
+                            @else
+                                {{ $brandInitials ?: 'DK' }}
+                            @endif
+                        </span>
+                        <span class="dk-doctor-chip-copy">
+                            <strong>{{ $doctor?->name ?: $clinicName }}</strong>
+                            <small>{{ $doctor?->specialty ?: 'Medicina estética facial y corporal' }}</small>
+                        </span>
+                    </a>
                 </div>
 
-                @if ($heroBanners->count() > 1)
-                    <!-- Controls -->
-                    <button class="banner-control banner-prev" aria-label="Banner anterior">
-                        <span aria-hidden="true">‹</span>
-                    </button>
-                    <button class="banner-control banner-next" aria-label="Banner siguiente">
-                        <span aria-hidden="true">›</span>
-                    </button>
+                <figure class="dk-hero-media">
+                    @if ($doctorPhotoUrl)
+                        <img src="{{ $doctorPhotoUrl }}" alt="Foto de {{ $doctor?->name ?: $clinicName }}" class="dk-hero-photo" fetchpriority="high">
+                    @elseif ($heroBanners->first()['image'] ?? null)
+                        <img src="{{ $heroBanners->first()['image'] }}" alt="{{ $clinicName }}" class="dk-hero-photo" fetchpriority="high" onerror="this.remove()">
+                    @elseif ($clinicLogoUrl)
+                        <div class="dk-hero-fallback"><img src="{{ $clinicLogoUrl }}" alt="Logo de {{ $clinicName }}"></div>
+                    @else
+                        <div class="dk-hero-fallback" aria-hidden="true"><span>{{ $brandInitials ?: 'DK' }}</span></div>
+                    @endif
+                </figure>
+            </div>
+        </section>
 
-                    <!-- Indicators -->
-                    <div class="banner-indicators">
-                        @foreach ($heroBanners as $index => $banner)
-                            <button class="banner-indicator{{ $index === 0 ? ' active' : '' }}" data-index="{{ $index }}" aria-label="Ir a banner {{ $index + 1 }}" @if($index === 0) aria-current="true" @endif></button>
+        @if ($dkTrustItems->isNotEmpty())
+            <section class="dk-trust" aria-label="Por qué elegirnos">
+                <div class="container">
+                    <ul class="dk-trust-list">
+                        @foreach ($dkTrustItems as $item)
+                            <li class="dk-trust-item">
+                                <span class="dk-trust-icon" aria-hidden="true">
+                                    @switch($item['icon'])
+                                        @case('shield')
+                                            <svg viewBox="0 0 24 24" focusable="false"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Zm-1.2 13.6-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3Z"/></svg>
+                                            @break
+                                        @case('doctor')
+                                            <svg viewBox="0 0 24 24" focusable="false"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.4 0-8 2.2-8 5v2h16v-2c0-2.8-3.6-5-8-5Zm4.5 2.5h-1.5V15h-1.5v1.5H12V18h1.5v1.5H15V18h1.5v-1.5Z"/></svg>
+                                            @break
+                                        @case('spark')
+                                            <svg viewBox="0 0 24 24" focusable="false"><path d="M12 2l1.9 5.6L19.5 9.5l-5.6 1.9L12 17l-1.9-5.6L4.5 9.5l5.6-1.9L12 2Zm6.5 11 .9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6Z"/></svg>
+                                            @break
+                                        @default
+                                            <svg viewBox="0 0 24 24" focusable="false"><path d="M12 21s-7.5-4.6-9.4-9.3C1.3 8.4 3.3 5 6.7 5c2 0 3.3 1 4.3 2.4h2C14 6 15.3 5 17.3 5c3.4 0 5.4 3.4 4.1 6.7C19.5 16.4 12 21 12 21Z"/></svg>
+                                    @endswitch
+                                </span>
+                                <span class="dk-trust-copy">
+                                    @if ($item['value'])
+                                        <strong>{{ $item['value'] }}</strong>
+                                    @endif
+                                    <span>{{ $item['label'] }}</span>
+                                </span>
+                            </li>
                         @endforeach
-                    </div>
-                @endif
-            </div>
-        </section>
-
-        <section class="hero section container">
-            <aside class="hero-panel hero-panel-featured reveal reveal-2" aria-label="Resumen de experiencia {{ $clinicName }}">
-                <div class="hero-card landing-hero-card hero-portrait-card">
-                    <div class="hero-portrait-media">
-                        @if ($doctorPhotoUrl)
-                            <img src="{{ $doctorPhotoUrl }}" alt="Foto del doctor {{ $doctor?->name ?: $clinicName }}" loading="lazy" class="hero-portrait-image">
-                            <div class="hero-portrait-note">
-                                <strong>{{ $doctor?->name ?: $clinicName }}</strong>
-                                <span>{{ $doctor?->specialty ?: 'Medicina estética facial y corporal' }}</span>
-                            </div>
-                        @elseif ($clinicLogoUrl)
-                            <div class="hero-portrait-fallback hero-logo-fallback">
-                                <img src="{{ $clinicLogoUrl }}" alt="Logo de {{ $clinicName }}">
-                            </div>
-                        @else
-                            <div class="hero-portrait-fallback">
-                                <span>{{ $brandInitials ?: 'DK' }}</span>
-                            </div>
-                        @endif
-                    </div>
-                    <div class="hero-portrait-copy">
-                        <div class="hero-profile-kicker">
-                            <span>{{ $heroCardKicker }}</span>
-                        </div>
-                        <div class="hero-profile-identity">
-                            <h2>{{ $doctor?->name ?: $clinicName }}</h2>
-                            <p class="hero-profile-specialty">{{ $doctor?->specialty ?: 'Medicina estética facial y corporal' }}</p>
-                        </div>
-                        <div class="hero-profile-divider"></div>
-                        <div class="hero-portrait-body">
-                            <p class="hero-profile-summary">{{ $heroCardTitle }}</p>
-                            <details class="hero-bio-details">
-                                <summary>Ver historia completa</summary>
-                                <p class="hero-profile-bio">{!! nl2br(e($heroCardText)) !!}</p>
-                                <a href="{{ route('about') }}" class="hero-profile-link">Conocer trayectoria</a>
-                            </details>
-                        </div>
-                    </div>
+                    </ul>
                 </div>
-
-                <div class="hero-treatment-cta">
-                    <a href="{{ route('services.index', ['categoria' => 'facial']) }}#cat-facial" class="hero-treat-btn hero-treat-btn--primary">
-                        <span class="hero-treat-label">
-                            <strong>Tratamientos faciales</strong>
-                            <span>Armonización y rejuvenecimiento</span>
-                        </span>
-                        <span class="hero-treat-arrow">↗</span>
-                    </a>
-                    <a href="{{ route('services.index', ['categoria' => 'corporal']) }}#cat-corporal" class="hero-treat-btn hero-treat-btn--muted">
-                        <span class="hero-treat-label">
-                            <strong>Tratamientos corporales</strong>
-                            <span>Remodelación y estética corporal</span>
-                        </span>
-                        <span class="hero-treat-arrow">↗</span>
-                    </a>
-                </div>
-            </aside>
-
-            <div class="hero-copy hero-copy-compact reveal reveal-3">
-                <p class="kicker">{{ $heroKicker }}</p>
-                <h1>{{ $heroTitle }}</h1>
-                <p class="lead">{{ $heroSubtitle }}</p>
-                <p class="hero-editorial-note">{{ $heroEditorialNote }}</p>
-                <div class="hero-actions">
-                    <a href="#contacto" class="btn btn-primary">{{ $heroPrimaryCta }}</a>
-                    <a href="#servicios" class="btn btn-ghost">{{ $heroSecondaryCta }}</a>
-                </div>
-                <div class="hero-metrics">
-                    @foreach ($heroMetrics as $metric)
-                        <article>
-                            <strong>{{ $metric['value'] }}</strong>
-                            <span>{{ $metric['label'] }}</span>
-                        </article>
-                    @endforeach
-                </div>
-            </div>
-        </section>
+            </section>
+        @endif
 
         <section id="servicios" class="section section-soft section-beige">
             <div class="container reveal reveal-2">
@@ -583,6 +586,12 @@
                     </div>
                     <p class="section-intro service-intro">{{ $servicesLead }}</p>
                 </div>
+
+                <nav class="dk-svc-shortcuts" aria-label="Accesos rápidos a tratamientos">
+                    <a href="{{ route('services.index', ['categoria' => 'facial']) }}#cat-facial">Tratamientos faciales <span aria-hidden="true">→</span></a>
+                    <a href="{{ route('services.index', ['categoria' => 'corporal']) }}#cat-corporal">Tratamientos corporales <span aria-hidden="true">→</span></a>
+                    <a href="{{ route('services.index') }}">Ver catálogo completo <span aria-hidden="true">→</span></a>
+                </nav>
 
                 @if ($serviceCategories->count() > 1)
                     <div class="services-tabs" role="tablist" aria-label="Categorías de tratamientos">
@@ -623,9 +632,10 @@
                                         @endif
                                         <div class="svc-card-copy">
                                             <h3>{{ $service->name }}</h3>
-                                            <p>{{ $service->short_description ?: 'Tratamiento personalizado con enfoque medico, seguridad y resultados naturales.' }}</p>
-                                            <div class="svc-card-links">
+                                            <p>{{ \Illuminate\Support\Str::limit($service->short_description ?: 'Tratamiento personalizado con enfoque médico y resultados naturales.', 90) }}</p>
+                                            <div class="svc-card-links dk-svc-actions">
                                                 <a href="{{ route('services.show', $service) }}" class="svc-card-link">Ver detalle</a>
+                                                <a href="{{ $hasWhatsappLink ? $service->whatsapp_url : '#formulario' }}" class="dk-btn-agendar" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif aria-label="Agendar {{ $service->name }}">Agendar</a>
                                             </div>
                                         </div>
                                     </article>
@@ -664,9 +674,10 @@
                                         @endif
                                         <div class="svc-card-copy">
                                             <h3>{{ $service->name }}</h3>
-                                            <p>{{ $service->short_description ?: 'Tratamiento personalizado con enfoque medico, seguridad y resultados naturales.' }}</p>
-                                            <div class="svc-card-links">
+                                            <p>{{ \Illuminate\Support\Str::limit($service->short_description ?: 'Tratamiento personalizado con enfoque médico y resultados naturales.', 90) }}</p>
+                                            <div class="svc-card-links dk-svc-actions">
                                                 <a href="{{ route('services.show', $service) }}" class="svc-card-link">Ver detalle</a>
+                                                <a href="{{ $hasWhatsappLink ? $service->whatsapp_url : '#formulario' }}" class="dk-btn-agendar" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif aria-label="Agendar {{ $service->name }}">Agendar</a>
                                             </div>
                                         </div>
                                     </article>
@@ -686,6 +697,51 @@
                 @endforelse
             </div>
         </section>
+
+        @if ($beforeAfter->isNotEmpty())
+            <section id="antes-despues" class="section dk-ba" aria-labelledby="dk-ba-title">
+                <div class="container">
+                    <p class="kicker">{{ $settings['before_after_kicker'] ?? 'Antes y después' }}</p>
+                    <h2 id="dk-ba-title" class="section-title">{{ $settings['before_after_title'] ?? 'Cambios reales, resultados naturales' }}</h2>
+
+                    <div class="dk-ba-grid">
+                        @foreach ($beforeAfter as $pair)
+                            <figure class="dk-ba-item">
+                                <div class="dk-ba-slider" style="--dk-pos: 50%">
+                                    <img src="{{ $pair['after'] }}" alt="Después: {{ $pair['title'] }}" class="dk-ba-img dk-ba-after" loading="lazy">
+                                    <img src="{{ $pair['before'] }}" alt="Antes: {{ $pair['title'] }}" class="dk-ba-img dk-ba-before" loading="lazy">
+                                    <span class="dk-ba-tag dk-ba-tag-before" aria-hidden="true">Antes</span>
+                                    <span class="dk-ba-tag dk-ba-tag-after" aria-hidden="true">Después</span>
+                                    <span class="dk-ba-handle" aria-hidden="true"></span>
+                                    <input type="range" class="dk-ba-range" min="0" max="100" step="1" value="50"
+                                        aria-label="Deslizar para comparar antes y después: {{ $pair['title'] }}">
+                                </div>
+                                <figcaption>
+                                    <strong>{{ $pair['title'] }}</strong>
+                                    @if ($pair['label'] && $pair['label'] !== $pair['title'])
+                                        <span>{{ $pair['label'] }}</span>
+                                    @endif
+                                </figcaption>
+                            </figure>
+                        @endforeach
+                    </div>
+
+                    <p class="dk-ba-note">Los resultados pueden variar según cada paciente.</p>
+                </div>
+
+                <script>
+                    document.querySelectorAll('.dk-ba-range').forEach((range) => {
+                        const slider = range.closest('.dk-ba-slider');
+                        const update = () => {
+                            slider.style.setProperty('--dk-pos', range.value + '%');
+                            range.setAttribute('aria-valuetext', range.value + '% de la imagen de antes visible');
+                        };
+                        range.addEventListener('input', update);
+                        update();
+                    });
+                </script>
+            </section>
+        @endif
 
         <section id="resultados" class="section section-white">
             <div class="container reveal reveal-2">
@@ -822,6 +878,44 @@
             </div>
         </section>
 
+        <!-- Banners promocionales (carrusel; antes estaba arriba) -->
+        <section class="banners-carousel-wrap section dk-promos">
+            <div class="banners-carousel" role="region" aria-label="Banners promocionales">
+                <div class="banners-carousel-inner">
+                    @foreach ($heroBanners as $index => $banner)
+                        <article class="banner-slide tone-{{ $index % 3 }}" data-slide="{{ $index }}">
+                            @if (!empty($banner['image']))
+                                <img src="{{ $banner['image'] }}" alt="{{ $banner['title'] }}" loading="{{ $index === 0 ? 'eager' : 'lazy' }}" onerror="this.remove()">
+                            @endif
+
+                            <div class="banner-slide-overlay">
+                                <span>{{ $banner['kicker'] }}</span>
+                                <strong>{{ $banner['title'] }}</strong>
+                                <p>{{ $banner['text'] }}</p>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+
+                @if ($heroBanners->count() > 1)
+                    <!-- Controls -->
+                    <button class="banner-control banner-prev" aria-label="Banner anterior">
+                        <span aria-hidden="true">‹</span>
+                    </button>
+                    <button class="banner-control banner-next" aria-label="Banner siguiente">
+                        <span aria-hidden="true">›</span>
+                    </button>
+
+                    <!-- Indicators -->
+                    <div class="banner-indicators">
+                        @foreach ($heroBanners as $index => $banner)
+                            <button class="banner-indicator{{ $index === 0 ? ' active' : '' }}" data-index="{{ $index }}" aria-label="Ir a banner {{ $index + 1 }}" @if($index === 0) aria-current="true" @endif></button>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+        </section>
+
         <section id="contacto" class="section section-white cta-wrap">
             <div class="container contact-layout reveal reveal-2">
                 <div class="cta">
@@ -832,25 +926,56 @@
                         <p class="cta-note">{{ $ctaNote }}</p>
                     </div>
                     <div class="cta-actions">
-                        <a class="btn btn-primary" href="{{ $whatsappUrl }}" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $ctaWhatsappLabel }}</a>
+                        <a class="btn btn-primary" href="{{ $dkWhatsappBookingUrl }}" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $ctaWhatsappLabel }}</a>
                         <a class="btn btn-ghost" href="{{ !empty($settings['email']) ? 'mailto:' . $settings['email'] : '#formulario' }}">{{ $settings['email'] ?: $ctaEmailLabel }}</a>
                     </div>
                 </div>
 
-                <form id="formulario" method="POST" action="{{ route('leads.store') }}" class="contact-form landing-contact-form reveal reveal-3">
+                <form id="formulario" method="POST" action="{{ route('leads.store') }}" class="contact-form landing-contact-form dk-lead-form reveal reveal-3">
                     @csrf
                     <input type="hidden" name="source" value="website">
-                    <input type="text" name="name" placeholder="Nombre completo" value="{{ old('name') }}" required>
-                    <input type="text" name="phone" placeholder="WhatsApp / Telefono" value="{{ old('phone') }}" required>
-                    <input type="email" name="email" placeholder="Correo" value="{{ old('email') }}">
-                    <select name="service_id">
-                        <option value="">Tratamiento de interes</option>
-                        @foreach ($services as $service)
-                            <option value="{{ $service->id }}" @selected((string) old('service_id') === (string) $service->id)>{{ $service->name }}</option>
-                        @endforeach
-                    </select>
-                    <textarea name="message" rows="5" placeholder="Cuéntanos qué objetivo estético quieres trabajar">{{ old('message') }}</textarea>
-                    <button type="submit" class="btn btn-primary btn-submit">Enviar solicitud</button>
+
+                    <p class="dk-form-title">Solicita tu valoración</p>
+
+                    @if ($errors->any())
+                        <script>document.addEventListener('DOMContentLoaded', () => document.getElementById('formulario')?.scrollIntoView({ block: 'center' }));</script>
+                        <div class="dk-form-errors" role="alert">
+                            <p>Revisa los datos marcados:</p>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <div class="dk-field">
+                        <label for="lead-name">Nombre</label>
+                        <input id="lead-name" type="text" name="name" autocomplete="name" value="{{ old('name') }}" required maxlength="200"
+                            @error('name') aria-invalid="true" aria-describedby="lead-name-error" @enderror>
+                        @error('name')<p id="lead-name-error" class="dk-field-error">{{ $message }}</p>@enderror
+                    </div>
+
+                    <div class="dk-field">
+                        <label for="lead-phone">WhatsApp o teléfono</label>
+                        <input id="lead-phone" type="tel" name="phone" autocomplete="tel" inputmode="tel" value="{{ old('phone') }}" required maxlength="30"
+                            @error('phone') aria-invalid="true" aria-describedby="lead-phone-error" @enderror>
+                        @error('phone')<p id="lead-phone-error" class="dk-field-error">{{ $message }}</p>@enderror
+                    </div>
+
+                    <div class="dk-field">
+                        <label for="lead-service">Tratamiento de interés</label>
+                        <select id="lead-service" name="service_id">
+                            <option value="">Aún no lo sé / quiero asesoría</option>
+                            @foreach ($services as $service)
+                                <option value="{{ $service->id }}" @selected((string) old('service_id') === (string) $service->id)>{{ $service->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <button type="submit" class="dk-btn-primary dk-btn-block">Solicitar valoración</button>
+
+                    <p class="dk-form-legal">Al enviar aceptas nuestra <a href="{{ $dkDataPolicyUrl }}">política de tratamiento de datos</a>.</p>
                 </form>
             </div>
         </section>
