@@ -171,6 +171,29 @@ class PatientAdminTest extends TestCase
             ->assertCanNotSeeTableRecords([$vigente, $noAplica, $otraClinica, $toxinaVieja, $toxinaNueva]);
     }
 
+    public function test_tratamientos_sin_servicio_no_se_fusionan_entre_si(): void
+    {
+        $ana = $this->makePatient($this->clinic);
+
+        // Dos tratamientos SIN servicio del mismo paciente: ambos por renovar, ninguno "reemplaza" al otro.
+        $viejo = $this->makeTreatment($ana, ['performed_at' => '2026-01-01', 'next_due_at' => '2026-11-01']); // vencido
+        $nuevo = $this->makeTreatment($ana, ['performed_at' => '2026-10-01', 'next_due_at' => '2026-11-20']); // próximo
+
+        $currentIds = \App\Support\Renewals::currentTreatments($this->clinic->id)->pluck('id')->all();
+        $this->assertEqualsCanonicalizing([$viejo->id, $nuevo->id], $currentIds);
+
+        Livewire::test(RenewalsWidget::class)->assertCanSeeTableRecords([$viejo, $nuevo]);
+
+        // En cambio, con el mismo servicio sí cuenta solo el último.
+        $service = Service::query()->create(['clinic_id' => $this->clinic->id, 'name' => 'Toxina', 'slug' => 'toxina', 'renewal_interval_days' => 180]);
+        $a = $this->makeTreatment($ana, ['service_id' => $service->id, 'performed_at' => '2026-01-01']);
+        $b = $this->makeTreatment($ana, ['service_id' => $service->id, 'performed_at' => '2026-02-01']);
+
+        $currentIds = \App\Support\Renewals::currentTreatments($this->clinic->id)->pluck('id')->all();
+        $this->assertContains($b->id, $currentIds);
+        $this->assertNotContains($a->id, $currentIds);
+    }
+
     public function test_primer_tratamiento_convierte_el_lead_desde_filament(): void
     {
         $lead = Lead::query()->create(['clinic_id' => $this->clinic->id, 'name' => 'Ana', 'phone' => '3000000000', 'source' => 'website', 'status' => 'contacted']);
