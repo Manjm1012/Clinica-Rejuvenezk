@@ -335,6 +335,27 @@ class PatientPortalTest extends TestCase
         $this->assertNull($noAplica->due_date);
     }
 
+    public function test_renewal_status_usa_la_hora_de_colombia_y_no_utc(): void
+    {
+        // 19:30 en Bogotá = 00:30 del día siguiente en UTC.
+        Carbon::setTestNow(Carbon::parse('2026-11-10 19:30:00', 'America/Bogota'));
+        $this->assertSame('2026-11-11', Carbon::now('UTC')->toDateString());
+
+        $ana = $this->makePatient($this->clinic);
+        $venceHoy = $this->makeTreatment($ana, ['next_due_at' => '2026-11-10']);
+        $vencioAyer = $this->makeTreatment($ana, ['next_due_at' => '2026-11-09']);
+        $limiteProxima = $this->makeTreatment($ana, ['next_due_at' => '2026-12-10']); // hoy + 30 días en Bogotá
+
+        $this->assertSame('America/Bogota', PatientTreatment::timezoneForClinic($this->clinic->id));
+        $this->assertSame('proxima', $venceHoy->fresh()->renewal_status); // en UTC sería "vencido"
+        $this->assertSame('vencido', $vencioAyer->fresh()->renewal_status);
+        $this->assertSame('proxima', $limiteProxima->fresh()->renewal_status);
+
+        // El dashboard muestra el mismo estado.
+        $this->post('/ingresar', ['login' => 'ana@example.com', 'password' => 'secreta123']);
+        $this->get('/mi-cuenta')->assertOk()->assertSeeInOrder(['Renovar pronto', 'Vencido']);
+    }
+
     // ---------- Perfil ----------
 
     public function test_perfil_cambia_contrasena_solo_con_la_actual(): void

@@ -80,14 +80,44 @@ class PatientTreatment extends Model
                 return 'no_aplica';
             }
 
-            $today = Carbon::today();
+            // Se comparan fechas (Y-m-d) en la zona de la clínica, no en la del servidor (UTC).
+            $now = Carbon::now(static::timezoneForClinic($this->clinic_id));
+            $dueDay = $due->toDateString();
 
-            if ($due->lt($today)) {
+            if ($dueDay < $now->toDateString()) {
                 return 'vencido';
             }
 
-            return $due->lte($today->copy()->addDays(self::SOON_DAYS)) ? 'proxima' : 'vigente';
+            return $dueDay <= $now->copy()->addDays(self::SOON_DAYS)->toDateString() ? 'proxima' : 'vigente';
         });
+    }
+
+    public const DEFAULT_TIMEZONE = 'America/Bogota';
+
+    /** @var array<int, string> */
+    private static array $timezoneCache = [];
+
+    /** Zona horaria de la clínica (clinics.timezone) o America/Bogota; cacheada por petición. */
+    public static function timezoneForClinic(?int $clinicId): string
+    {
+        if (! $clinicId) {
+            return self::DEFAULT_TIMEZONE;
+        }
+
+        if (! isset(self::$timezoneCache[$clinicId])) {
+            $timezone = Clinic::query()->whereKey($clinicId)->value('timezone');
+            self::$timezoneCache[$clinicId] = $timezone && in_array($timezone, timezone_identifiers_list(), true)
+                ? $timezone
+                : self::DEFAULT_TIMEZONE;
+        }
+
+        return self::$timezoneCache[$clinicId];
+    }
+
+    /** Hoy (Y-m-d) en la zona de la clínica. */
+    public static function todayForClinic(?int $clinicId): string
+    {
+        return Carbon::now(static::timezoneForClinic($clinicId))->toDateString();
     }
 
     public const RENEWAL_LABELS = [
