@@ -41,6 +41,16 @@ class Patient extends Authenticatable
         ];
     }
 
+    protected static function booted(): void
+    {
+        // Si cambia el consentimiento (portal o Filament) y nadie fijó la fecha, se registra ahora.
+        static::saving(function (Patient $patient): void {
+            if ($patient->isDirty('marketing_consent') && ! $patient->isDirty('marketing_consent_at')) {
+                $patient->marketing_consent_at = now();
+            }
+        });
+    }
+
     /** Solo dígitos; quita el indicativo 57 si quedan 12 dígitos (móvil colombiano). */
     public static function normalizePhone(?string $phone): string
     {

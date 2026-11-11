@@ -134,6 +134,14 @@ class ServiceResource extends Resource
                         ->label('Orden de aparición')
                         ->numeric()
                         ->default(0),
+                    Forms\Components\TextInput::make('renewal_interval_days')
+                        ->label('Renovar cada (días)')
+                        ->helperText('Ej.: 180 para toxina botulínica; vacío si no aplica.')
+                        ->numeric()
+                        ->integer()
+                        ->minValue(1)
+                        ->maxValue(3650)
+                        ->nullable(),
                 ])->columns(2),
         ]);
     }

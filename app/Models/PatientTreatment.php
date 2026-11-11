@@ -39,6 +39,28 @@ class PatientTreatment extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        // El primer tratamiento de un paciente con lead vinculado convierte ese lead.
+        static::created(function (PatientTreatment $treatment): void {
+            $patient = Patient::query()->withoutGlobalScope('clinic')->find($treatment->patient_id);
+
+            if (! $patient?->lead_id) {
+                return;
+            }
+
+            $isFirst = static::query()->withoutGlobalScope('clinic')
+                ->where('patient_id', $patient->id)
+                ->count() === 1;
+
+            if ($isFirst) {
+                Lead::query()->withoutGlobalScope('clinic')
+                    ->whereKey($patient->lead_id)
+                    ->update(['status' => 'converted']);
+            }
+        });
+    }
+
     public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class);

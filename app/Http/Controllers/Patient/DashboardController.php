@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Patient;
 use App\Http\Controllers\Controller;
 use App\Models\PatientTreatment;
 use App\Support\PublicSettings;
+use App\Support\Renewals;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -27,7 +28,11 @@ class DashboardController extends Controller
             ->orderByDesc('id')
             ->get();
 
-        $renewUrls = $treatments
+        // Solo el último tratamiento de cada servicio cuenta para renovar; los anteriores quedan "Renovado".
+        $currentIds = Renewals::currentIds($treatments);
+        $current = $treatments->filter(fn (PatientTreatment $t) => in_array($t->id, $currentIds, true));
+
+        $renewUrls = $current
             ->filter(fn (PatientTreatment $t) => in_array($t->renewal_status, ['proxima', 'vencido'], true))
             ->mapWithKeys(function (PatientTreatment $t) use ($settings, $hasWhatsapp) {
                 if (! $hasWhatsapp) {
@@ -41,15 +46,16 @@ class DashboardController extends Controller
                 return [$t->id => $url];
             });
 
-        $nextRenewal = $treatments
+        $nextRenewal = $current
             ->filter(fn (PatientTreatment $t) => $t->due_date !== null)
-            ->sortBy(fn (PatientTreatment $t) => $t->due_date->timestamp)
+            ->sortBy(fn (PatientTreatment $t) => $t->due_date->toDateString())
             ->first();
 
         return view('patient.dashboard', [
             'settings' => $settings,
             'patient' => $patient,
             'treatments' => $treatments,
+            'currentIds' => $currentIds,
             'nextRenewal' => $nextRenewal,
             'renewUrls' => $renewUrls,
             'hasWhatsapp' => $hasWhatsapp,

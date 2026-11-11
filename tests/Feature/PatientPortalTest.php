@@ -7,8 +7,10 @@ use App\Models\Lead;
 use App\Models\Patient;
 use App\Models\PatientTreatment;
 use App\Models\Service;
+use App\Models\SiteSetting;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -311,8 +313,8 @@ class PatientPortalTest extends TestCase
 
     public function test_agendar_renovacion_abre_whatsapp_con_el_nombre_del_servicio(): void
     {
-        \App\Models\SiteSetting::query()->create(['clinic_id' => $this->clinic->id, 'group' => 'contact', 'key' => 'whatsapp_number', 'value' => '573001234567', 'type' => 'string']);
-        \Illuminate\Support\Facades\Cache::flush();
+        SiteSetting::query()->create(['clinic_id' => $this->clinic->id, 'group' => 'contact', 'key' => 'whatsapp_number', 'value' => '573001234567', 'type' => 'string']);
+        Cache::flush();
 
         $ana = $this->makePatient($this->clinic);
         $service = Service::query()->create(['clinic_id' => $this->clinic->id, 'name' => 'Toxina botulínica', 'slug' => 'toxina', 'renewal_interval_days' => 180, 'whatsapp_text' => 'Texto de catálogo']);
@@ -322,6 +324,21 @@ class PatientPortalTest extends TestCase
 
         $expected = 'https://wa.me/573001234567?text='.urlencode('Hola, quiero agendar la renovación de Toxina botulínica');
         $this->get('/mi-cuenta')->assertOk()->assertSee(e($expected), false)->assertDontSee('Texto de catálogo');
+    }
+
+    public function test_tratamiento_repetido_marca_el_anterior_como_renovado(): void
+    {
+        $ana = $this->makePatient($this->clinic);
+        $service = Service::query()->create(['clinic_id' => $this->clinic->id, 'name' => 'Toxina botulínica', 'slug' => 'toxina', 'renewal_interval_days' => 180]);
+        $this->makeTreatment($ana, ['service_id' => $service->id, 'performed_at' => '2026-01-01']); // vencería
+        $this->makeTreatment($ana, ['service_id' => $service->id, 'performed_at' => '2026-11-01']); // vigente
+
+        $this->post('/ingresar', ['login' => 'ana@example.com', 'password' => 'secreta123']);
+
+        $this->get('/mi-cuenta')->assertOk()
+            ->assertSee('Renovado')
+            ->assertDontSee('Vencido')
+            ->assertDontSee('Agendar renovación');
     }
 
     public function test_dashboard_vacio_muestra_mensaje_amable(): void

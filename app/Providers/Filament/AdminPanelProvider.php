@@ -54,6 +54,7 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Contenido del Sitio',
                 'Procedimientos',
+                'Pacientes',
                 'CRM & Leads',
                 'Configuración',
             ])

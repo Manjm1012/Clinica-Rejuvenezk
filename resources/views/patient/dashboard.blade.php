@@ -50,6 +50,7 @@
             <h2 id="dk-history-title" class="dk-section-title">Mis procedimientos</h2>
 
             @forelse ($treatments as $treatment)
+                @php($isCurrent = in_array($treatment->id, $currentIds, true))
                 @php($status = $treatment->renewal_status)
                 <article class="dk-treatment">
                     <div class="dk-treatment-main">
@@ -63,12 +64,16 @@
                         @if ($treatment->notes)
                             <p class="dk-treatment-notes">{{ $treatment->notes }}</p>
                         @endif
-                        @if ($treatment->due_date)
+                        @if ($isCurrent && $treatment->due_date)
                             <p class="dk-treatment-due">Renovar: {{ $fmtDate($treatment->due_date) }}</p>
                         @endif
                     </div>
                     <div class="dk-treatment-side">
-                        <span class="dk-badge dk-badge--{{ $status }}">{{ $labels[$status] }}</span>
+                        @if ($isCurrent)
+                            <span class="dk-badge dk-badge--{{ $status }}">{{ $labels[$status] }}</span>
+                        @else
+                            <span class="dk-badge dk-badge--no_aplica">Renovado</span>
+                        @endif
                         @if (isset($renewUrls[$treatment->id]))
                             <a href="{{ $renewUrls[$treatment->id] }}" class="dk-btn-agendar" {!! $linkAttrs !!}
                                 aria-label="Agendar renovación de {{ $treatment->service?->name ?? 'tratamiento' }}">Agendar renovación</a>
