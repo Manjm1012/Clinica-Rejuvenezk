@@ -102,17 +102,18 @@ class PatientPortalTest extends TestCase
 
         $lead = Lead::query()->findOrFail($patient->lead_id);
         $this->assertSame('portal_paciente', $lead->source);
+        $this->assertSame('new', $lead->status);
     }
 
-    public function test_registro_vincula_lead_existente_y_lo_convierte(): void
+    public function test_registro_vincula_lead_existente_sin_cambiar_su_estado(): void
     {
-        $lead = Lead::query()->create(['clinic_id' => $this->clinic->id, 'name' => 'Laura', 'phone' => '310 555 1234', 'source' => 'website']);
+        $lead = Lead::query()->create(['clinic_id' => $this->clinic->id, 'name' => 'Laura', 'phone' => '310 555 1234', 'source' => 'website', 'status' => 'contacted']);
 
         $this->post('/registro', $this->registrationData(['marketing_consent' => '1']))->assertRedirect(route('patient.dashboard'));
 
         $patient = Patient::query()->firstOrFail();
         $this->assertSame($lead->id, $patient->lead_id);
-        $this->assertSame('converted', $lead->fresh()->status);
+        $this->assertSame('contacted', $lead->fresh()->status);
         $this->assertTrue($patient->marketing_consent);
         $this->assertNotNull($patient->marketing_consent_at);
         $this->assertSame(1, Lead::query()->count());

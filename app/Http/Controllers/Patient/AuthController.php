@@ -197,9 +197,8 @@ class AuthController extends Controller
             ->first(fn (Lead $lead) => mb_strtolower((string) $lead->email) === $data['email']
                 || Patient::normalizePhone($lead->phone) === $data['phone']);
 
+        // Un lead existente conserva su estado: pasa a 'converted' cuando se registra su primer tratamiento.
         if ($lead) {
-            $lead->update(['status' => 'converted']);
-
             return $lead;
         }
 
@@ -209,7 +208,7 @@ class AuthController extends Controller
             'phone' => $data['phone'],
             'email' => $data['email'],
             'source' => 'portal_paciente',
-            'status' => 'converted',
+            'status' => 'new',
         ]);
     }
 }
