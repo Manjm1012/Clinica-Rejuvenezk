@@ -27,7 +27,11 @@ class LeadResource extends Resource
                 Forms\Components\TextInput::make('phone')->required()->maxLength(30),
                 Forms\Components\TextInput::make('email')->email()->maxLength(200),
                 Forms\Components\Select::make('status')->options(Lead::STATUSES)->required(),
-                Forms\Components\TextInput::make('source')->maxLength(100),
+                // La columna es NOT NULL: si se deja vacío se guarda 'website' (antes daba error 500).
+                Forms\Components\TextInput::make('source')
+                    ->maxLength(100)
+                    ->default('website')
+                    ->dehydrateStateUsing(fn (?string $state) => filled($state) ? $state : 'website'),
                 Forms\Components\Textarea::make('message')->columnSpanFull(),
                 Forms\Components\TextInput::make('tayrai_contact_id')->maxLength(255),
                 Forms\Components\TextInput::make('tayrai_lead_id')->maxLength(255),
