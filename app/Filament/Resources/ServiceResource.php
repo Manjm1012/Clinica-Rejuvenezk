@@ -35,9 +35,12 @@ class ServiceResource extends Resource
                         ->required()
                         ->maxLength(200)
                         ->live(onBlur: true)
-                        ->afterStateUpdated(fn (Forms\Set $set, ?string $state) =>
-                            $set('slug', Str::slug($state ?? ''))
-                        ),
+                        // El slug se genera solo al crear: al editar no se reescribe (cambiaría la URL pública).
+                        ->afterStateUpdated(function (Forms\Set $set, ?string $state, string $operation): void {
+                            if ($operation === 'create') {
+                                $set('slug', Str::slug($state ?? ''));
+                            }
+                        }),
                     Forms\Components\TextInput::make('slug')
                         ->label('URL amigable (slug)')
                         ->required()
