@@ -52,9 +52,14 @@ class Service extends Model
 
     public function getWhatsappUrlAttribute(): string
     {
+        return $this->whatsappUrlWithText($this->whatsapp_text ?? 'Hola! Estoy interesado/a en ' . $this->name);
+    }
+
+    /** Misma base que whatsapp_url (URL o número configurado) con otro mensaje prellenado. */
+    public function whatsappUrlWithText(string $text): string
+    {
         $rawUrl = trim((string) SiteSetting::get('contact', 'whatsapp_url', ''));
         $phone = SiteSetting::get('contact', 'whatsapp_number', '');
-        $text  = $this->whatsapp_text ?? 'Hola! Estoy interesado/a en ' . $this->name;
 
         if ($rawUrl !== '') {
             $separator = str_contains($rawUrl, '?') ? '&' : '?';

@@ -308,6 +308,21 @@ class PatientPortalTest extends TestCase
             ->assertDontSee('SECRETO-INTERNO-NO-MOSTRAR');
     }
 
+    public function test_agendar_renovacion_abre_whatsapp_con_el_nombre_del_servicio(): void
+    {
+        \App\Models\SiteSetting::query()->create(['clinic_id' => $this->clinic->id, 'group' => 'contact', 'key' => 'whatsapp_number', 'value' => '573001234567', 'type' => 'string']);
+        \Illuminate\Support\Facades\Cache::flush();
+
+        $ana = $this->makePatient($this->clinic);
+        $service = Service::query()->create(['clinic_id' => $this->clinic->id, 'name' => 'Toxina botulínica', 'slug' => 'toxina', 'renewal_interval_days' => 180, 'whatsapp_text' => 'Texto de catálogo']);
+        $this->makeTreatment($ana, ['service_id' => $service->id, 'performed_at' => '2026-01-01']); // vencido
+
+        $this->post('/ingresar', ['login' => 'ana@example.com', 'password' => 'secreta123']);
+
+        $expected = 'https://wa.me/573001234567?text='.urlencode('Hola, quiero agendar la renovación de Toxina botulínica');
+        $this->get('/mi-cuenta')->assertOk()->assertSee(e($expected), false)->assertDontSee('Texto de catálogo');
+    }
+
     public function test_dashboard_vacio_muestra_mensaje_amable(): void
     {
         $this->makePatient($this->clinic);

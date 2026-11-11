@@ -35,8 +35,8 @@ class DashboardController extends Controller
                 }
 
                 $url = $t->service
-                    ? $t->service->whatsapp_url
-                    : PublicSettings::whatsappLink($settings, 'Hola, quiero agendar la renovación de mi tratamiento.');
+                    ? $t->service->whatsappUrlWithText('Hola, quiero agendar la renovación de '.$t->service->name)
+                    : PublicSettings::whatsappLink($settings, 'Hola, quiero agendar la renovación de mi tratamiento');
 
                 return [$t->id => $url];
             });
