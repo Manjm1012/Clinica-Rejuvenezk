@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Lead;
+use App\Models\Testimonial;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -72,5 +74,16 @@ class SeederAdminTest extends TestCase
         $admin = User::query()->where('email', 'admin@localhost')->firstOrFail();
         $this->assertFalse(Hash::check('password', $admin->password));
         $this->assertFalse(User::query()->where('email', 'admin@rejuvenezk.test')->exists());
+    }
+
+    public function test_en_produccion_no_siembra_testimonios_ni_leads_de_ejemplo(): void
+    {
+        $this->app['env'] = 'production';
+        config(['seeding.admin_email' => 'gerencia@clinica.co', 'seeding.admin_password' => 'una-clave-muy-larga-123']);
+
+        $this->runSeeder();
+
+        $this->assertSame(0, Testimonial::query()->withoutGlobalScopes()->count());
+        $this->assertSame(0, Lead::query()->withoutGlobalScopes()->count());
     }
 }

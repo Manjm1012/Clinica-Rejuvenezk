@@ -13,6 +13,29 @@ use Illuminate\Support\Str;
  */
 class HomePage
 {
+    private const DEFAULT_SUBTITLE = 'Valoración personalizada con médico certificado y resultados naturales, sin perder tu expresión.';
+
+    /**
+     * Textos de demostración que sembraba la versión anterior del seeder y que no deben verlos los pacientes.
+     * Si siguen guardados tal cual, se reemplazan (la vista original ya hacía esto con el título).
+     */
+    private const DEMO_TEXTS = [
+        'Medicina estética y cirugía con enfoque premium' => 'Medicina estética y cirugía con enfoque médico',
+        'Una plataforma comercializable para clínicas estéticas con sitio web, CRM y WhatsApp integrados.' => self::DEFAULT_SUBTITLE,
+        'Atención presencial y seguimiento digital para una experiencia comercial ordenada.' => 'Atención presencial y seguimiento cercano después de cada tratamiento.',
+    ];
+
+    private static function publicText(?string $value, string $default): string
+    {
+        $value = trim((string) $value);
+
+        if ($value === '') {
+            return $default;
+        }
+
+        return self::DEMO_TEXTS[$value] ?? $value;
+    }
+
     public static function build(array $data): array
     {
         $settings = $data['settings'];
@@ -27,8 +50,8 @@ class HomePage
         return [
             'hero' => [
                 'kicker' => $settings['hero_kicker'] ?? 'Medicina estética avanzada',
-                'title' => $settings['hero_title'] ?? 'Rejuvenecimiento facial con resultados naturales.',
-                'subtitle' => Str::limit(trim((string) ($settings['hero_subtitle'] ?? '')), 210, '...'),
+                'title' => static::publicText($settings['hero_title'] ?? null, 'Rejuvenecimiento facial con resultados naturales.'),
+                'subtitle' => Str::limit(static::publicText($settings['hero_subtitle'] ?? null, self::DEFAULT_SUBTITLE), 210, '...'),
                 'primaryCta' => $settings['hero_primary_cta'] ?? 'Reservar valoración',
                 'image' => $doctorPhotoUrl,
             ],
@@ -55,7 +78,7 @@ class HomePage
             'resultsLead' => $settings['results_lead'] ?? 'Tratamientos, armonización y resultados reales en una sola mirada.',
             'ctaKicker' => $settings['cta_kicker'] ?? 'Agenda tu cita',
             'ctaTitle' => $settings['cta_title'] ?? 'Empieza tu valoración con una experiencia clara y personalizada.',
-            'ctaBody' => $settings['cta_body'] ?? 'Atención médica estética, seguimiento ordenado y una propuesta pensada para tus objetivos reales.',
+            'ctaBody' => static::publicText($settings['cta_body'] ?? null, 'Atención médica estética, seguimiento ordenado y una propuesta pensada para tus objetivos reales.'),
             'ctaNote' => $settings['cta_note'] ?? 'Respuesta por WhatsApp o correo con orientación inicial y siguientes pasos.',
             'ctaWhatsappLabel' => $settings['cta_whatsapp_label'] ?? 'WhatsApp',
             'ctaEmailLabel' => $settings['cta_email_label'] ?? 'Solicitar información',

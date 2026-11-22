@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
         $clinic = Clinic::query()->updateOrCreate([
             'slug' => 'clinica-rejuvenezk',
         ], [
-            'name' => 'Doctor Kevin Rejuvenezk',
+            'name' => 'Dr. Kevin Rejuvenezk',
             'logo_path' => 'branding/logos/logo-clinica.webp',
             'domain' => null,
             'timezone' => 'America/Bogota',
@@ -41,10 +41,10 @@ class DatabaseSeeder extends Seeder
         $this->seedAdmin($clinic);
 
         foreach ([
-            ['group' => 'branding', 'key' => 'clinic_name', 'value' => 'Doctor Kevin Rejuvenezk', 'type' => 'string', 'label' => 'Nombre clínica'],
+            ['group' => 'branding', 'key' => 'clinic_name', 'value' => 'Dr. Kevin Rejuvenezk', 'type' => 'string', 'label' => 'Nombre clínica'],
             ['group' => 'branding', 'key' => 'hero_kicker', 'value' => 'Medicina estética avanzada', 'type' => 'string', 'label' => 'Etiqueta hero'],
-            ['group' => 'branding', 'key' => 'hero_title', 'value' => 'Medicina estética y cirugía con enfoque premium', 'type' => 'string', 'label' => 'Título principal'],
-            ['group' => 'branding', 'key' => 'hero_subtitle', 'value' => 'Una plataforma comercializable para clínicas estéticas con sitio web, CRM y WhatsApp integrados.', 'type' => 'text', 'label' => 'Subtítulo principal'],
+            ['group' => 'branding', 'key' => 'hero_title', 'value' => 'Medicina estética y cirugía con enfoque médico', 'type' => 'string', 'label' => 'Título principal'],
+            ['group' => 'branding', 'key' => 'hero_subtitle', 'value' => 'Valoración personalizada con médico certificado y resultados naturales, sin perder tu expresión.', 'type' => 'text', 'label' => 'Subtítulo principal'],
             ['group' => 'branding', 'key' => 'hero_primary_cta', 'value' => 'Reservar valoración', 'type' => 'string', 'label' => 'CTA principal hero'],
             ['group' => 'branding', 'key' => 'hero_secondary_cta', 'value' => 'Ver tratamientos', 'type' => 'string', 'label' => 'CTA secundario hero'],
             ['group' => 'branding', 'key' => 'hero_card_kicker', 'value' => 'Primera cita', 'type' => 'string', 'label' => 'Etiqueta tarjeta hero'],
@@ -61,7 +61,7 @@ class DatabaseSeeder extends Seeder
             ['group' => 'branding', 'key' => 'social_lead', 'value' => 'Comparte resultados, conoce casos reales y recibe novedades de nuestros tratamientos en tiempo real.', 'type' => 'text', 'label' => 'Texto redes'],
             ['group' => 'branding', 'key' => 'cta_kicker', 'value' => 'Agenda tu cita', 'type' => 'string', 'label' => 'Etiqueta CTA final'],
             ['group' => 'branding', 'key' => 'cta_title', 'value' => 'Empieza hoy tu protocolo personalizado.', 'type' => 'string', 'label' => 'Título CTA final'],
-            ['group' => 'branding', 'key' => 'cta_body', 'value' => 'Atención presencial y seguimiento digital para una experiencia comercial ordenada.', 'type' => 'text', 'label' => 'Texto CTA final'],
+            ['group' => 'branding', 'key' => 'cta_body', 'value' => 'Atención presencial y seguimiento cercano después de cada tratamiento.', 'type' => 'text', 'label' => 'Texto CTA final'],
             ['group' => 'branding', 'key' => 'topbar_cta_label', 'value' => 'Agenda ahora', 'type' => 'string', 'label' => 'CTA topbar'],
             ['group' => 'branding', 'key' => 'cta_whatsapp_label', 'value' => 'WhatsApp', 'type' => 'string', 'label' => 'Texto botón WhatsApp'],
             ['group' => 'branding', 'key' => 'cta_email_label', 'value' => 'Solicitar información', 'type' => 'string', 'label' => 'Texto botón correo'],
@@ -358,7 +358,7 @@ class DatabaseSeeder extends Seeder
         $doctor = Doctor::query()->where('clinic_id', $clinic->id)->orderBy('id')->first() ?? new Doctor;
         $doctor->fill([
             'clinic_id' => $clinic->id,
-            'name' => 'Dr Kevin-Rejuvenezk',
+            'name' => 'Dr. Kevin Rejuvenezk',
             'specialty' => 'Medicina Estética Facial',
             'subtitle' => 'Armonización facial y procedimientos mínimamente invasivos',
             'photo_path' => 'doctors/doctor-kevin-perfil.jpg',
@@ -390,22 +390,24 @@ class DatabaseSeeder extends Seeder
             );
         }
 
-        Testimonial::query()->updateOrCreate(
-            ['clinic_id' => $clinic->id, 'patient_name' => 'Paciente Demo'],
-            [
-                'clinic_id' => $clinic->id,
-                'content' => 'Excelente atención, seguimiento y resultados. Este bloque también es editable desde Filament.',
-                'rating' => 5,
-                'source' => 'google',
-                'is_featured' => true,
-                'is_active' => true,
-            ],
-        );
+        // Datos de ejemplo SOLO en desarrollo: un testimonio ficticio en producción sería publicidad engañosa.
+        if (app()->environment(['local', 'testing'])) {
+            Testimonial::query()->updateOrCreate(
+                ['clinic_id' => $clinic->id, 'patient_name' => 'Ejemplo (solo desarrollo)'],
+                [
+                    'clinic_id' => $clinic->id,
+                    'content' => 'Testimonio de ejemplo para desarrollo local. No se crea en producción.',
+                    'rating' => 5,
+                    'is_featured' => true,
+                    'is_active' => true,
+                ],
+            );
 
-        Lead::query()->firstOrCreate(
-            ['clinic_id' => $clinic->id, 'phone' => '3000000000'],
-            ['clinic_id' => $clinic->id, 'name' => 'Lead Demo', 'email' => 'lead@example.com', 'status' => 'new', 'source' => 'website']
-        );
+            Lead::query()->firstOrCreate(
+                ['clinic_id' => $clinic->id, 'phone' => '3000000000'],
+                ['clinic_id' => $clinic->id, 'name' => 'Lead de ejemplo', 'email' => 'lead@example.com', 'status' => 'new', 'source' => 'website']
+            );
+        }
     }
 
     /**

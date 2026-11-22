@@ -6,8 +6,10 @@ use App\Models\Clinic;
 use App\Models\Doctor;
 use App\Models\Faq;
 use App\Models\Service;
+use App\Models\SiteSetting;
 use App\Models\Testimonial;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
 /**
@@ -108,5 +110,21 @@ class PublicSiteTest extends TestCase
         $this->get('/procedimientos/peeling')->assertOk()
             ->assertDontSee('editables desde Filament')
             ->assertSee('<meta name="description" content="Renueva la piel">', false);
+    }
+
+    public function test_los_textos_de_demostracion_no_llegan_al_paciente(): void
+    {
+        foreach ([
+            ['hero_title', 'Medicina estética y cirugía con enfoque premium'],
+            ['hero_subtitle', 'Una plataforma comercializable para clínicas estéticas con sitio web, CRM y WhatsApp integrados.'],
+        ] as [$key, $value]) {
+            $this->make(SiteSetting::class, ['group' => 'branding', 'key' => $key, 'value' => $value, 'type' => 'string']);
+        }
+        Cache::flush();
+
+        $this->get('/')->assertOk()
+            ->assertSee('Medicina estética y cirugía con enfoque médico')
+            ->assertDontSee('enfoque premium')
+            ->assertDontSee('comercializable');
     }
 }
