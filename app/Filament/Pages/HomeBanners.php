@@ -2,11 +2,14 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Concerns\AdminOnly;
 use App\Models\SiteSetting;
 use Filament\Pages\Page;
 
 class HomeBanners extends Page
 {
+    use AdminOnly;
+
     protected static ?string $navigationIcon = 'heroicon-o-photo';
 
     protected static ?string $navigationGroup = 'Configuración';

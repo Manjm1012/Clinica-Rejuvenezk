@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AdminOnly;
 use App\Filament\Resources\GalleryItemResource\Pages;
 use App\Models\GalleryItem;
 use Filament\Forms;
@@ -12,10 +13,14 @@ use Filament\Tables\Table;
 
 class GalleryItemResource extends Resource
 {
+    use AdminOnly;
+
     protected static ?string $model = GalleryItem::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
+
     protected static ?string $navigationGroup = 'Contenido del Sitio';
+
     protected static ?string $navigationLabel = 'Galería';
 
     public static function form(Form $form): Form

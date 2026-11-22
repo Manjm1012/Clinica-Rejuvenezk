@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Resources\LeadResource;
 use App\Filament\Resources\SiteSettingResource;
+use App\Filament\Resources\UserResource;
 use App\Models\Clinic;
 use App\Models\Lead;
 use App\Models\Service;
@@ -15,7 +17,7 @@ use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 /**
- * Correcciones de seguridad: aislamiento por clínica, medios, webhook y API.
+ * Correcciones de seguridad: aislamiento por clínica, medios, webhook, API y roles.
  */
 class SecurityHardeningTest extends TestCase
 {
@@ -155,6 +157,17 @@ class SecurityHardeningTest extends TestCase
 
         $this->assertSame(['id', 'name', 'email', 'clinic_id', 'role', 'is_super_admin'], array_keys($data));
         $this->assertNotNull(config('sanctum.expiration'));
+    }
+
+    // ---------- Roles ----------
+
+    public function test_recepcion_ve_crm_pero_no_configuracion(): void
+    {
+        $this->actingAs(User::factory()->create(['clinic_id' => $this->clinic->id, 'role' => User::ROLE_RECEPTION]));
+
+        $this->get(LeadResource::getUrl('index'))->assertOk();
+        $this->get(SiteSettingResource::getUrl('index'))->assertForbidden();
+        $this->get(UserResource::getUrl('index'))->assertForbidden();
     }
 
     public function test_los_secretos_no_se_muestran_en_ajustes(): void

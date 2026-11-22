@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AdminOnly;
 use App\Filament\Resources\DoctorResource\Pages;
 use App\Models\Doctor;
 use Filament\Forms;
@@ -12,10 +13,14 @@ use Filament\Tables\Table;
 
 class DoctorResource extends Resource
 {
+    use AdminOnly;
+
     protected static ?string $model = Doctor::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
+
     protected static ?string $navigationGroup = 'Contenido del Sitio';
+
     protected static ?string $navigationLabel = 'Doctor / Especialista';
 
     public static function form(Form $form): Form

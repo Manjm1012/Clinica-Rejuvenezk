@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AdminOnly;
 use App\Filament\Resources\TechnologyResource\Pages;
 use App\Models\Technology;
 use Filament\Forms;
@@ -12,10 +13,14 @@ use Filament\Tables\Table;
 
 class TechnologyResource extends Resource
 {
+    use AdminOnly;
+
     protected static ?string $model = Technology::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-cpu-chip';
+
     protected static ?string $navigationGroup = 'Contenido del Sitio';
+
     protected static ?string $navigationLabel = 'Tecnologías';
 
     public static function form(Form $form): Form

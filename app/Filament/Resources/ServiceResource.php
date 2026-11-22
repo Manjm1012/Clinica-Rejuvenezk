@@ -2,27 +2,36 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AdminOnly;
 use App\Filament\Resources\ServiceResource\Pages;
 use App\Models\Service;
 use App\Models\ServiceCategory;
+use App\Support\AdminClinic;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use App\Support\AdminClinic;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Unique;
 
 class ServiceResource extends Resource
 {
+    use AdminOnly;
+
     protected static ?string $model = Service::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-sparkles';
+
     protected static ?string $navigationGroup = 'Procedimientos';
+
     protected static ?string $navigationLabel = 'Servicios / Procedimientos';
+
     protected static ?int $navigationSort = 1;
+
     protected static ?string $modelLabel = 'Servicio';
+
     protected static ?string $pluralModelLabel = 'Servicios';
 
     public static function form(Form $form): Form
@@ -204,9 +213,9 @@ class ServiceResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListServices::route('/'),
+            'index' => Pages\ListServices::route('/'),
             'create' => Pages\CreateService::route('/create'),
-            'edit'   => Pages\EditService::route('/{record}/edit'),
+            'edit' => Pages\EditService::route('/{record}/edit'),
         ];
     }
 }
