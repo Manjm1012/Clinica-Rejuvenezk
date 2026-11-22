@@ -24,6 +24,8 @@ class SecurityHardeningTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected bool $medicalPanel = true;
+
     private Clinic $clinic;
 
     private Clinic $otherClinic;

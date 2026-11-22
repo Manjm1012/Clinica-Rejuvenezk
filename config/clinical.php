@@ -7,6 +7,13 @@
 */
 
 return [
+    /*
+    | Panel médico (/medico), historia clínica y fórmulas en el portal del paciente.
+    | Apagado por defecto: se activa SOLO tras la revisión médico-legal (ver DEPLOYMENT.md).
+    | Con false, /medico y las fórmulas del portal no existen (404) ni aparecen en menús.
+    */
+    'medical_panel_enabled' => (bool) env('MEDICAL_PANEL_ENABLED', false),
+
     'care_templates' => [
         'toxina' => [
             'label' => 'Toxina botulínica',

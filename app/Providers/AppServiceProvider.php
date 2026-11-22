@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\Patient;
+use App\Providers\Filament\DoctorPanelProvider;
+use App\Support\MedicalPanel;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -16,7 +18,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // El panel médico solo existe si está habilitado (sin proveedor no hay rutas: 404).
+        if (MedicalPanel::enabled()) {
+            $this->app->register(DoctorPanelProvider::class);
+        }
     }
 
     /**

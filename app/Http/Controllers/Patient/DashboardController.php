@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PatientTreatment;
 use App\Models\Prescription;
 use App\Models\ServiceRequest;
+use App\Support\MedicalPanel;
 use App\Support\PublicSettings;
 use App\Support\Renewals;
 use Illuminate\Http\Request;
@@ -67,7 +68,7 @@ class DashboardController extends Controller
         $openServiceIds = $requests->filter->isOpen()->pluck('service_id')->filter()->unique()->all();
 
         // Solo fórmulas emitidas o anuladas (los borradores del médico nunca llegan al portal).
-        $prescriptions = Prescription::query()->withoutGlobalScope('clinic')
+        $prescriptions = ! MedicalPanel::enabled() ? collect() : Prescription::query()->withoutGlobalScope('clinic')
             ->where('patient_id', $patient->getKey())
             ->whereIn('status', [Prescription::STATUS_ISSUED, Prescription::STATUS_ANNULLED])
             ->select(['id', 'patient_id', 'doctor_id', 'code', 'status', 'issued_at', 'valid_until'])

@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Concerns\AdminOnly;
 use App\Filament\Resources\DoctorResource\Pages;
 use App\Models\Doctor;
+use App\Support\MedicalPanel;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -43,6 +44,7 @@ class DoctorResource extends Resource
                 Forms\Components\TextInput::make('linkedin_url')->url()->maxLength(255),
                 Forms\Components\TextInput::make('instagram_url')->url()->maxLength(255),
                 Forms\Components\Section::make('Datos para la fórmula médica')
+                    ->visible(fn () => MedicalPanel::enabled())
                     ->description('Aparecen en las fórmulas que emite este médico.')
                     ->schema([
                         Forms\Components\TextInput::make('professional_registration')

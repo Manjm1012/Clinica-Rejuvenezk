@@ -264,6 +264,29 @@ Panel `/admin`:
 - Datos: no ejecutes `migrate:rollback` en produccion sin backup; restaura el dump si necesitas volver atras.
 ## Panel médico, roles y seguridad (noviembre 2026)
 
+### Panel médico: apagado por defecto
+
+El panel médico (`/medico`), la historia clínica, las fórmulas del portal del paciente y el rol **Médico** están detrás de la variable:
+
+```
+MEDICAL_PANEL_ENABLED=false   # valor por defecto
+```
+
+Con `false`:
+
+- `/medico`, sus recursos, `/formulas/{id}/imprimir` y `/mi-cuenta/formulas/{id}` **no existen** (responden 404).
+- El portal del paciente no muestra la sección de fórmulas.
+- En el admin no aparecen el rol Médico, el vínculo a un perfil de médico ni los datos de fórmula del médico.
+
+**Solo se activa (`true`) después de la revisión médico-legal**, que debe cubrir al menos:
+
+1. Las plantillas de indicaciones de `config/clinical.php`, revisadas y aprobadas por los médicos tratantes.
+2. El cumplimiento de la normativa de historia clínica y fórmula médica (Res. 1995 de 1999, Decreto 2200 de 2005, Ley 1581 de 2012), con un asesor legal.
+3. La política de respaldos y la custodia de `APP_KEY`.
+
+Para activarlo: define `MEDICAL_PANEL_ENABLED=true` y ejecuta `php artisan optimize:clear` y luego `php artisan config:cache && php artisan route:cache`. Las rutas se registran al arrancar, así que sin limpiar la caché el cambio no surte efecto.
+
+
 ### Antes del deploy
 
 1. **Respaldo de la base de datos.** Las migraciones nuevas solo agregan tablas y columnas, pero la historia clínica no se debe arriesgar.
@@ -288,7 +311,7 @@ Panel `/admin`:
 
 1. Admin → **Contenido del sitio → Médicos / Especialistas**: crea o edita el perfil (registro profesional y firma en PNG).
 2. Admin → **Configuración → Usuarios y roles**: crea el usuario con rol **Médico** y elige su perfil.
-3. El médico entra por **`/medico`**. Un administrador que también atiende pacientes puede tener perfil y entra a ambos paneles.
+3. Con `MEDICAL_PANEL_ENABLED=true`, el médico entra por **`/medico`**. Un administrador que también atiende pacientes puede tener perfil y entra a ambos paneles.
 
 | Rol | `/admin` | `/medico` |
 |---|---|---|

@@ -24,6 +24,8 @@ class AdminTeamTest extends TestCase
 {
     use CallsLivewireOverHttp, RefreshDatabase;
 
+    protected bool $medicalPanel = true;
+
     private Clinic $clinic;
 
     private User $admin;

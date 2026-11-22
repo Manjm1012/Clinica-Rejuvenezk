@@ -142,7 +142,7 @@
             @endforelse
         </section>
 
-        @if ($prescriptions->isNotEmpty())
+        @if (\App\Support\MedicalPanel::enabled() && $prescriptions->isNotEmpty())
             <section class="dk-history" aria-labelledby="dk-prescriptions-title">
                 <h2 id="dk-prescriptions-title" class="dk-section-title">Mis fórmulas e indicaciones</h2>
 

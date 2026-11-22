@@ -15,6 +15,8 @@ class CreateUser extends CreateRecord
     /** La clínica es siempre la del administrador; nunca se crea un super admin desde aquí. */
     protected function handleRecordCreation(array $data): Model
     {
+        UserResource::guardRole($data['role'] ?? null);
+
         $clinicId = AdminClinic::id();
         abort_unless($clinicId, 403, 'Tu usuario no tiene una clínica asignada.');
 

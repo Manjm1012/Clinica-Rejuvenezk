@@ -7,6 +7,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Models\Doctor;
 use App\Models\User;
 use App\Support\AdminClinic;
+use App\Support\MedicalPanel;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -15,6 +16,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Usuarios del equipo de la clínica: administradores, recepción y médicos.
@@ -62,11 +64,12 @@ class UserResource extends Resource
                     ->dehydrated(fn (?string $state) => filled($state))
                     ->helperText('Mínimo 10 caracteres. En edición, déjala vacía para no cambiarla.'),
                 Forms\Components\Select::make('role')->label('Rol')
-                    ->options(User::ROLES)->required()->default(User::ROLE_RECEPTION)->live()
-                    ->helperText('Administrador: todo el panel. Recepción: leads, citas, pacientes y solicitudes. Médico: solo el panel médico.'),
+                    ->options(fn () => MedicalPanel::enabled() ? User::ROLES : array_diff_key(User::ROLES, [User::ROLE_DOCTOR => true]))->required()->default(User::ROLE_RECEPTION)->live()
+                    ->helperText(fn () => 'Administrador: todo el panel. Recepción: leads, citas, pacientes y solicitudes.'.(MedicalPanel::enabled() ? ' Médico: solo el panel médico.' : '')),
             ])->columns(2),
 
             Forms\Components\Section::make('Perfil de médico')
+                ->visible(fn () => MedicalPanel::enabled())
                 ->description('Vincula la cuenta con el perfil del médico (Contenido del sitio → Doctores) para que pueda entrar a /medico. Un administrador que también atiende pacientes puede tener perfil.')
                 ->schema([
                     Forms\Components\Select::make('doctor_profile_id')
@@ -85,9 +88,21 @@ class UserResource extends Resource
         ]);
     }
 
+    /** Con el panel médico apagado no se puede asignar el rol Médico (aunque se manipule la petición). */
+    public static function guardRole(?string $role): void
+    {
+        if (! array_key_exists((string) $role, User::ROLES) || ($role === User::ROLE_DOCTOR && ! MedicalPanel::enabled())) {
+            throw ValidationException::withMessages(['data.role' => 'Rol no válido.']);
+        }
+    }
+
     /** Vincula (o desvincula) el perfil de médico elegido con la cuenta. */
     public static function syncDoctorProfile(User $user, mixed $doctorId): void
     {
+        if (! MedicalPanel::enabled()) {
+            return;
+        }
+
         Doctor::query()->withoutGlobalScope('clinic')
             ->where('user_id', $user->getKey())
             ->when($doctorId, fn (Builder $q) => $q->whereKeyNot($doctorId))

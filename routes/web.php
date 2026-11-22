@@ -13,6 +13,7 @@ use App\Http\Controllers\PublicMediaController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\TayraiWebhookController;
 use App\Http\Middleware\AuthenticatePatient;
+use App\Support\MedicalPanel;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/media/{path}', PublicMediaController::class)
@@ -56,12 +57,18 @@ Route::middleware(AuthenticatePatient::class)->group(function () {
     Route::get('/mi-cuenta/renovar/{treatment}', [PatientServiceRequestController::class, 'create'])->whereNumber('treatment')->name('patient.requests.create');
     Route::post('/mi-cuenta/renovar/{treatment}', [PatientServiceRequestController::class, 'store'])->whereNumber('treatment')->middleware('throttle:10,1')->name('patient.requests.store');
     Route::post('/mi-cuenta/solicitudes/{serviceRequest}/cancelar', [PatientServiceRequestController::class, 'cancel'])->whereNumber('serviceRequest')->name('patient.requests.cancel');
-
-    // Fórmulas e indicaciones emitidas por el médico.
-    Route::get('/mi-cuenta/formulas/{prescription}', [PrescriptionPrintController::class, 'patient'])->whereNumber('prescription')->name('patient.prescriptions.show');
 });
 
-// Fórmula imprimible para el equipo médico (sesión del panel).
-Route::middleware('auth')->get('/formulas/{prescription}/imprimir', [PrescriptionPrintController::class, 'staff'])
-    ->whereNumber('prescription')
-    ->name('prescriptions.print');
+// Fórmulas: solo existen con el panel médico habilitado (MEDICAL_PANEL_ENABLED); si no, 404.
+if (MedicalPanel::enabled()) {
+    // Fórmulas e indicaciones emitidas por el médico, vistas por el paciente dueño.
+    Route::middleware(AuthenticatePatient::class)
+        ->get('/mi-cuenta/formulas/{prescription}', [PrescriptionPrintController::class, 'patient'])
+        ->whereNumber('prescription')
+        ->name('patient.prescriptions.show');
+
+    // Fórmula imprimible para el equipo médico (sesión del panel).
+    Route::middleware('auth')->get('/formulas/{prescription}/imprimir', [PrescriptionPrintController::class, 'staff'])
+        ->whereNumber('prescription')
+        ->name('prescriptions.print');
+}

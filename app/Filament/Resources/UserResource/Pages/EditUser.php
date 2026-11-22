@@ -13,6 +13,8 @@ class EditUser extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
+        UserResource::guardRole($data['role'] ?? $record->role);
+
         $record->fill(collect($data)->only(['name', 'email', 'password', 'role'])->all());
         $record->save();
 

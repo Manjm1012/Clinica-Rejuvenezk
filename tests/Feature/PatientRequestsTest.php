@@ -25,6 +25,8 @@ class PatientRequestsTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected bool $medicalPanel = true;
+
     private Clinic $clinic;
 
     private Patient $ana;
