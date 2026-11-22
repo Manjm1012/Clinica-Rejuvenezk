@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\MigrationGuard;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -56,6 +57,11 @@ return new class extends Migration
 
     public function down(): void
     {
+        MigrationGuard::refuseIfHasData('2026_11_22_000300_create_service_requests_and_audit_logs', [
+            'service_requests' => null,
+            'audit_logs' => null,
+        ]);
+
         Schema::dropIfExists('audit_logs');
         Schema::dropIfExists('service_requests');
 

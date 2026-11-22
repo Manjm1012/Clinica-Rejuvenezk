@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\MigrationGuard;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -77,6 +78,12 @@ return new class extends Migration
 
     public function down(): void
     {
+        MigrationGuard::refuseIfHasData('2026_11_22_000200_create_clinical_records_tables', [
+            'consultations' => null,
+            'consultation_addenda' => null,
+            'prescriptions' => null,
+        ]);
+
         Schema::dropIfExists('prescription_items');
         Schema::dropIfExists('prescriptions');
         Schema::dropIfExists('consultation_addenda');

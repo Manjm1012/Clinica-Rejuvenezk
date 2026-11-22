@@ -347,3 +347,135 @@ Para activarlo: define `MEDICAL_PANEL_ENABLED=true` y ejecuta `php artisan optim
 
 - Envía `https://<tu-dominio>/sitemap.xml` en Google Search Console.
 - Páginas nuevas: `/resultados`, `/equipo-medico` y `/preguntas-frecuentes`.
+
+## Paso a producción: portal, roles, seguridad y marca (MariaDB 11.8)
+
+Esta sección reúne todo lo necesario para desplegar la rama `feat/doctor-kevin-portal` con `MEDICAL_PANEL_ENABLED=false`.
+
+### Variables de entorno nuevas o cambiadas
+
+| Variable | Para qué sirve | Valor por defecto | ¿Obligatoria? | Si falta |
+|---|---|---|---|---|
+| `APP_KEY` | **No es nueva, pero ahora es crítica**: cifra alergias, antecedentes, medicamentos, consultas y fórmulas. | — | **Sí, y no puede cambiar nunca** | Sin la misma clave, los datos clínicos cifrados quedan ilegibles. Para rotarla, usa `APP_PREVIOUS_KEYS`. |
+| `APP_NAME` | Nombre en correos y títulos internos. | `"Dr. Kevin Rejuvenezk"` (antes `"Clinica Rejuvenezk"`) | No | Se usa el valor anterior; la web toma el nombre de *Ajustes → branding.clinic_name*. |
+| `MEDICAL_PANEL_ENABLED` | Activa `/medico`, la historia clínica, las fórmulas del portal y el rol Médico. | `false` | No | Panel apagado (404). **Solo `true` tras la revisión médico-legal.** |
+| `TAYRAI_ENABLED` | Activa la sincronización de leads con TayrAI. Reemplaza el ajuste `tayrai.enabled`. | vacío → usa `tayrai.enabled` de la base | No | Se usa el valor de la base; si tampoco existe, la integración queda apagada. |
+| `TAYRAI_API_KEY` | Token de la API de TayrAI. Reemplaza el ajuste `tayrai.api_key`. | vacío → usa `tayrai.api_key` de la base | Solo si TayrAI está activo | El lead **se guarda igual**; no se envía al CRM y queda un aviso `warning` en el log (máximo uno por hora). |
+| `TAYRAI_WEBHOOK_SECRET` | Secreto HMAC para verificar el webhook. Reemplaza el ajuste `tayrai.webhook_secret`. | vacío → usa `tayrai.webhook_secret` de la base | Solo si TayrAI llama al webhook | El webhook responde **401** (nunca 500) y queda un aviso `warning` en el log. |
+| `TAYRAI_BASE_URL` | URL base de la API de TayrAI. | `https://api.tayrai.com/v1` | No | Se usa el valor por defecto (el mismo que estaba fijo en el código). |
+| `SANCTUM_EXPIRATION` | Minutos de vigencia de los tokens de la API móvil. | `43200` (30 días) | No | 30 días. Los tokens creados antes del deploy también vencen según su fecha de creación. |
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Solo para `php artisan db:seed` (administrador inicial). **No se usan en tiempo de ejecución.** | sin valor | Solo si ejecutas el seeder fuera de local | El seeder falla con un mensaje claro (en la terminal, no en la web). **No ejecutes el seeder en producción con datos reales**: no hace falta para este deploy. |
+
+**Valores de TayrAI guardados hoy en la base** (`site_settings`, grupo `tayrai`, claves `enabled`, `api_key` y `webhook_secret`):
+
+- **Ninguna migración los borra ni los modifica.** Se quedan como están.
+- La aplicación usa primero la variable de entorno; **si está vacía, usa el valor de la base**. Puedes desplegar sin definir las variables y TayrAI seguirá funcionando como hoy.
+- Las variables son **globales** (una sola cuenta de TayrAI para todas las clínicas). Si alguna vez tienes varias clínicas con cuentas distintas, deja las variables vacías y usa los ajustes por clínica.
+- La tabla de *Ajustes del sitio* ya no muestra esos valores (aparecen como `•••••••• (oculto)`).
+- Recomendado, una vez confirmado que TayrAI funciona con las variables: borra `tayrai.api_key` y `tayrai.webhook_secret` de *Ajustes del sitio*, para que el secreto viva solo en Dokploy.
+
+### Migraciones que correrán en producción
+
+`origin/main` no tiene estas cinco; todas son aditivas (crean tablas o agregan columnas):
+
+1. `2026_11_10_000100_rename_brand_to_doctor_kevin`: renombra `clinics.name` y `branding.clinic_name` solo si valen exactamente "Clínica Rejuvenezk", "Clinica Rejuvenezk" o "Doctor Kevin Rejuvenezk".
+2. `2026_11_10_000200_create_patients_tables`: `patients`, `patient_treatments` y `services.renewal_interval_days`.
+3. `2026_11_22_000100_add_roles_and_doctor_accounts`: `users.role` con valor por defecto `admin`. **Todos los usuarios existentes quedan como Administrador** (probado). También agrega columnas de médico y de datos clínicos del paciente.
+4. `2026_11_22_000200_create_clinical_records_tables`: consultas y fórmulas (vacías mientras el panel médico esté apagado).
+5. `2026_11_22_000300_create_service_requests_and_audit_logs`: solicitudes de renovación, auditoría, y `patient_id`/`doctor_id` (opcionales) en citas.
+
+Ninguna toca leads, servicios, galería, ajustes (salvo el nombre de marca), usuarios ni citas existentes.
+
+**Los `down()` que borrarían datos de pacientes están protegidos**: si las tablas tienen filas, el rollback se cancela con un mensaje. En producción **no se usa `migrate:rollback`**; se revierte el código (ver más abajo).
+
+### Prueba previa con el respaldo (recomendada)
+
+En una máquina con Docker, sin tocar producción:
+
+```bash
+docker run -d --name rejuv-prueba -p 127.0.0.1:3307:3306 \
+  -e MARIADB_ROOT_PASSWORD=prueba -e MARIADB_DATABASE=prueba mariadb:11.8
+# esperar a que acepte conexiones
+docker exec -i rejuv-prueba mariadb -uroot -pprueba prueba < mariadb.sql
+
+# Solo en esta terminal (no editar .env):
+export DB_CONNECTION=mariadb DB_HOST=127.0.0.1 DB_PORT=3307 DB_DATABASE=prueba DB_USERNAME=root DB_PASSWORD=prueba CACHE_STORE=array SESSION_DRIVER=file
+php artisan migrate:status
+php artisan migrate --force
+php artisan migrate:rollback --force   # lote nuevo, aún sin datos de pacientes
+php artisan migrate --force
+php artisan serve --port=8080           # entrar a /admin con el usuario existente
+
+docker rm -f rejuv-prueba               # limpiar al terminar
+```
+
+### Orden de despliegue en Dokploy
+
+**Antes del deploy**
+
+1. Confirma que el servicio de la app tiene `APP_KEY` y que **no la cambiarás**. Guarda una copia en un gestor de secretos.
+2. Haz un **respaldo** de la base de producción y descárgalo:
+   ```bash
+   mariadb-dump --single-transaction --routines --triggers -h <host> -u <usuario> -p <base> > respaldo-antes-portal-$(date +%F).sql
+   ```
+   Respalda también los volúmenes `storage/app/public` (y `storage/app/private` si ya existe).
+3. (Recomendado) Ejecuta la **prueba previa con el respaldo** de la sección anterior.
+4. En Dokploy → *Environment*, agrega:
+   ```dotenv
+   MEDICAL_PANEL_ENABLED=false
+   SANCTUM_EXPIRATION=43200
+   APP_NAME="Dr. Kevin Rejuvenezk"
+   # Opcional: si las defines, tienen prioridad sobre Ajustes del sitio
+   TAYRAI_ENABLED=
+   TAYRAI_API_KEY=
+   TAYRAI_WEBHOOK_SECRET=
+   ```
+   Comprueba `APP_ENV=production` y `APP_DEBUG=false`. No agregues `ADMIN_EMAIL`/`ADMIN_PASSWORD`: no se usan en este deploy.
+5. En Dokploy → *Volumes*, agrega un volumen persistente para **`storage/app/private`**: ahí quedan las firmas de los médicos y las subidas temporales. Mantén el de `storage/app/public`.
+6. Anota el commit que está desplegado hoy (`origin/main` = `efad3b7`) para un posible rollback.
+
+**Durante el deploy**
+
+7. Despliega la rama o commit nuevo. El *Build Command* no cambia (`composer install … && npm ci && npm run build`).
+8. El post-deploy (`composer run deploy`) ejecuta, en este orden: `migrate --force`, `storage:link`, `optimize:clear`, `filament:upgrade`, `config:cache`, `route:cache` y `view:cache`. Revisa en el log del deploy que las **5 migraciones** aparezcan como `DONE`.
+   Si tu servicio no ejecuta el post-deploy, lánzalo a mano desde la terminal del contenedor:
+   ```bash
+   php artisan migrate --force
+   php artisan optimize:clear && php artisan config:cache && php artisan route:cache && php artisan view:cache
+   ```
+9. Mientras se ejecutan las migraciones (unos segundos), el login de `/admin` puede fallar porque `users.role` todavía no existe. Se normaliza solo al terminar.
+
+**Después del deploy**
+
+10. Terminal del contenedor:
+    ```bash
+    php artisan migrate:status | tail -6                  # las 5 nuevas en "Ran"
+    php artisan tinker --execute="echo App\Models\User::query()->pluck('role','email');"   # todos 'admin'
+    php artisan route:list --path=medico                  # sin rutas (panel apagado)
+    ```
+11. Navegador:
+    - `/up` responde 200.
+    - En la portada, el título y la marca dicen "Dr. Kevin Rejuvenezk"; los servicios, la galería y los testimonios muestran sus datos.
+    - `/medico` responde **404**.
+    - `/admin`: entra con el administrador de siempre. Ves todo el menú (Contenido, Procedimientos, Pacientes, CRM y Configuración → *Usuarios y roles*, *Auditoría*) y los leads, servicios, ajustes y galería existentes.
+    - `/sitemap.xml` es válido. `/ingresar` y `/registro` cargan.
+12. Envía un lead de prueba desde el formulario: aparece en *Leads*. Si TayrAI está activo, revisa que se sincronice y que el log no tenga avisos `TayrAI…`:
+    ```bash
+    grep -i "tayrai" storage/logs/laravel.log | tail
+    ```
+13. Desactiva desde el admin el testimonio de ejemplo "Paciente Demo" si existe.
+14. Envía `https://<tu-dominio>/sitemap.xml` en Google Search Console.
+
+### Revertir solo el código (sin borrar datos de pacientes)
+
+**No uses `php artisan migrate:rollback` en producción**: borraría tablas. Los `down()` con datos de pacientes se niegan, pero aun así no es la vía.
+
+0. **Antes de revertir**: si creaste usuarios con rol *Recepción* o *Médico*, quítales el acceso (cambia su clave o elimínalos desde *Usuarios y roles*). El código anterior no conoce los roles y les daría acceso completo al panel. Lista de afectados:
+   ```bash
+   php artisan tinker --execute="echo App\Models\User::query()->where('role','!=','admin')->pluck('email');"
+   ```
+1. En Dokploy, vuelve a desplegar el commit anterior (`efad3b7`) o la imagen anterior (*Deployments → Rollback*).
+2. En la terminal del contenedor: `php artisan optimize:clear && php artisan config:cache && php artisan route:cache && php artisan view:cache`.
+3. Las tablas y columnas nuevas **se quedan en la base** y el código anterior las ignora. Son compatibles: `users.role` y las columnas nuevas de citas tienen valores por defecto o aceptan nulos. Los pacientes, solicitudes y la auditoría siguen guardados para cuando se vuelva a desplegar la versión nueva.
+4. El nombre de marca ya renombrado se queda; si hace falta, se cambia desde *Ajustes*.
+5. Solo si hubiera corrupción de datos: restaura el respaldo del paso 2 (pierdes lo creado después del deploy).

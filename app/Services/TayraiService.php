@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Lead;
 use App\Models\SiteSetting;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -157,6 +158,9 @@ class TayraiService
     {
         $secret = (string) (config('services.tayrai.webhook_secret') ?: SiteSetting::get('tayrai', 'webhook_secret', ''));
         if (! $secret) {
+            // Sin secreto no se puede verificar: se rechaza (401) y se avisa, nunca un 500.
+            static::warnOnce('webhook_secret', 'Webhook de TayrAI rechazado: falta TAYRAI_WEBHOOK_SECRET (ni en .env ni en Ajustes del sitio).');
+
             return false;
         }
 
@@ -195,6 +199,27 @@ class TayraiService
 
     private function isReady(): bool
     {
-        return $this->enabled && ! empty($this->apiKey);
+        if ($this->enabled && empty($this->apiKey)) {
+            // Habilitada pero sin clave: el lead se guarda igual en la app; solo no se envía al CRM.
+            static::warnOnce('api_key', 'TayrAI está habilitado pero falta TAYRAI_API_KEY (ni en .env ni en Ajustes del sitio): los leads no se sincronizan.');
+
+            return false;
+        }
+
+        return $this->enabled;
+    }
+
+    /** Aviso en el log como máximo una vez por hora por motivo (no inunda el log en cada lead). */
+    private static function warnOnce(string $reason, string $message): void
+    {
+        try {
+            $first = Cache::add('tayrai:config-warning:'.$reason, true, now()->addHour());
+        } catch (\Throwable) {
+            $first = true; // si la caché falla, se registra igual
+        }
+
+        if ($first) {
+            Log::warning($message);
+        }
     }
 }
