@@ -16,7 +16,7 @@ Para produccion en Dokploy no uses SQLite dentro del contenedor si esperas conse
 Configura al menos estas variables en `.env`:
 
 ```dotenv
-APP_NAME="Doctor Kevin Rejuvenezk"
+APP_NAME="Dr. Kevin Rejuvenezk"
 APP_ENV=production
 APP_DEBUG=false
 APP_URL=https://tu-dominio.com
@@ -195,7 +195,7 @@ Cron para scheduler:
 
 ## Portal del paciente y nombre de marca
 
-Esta version agrega el portal de pacientes (`/ingresar`, `/registro`, `/mi-cuenta`), la politica de datos (`/politica-de-datos`), la gestion de pacientes en Filament y el aislamiento por clinica en todo el panel. Tambien renombra la marca a "Doctor Kevin Rejuvenezk".
+Esta version agrega el portal de pacientes (`/ingresar`, `/registro`, `/mi-cuenta`), la politica de datos (`/politica-de-datos`), la gestion de pacientes en Filament y el aislamiento por clinica en todo el panel. Tambien renombra la marca a "Dr. Kevin Rejuvenezk".
 
 ### Antes del primer deploy con estos cambios
 
@@ -212,7 +212,7 @@ Esta version agrega el portal de pacientes (`/ingresar`, `/registro`, `/mi-cuent
 
 | Migracion | Que hace | Reversion |
 |---|---|---|
-| `2026_11_10_000100_rename_brand_to_doctor_kevin` | Cambia `clinics.name` y el ajuste `branding.clinic_name` solo si valen exactamente "Clinica/Clínica Rejuvenezk" e invalida su cache. | `down()` no hace nada a proposito; el nombre se cambia desde Filament. |
+| `2026_11_10_000100_rename_brand_to_doctor_kevin` | Cambia `clinics.name` y el ajuste `branding.clinic_name` solo si valen exactamente "Clinica Rejuvenezk", "Clínica Rejuvenezk" o "Doctor Kevin Rejuvenezk" (los pasa a "Dr. Kevin Rejuvenezk") e invalida su cache. | `down()` no hace nada a proposito; el nombre se cambia desde Filament. |
 | `2026_11_10_000200_create_patients_tables` | Crea `patients` y `patient_treatments` y agrega `services.renewal_interval_days`. | `down()` borra ambas tablas: **se pierden los pacientes**. Restaura desde el backup en su lugar. |
 
 `docker-entrypoint.sh` **no** ejecuta migraciones. Deben correr con el comando post-deploy:

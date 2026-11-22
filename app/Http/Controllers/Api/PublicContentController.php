@@ -17,7 +17,7 @@ class PublicContentController extends Controller
     {
         return response()->json([
             'branding' => [
-                'clinic_name' => SiteSetting::get('branding', 'clinic_name', 'Doctor Kevin Rejuvenezk'),
+                'clinic_name' => SiteSetting::get('branding', 'clinic_name', 'Dr. Kevin Rejuvenezk'),
                 'hero_title' => SiteSetting::get('branding', 'hero_title', ''),
                 'hero_subtitle' => SiteSetting::get('branding', 'hero_subtitle', ''),
             ],

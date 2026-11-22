@@ -5,14 +5,15 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Renombra la marca "Clínica Rejuvenezk" → "Doctor Kevin Rejuvenezk" en los datos ya guardados.
+ * Renombra la marca "Clínica Rejuvenezk" / "Doctor Kevin Rejuvenezk" → "Dr. Kevin Rejuvenezk" en los datos ya guardados.
+ * (El nombre del archivo se conserva: es el identificador de la migración.)
  * Solo toca filas cuyo valor sea EXACTAMENTE el nombre anterior (no afecta otras clínicas).
  */
 return new class extends Migration
 {
-    private const OLD_NAMES = ['Clínica Rejuvenezk', 'Clinica Rejuvenezk'];
+    private const OLD_NAMES = ['Clínica Rejuvenezk', 'Clinica Rejuvenezk', 'Doctor Kevin Rejuvenezk'];
 
-    private const NEW_NAME = 'Doctor Kevin Rejuvenezk';
+    private const NEW_NAME = 'Dr. Kevin Rejuvenezk';
 
     public function up(): void
     {

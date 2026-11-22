@@ -36,13 +36,30 @@ class BrandRenameMigrationTest extends TestCase
 
         (require database_path('migrations/2026_11_10_000100_rename_brand_to_doctor_kevin.php'))->up();
 
-        $this->assertSame('Doctor Kevin Rejuvenezk', $clinic->fresh()->name);
+        $this->assertSame('Dr. Kevin Rejuvenezk', $clinic->fresh()->name);
         $this->assertSame('Clínica Bella Piel', $other->fresh()->name);
-        $this->assertSame('Doctor Kevin Rejuvenezk', DB::table('site_settings')->where('clinic_id', $clinic->id)->value('value'));
+        $this->assertSame('Dr. Kevin Rejuvenezk', DB::table('site_settings')->where('clinic_id', $clinic->id)->value('value'));
         $this->assertSame('Clínica Bella Piel', DB::table('site_settings')->where('clinic_id', $other->id)->value('value'));
 
         $this->assertFalse(Cache::has("setting:{$clinic->id}:branding:clinic_name"));
         $this->assertFalse(Cache::has("settings_group:{$clinic->id}:branding"));
         $this->assertTrue(Cache::has("setting:{$other->id}:branding:clinic_name"));
+    }
+
+    public function test_tambien_renombra_doctor_kevin_y_no_toca_valores_parecidos(): void
+    {
+        $clinic = Clinic::query()->orderBy('id')->firstOrFail();
+        $similar = Clinic::query()->create(['name' => 'Doctor Kevin Rejuvenezk Sede Norte', 'slug' => 'sede-norte', 'is_active' => true]);
+        DB::table('clinics')->where('id', $clinic->id)->update(['name' => 'Doctor Kevin Rejuvenezk']);
+        DB::table('site_settings')->insert([
+            'clinic_id' => $clinic->id, 'group' => 'branding', 'key' => 'clinic_name', 'value' => 'Doctor Kevin Rejuvenezk',
+            'type' => 'string', 'label' => 'Nombre', 'created_at' => now(), 'updated_at' => now(),
+        ]);
+
+        (require database_path('migrations/2026_11_10_000100_rename_brand_to_doctor_kevin.php'))->up();
+
+        $this->assertSame('Dr. Kevin Rejuvenezk', $clinic->fresh()->name);
+        $this->assertSame('Dr. Kevin Rejuvenezk', DB::table('site_settings')->where('clinic_id', $clinic->id)->value('value'));
+        $this->assertSame('Doctor Kevin Rejuvenezk Sede Norte', $similar->fresh()->name);
     }
 }

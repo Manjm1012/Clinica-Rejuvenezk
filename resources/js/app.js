@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	window.addEventListener('resize', () => {
 		syncMenuOffset();
-		if (window.innerWidth > 980) {
+		if (window.innerWidth >= 1180) {
 			closeMenu();
 		}
 	});

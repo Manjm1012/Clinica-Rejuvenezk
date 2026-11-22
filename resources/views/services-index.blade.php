@@ -1,4 +1,4 @@
-@php($clinicName = $settings['clinic_name'] ?? 'Doctor Kevin Rejuvenezk')
+@php($clinicName = $settings['clinic_name'] ?? 'Dr. Kevin Rejuvenezk')
 
 <x-layouts.site :settings="$settings" :title="'Tratamientos | ' . $clinicName" :description="'Catálogo de tratamientos faciales y corporales de ' . $clinicName . ': valoración médica, tecnología y resultados naturales.'">
     <main class="services-catalog-page">

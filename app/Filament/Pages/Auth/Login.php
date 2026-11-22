@@ -8,17 +8,17 @@ use Illuminate\Contracts\Support\Htmlable;
 
 class Login extends BaseLogin
 {
-    public function getTitle(): string | Htmlable
+    public function getTitle(): string|Htmlable
     {
-        return 'Acceso administrativo | ' . $this->getClinicName();
+        return 'Acceso administrativo | '.$this->getClinicName();
     }
 
-    public function getHeading(): string | Htmlable
+    public function getHeading(): string|Htmlable
     {
-        return 'Bienvenido a ' . $this->getClinicName();
+        return 'Bienvenido a '.$this->getClinicName();
     }
 
-    public function getSubheading(): string | Htmlable | null
+    public function getSubheading(): string|Htmlable|null
     {
         return 'Ingresa al panel editorial para gestionar contenidos, tratamientos y solicitudes con una experiencia clara y ordenada.';
     }
@@ -28,6 +28,6 @@ class Login extends BaseLogin
         return Clinic::query()
             ->where('is_active', true)
             ->orderBy('id')
-            ->value('name') ?? 'Doctor Kevin Rejuvenezk';
+            ->value('name') ?? 'Dr. Kevin Rejuvenezk';
     }
 }

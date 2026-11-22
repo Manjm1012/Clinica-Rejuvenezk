@@ -37,7 +37,7 @@ class DoctorPanelProvider extends PanelProvider
                 'warning' => Color::hex('#C9A96E'),
             ])
             ->theme(asset('css/filament/admin/theme.css'))
-            ->brandName('Panel médico')
+            ->brandName('Dr. Kevin Rejuvenezk · Panel médico')
             ->favicon(asset('favicon.ico'))
             ->discoverResources(in: app_path('Filament/Doctor/Resources'), for: 'App\Filament\Doctor\Resources')
             ->discoverPages(in: app_path('Filament/Doctor/Pages'), for: 'App\Filament\Doctor\Pages')

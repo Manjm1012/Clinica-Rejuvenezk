@@ -13,7 +13,7 @@ class PublicSettings
     public static function all(): array
     {
         $branding = array_merge([
-            'clinic_name' => 'Doctor Kevin Rejuvenezk',
+            'clinic_name' => 'Dr. Kevin Rejuvenezk',
             'hero_kicker' => 'Medicina estética avanzada',
             'hero_title' => 'Cirugía y medicina estética premium',
             'hero_subtitle' => 'Valoración personalizada con médico certificado y resultados naturales, sin perder tu expresión.',
@@ -33,7 +33,7 @@ class PublicSettings
             'social_lead' => 'Comparte resultados, conoce casos reales y recibe novedades de nuestros tratamientos en tiempo real.',
             'cta_kicker' => 'Agenda tu cita',
             'cta_title' => 'Empieza hoy tu protocolo personalizado.',
-            'cta_body' => 'Atención presencial y seguimiento digital para una experiencia comercial ordenada.',
+            'cta_body' => 'Atención presencial y seguimiento cercano después de cada tratamiento.',
             'topbar_cta_label' => 'Agenda ahora',
             'cta_whatsapp_label' => 'WhatsApp',
             'cta_email_label' => 'Solicitar información',

@@ -1,5 +1,5 @@
 @php
-    $clinicName = $settings['clinic_name'] ?? 'Doctor Kevin Rejuvenezk';
+    $clinicName = $settings['clinic_name'] ?? 'Dr. Kevin Rejuvenezk';
     $forgotUrl = \App\Support\PublicSettings::whatsappLink($settings, 'Hola, olvidé mi contraseña del portal de pacientes.');
 @endphp
 

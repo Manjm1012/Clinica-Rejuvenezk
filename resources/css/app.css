@@ -3685,7 +3685,7 @@ a {
 }
 
 /* ==========================================================================
-   DK · Marca "Doctor Kevin Rejuvenezk" (Fase 0)
+   DK · Marca "Dr. Kevin Rejuvenezk" (Fase 0)
    Nombre más largo: evitar desbordes del encabezado en móvil y tablet.
    ========================================================================== */
 .brand-lockup .brand-copy strong {
@@ -5137,4 +5137,89 @@ p {
 	height: 100%;
 	max-height: 420px;
 	object-fit: cover;
+}
+
+/* ==========================================================================
+   DK · Encabezado con 6 enlaces y marca "Dr. Kevin Rejuvenezk" (revisión visual)
+   - Escritorio: la marca no se parte ni se corta; el menú se ajusta.
+   - Menos de 1180px: el menú pasa al botón "Menú" (no cabe junto a la marca).
+   ========================================================================== */
+@media (min-width: 981px) {
+    .topbar-inner .brand-lockup {
+        flex-shrink: 0;
+    }
+
+    .topbar-inner .brand-lockup .brand-clinic-name {
+        white-space: nowrap;
+        overflow: visible;
+        font-size: clamp(1.3rem, 1.55vw, 1.75rem);
+        line-height: 1.1;
+    }
+
+    .topbar-inner .brand-lockup .brand-doctor-name {
+        max-width: 100%;
+    }
+
+    .topbar-inner .nav-links {
+        min-width: max-content; /* nunca se monta sobre los botones */
+        gap: clamp(12px, 1.35vw, 24px);
+        font-size: clamp(0.88rem, 0.92vw, 1rem);
+        white-space: nowrap;
+    }
+
+    .topbar-inner .topbar-actions {
+        flex-shrink: 0;
+    }
+}
+
+@media (min-width: 981px) and (max-width: 1179px) {
+    .topbar-inner .nav-links {
+        display: none;
+    }
+
+    .topbar-inner .nav-toggle {
+        display: inline-flex;
+    }
+}
+
+/* Contacto: un correo largo en el botón no debe ensanchar la tarjeta en móvil */
+.contact-layout > * {
+    min-width: 0;
+}
+
+.cta-actions .btn {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: center;
+}
+
+/* 1180–1365px: menú visible pero compacto para que quepa con la marca y los botones */
+@media (min-width: 1180px) and (max-width: 1365px) {
+    .topbar-inner {
+        gap: 14px;
+    }
+
+    .topbar-inner .nav-links {
+        gap: 13px;
+        font-size: 0.86rem;
+    }
+
+    .topbar-inner .nav-links a.dk-nav-account {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .topbar-inner .topbar-cta {
+        min-width: 0;
+        padding: 0 14px;
+        font-size: 0.86rem;
+    }
+}
+
+/* Iconos sociales fijos: se ocultan donde se montarían sobre el encabezado */
+@media (max-width: 1240px) {
+    .social-dock {
+        display: none;
+    }
 }

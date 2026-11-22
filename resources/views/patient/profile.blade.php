@@ -1,6 +1,6 @@
 @php
     $fmtDate = fn ($date) => $date->copy()->locale('es')->translatedFormat('j \d\e F \d\e Y');
-    $clinicName = $settings['clinic_name'] ?? 'Doctor Kevin Rejuvenezk';
+    $clinicName = $settings['clinic_name'] ?? 'Dr. Kevin Rejuvenezk';
     $fieldError = fn (string $field) => $errors->has($field) ? 'aria-invalid="true" aria-describedby="' . $field . '-error"' : '';
 @endphp
 

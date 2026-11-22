@@ -1,6 +1,6 @@
 @php
     $fmtDate = fn ($date) => $date->copy()->locale('es')->translatedFormat('j \d\e F \d\e Y');
-    $clinicName = $settings['clinic_name'] ?? 'Doctor Kevin Rejuvenezk';
+    $clinicName = $settings['clinic_name'] ?? 'Dr. Kevin Rejuvenezk';
     $firstName = \Illuminate\Support\Str::of($patient->name)->trim()->explode(' ')->first();
     $labels = \App\Models\PatientTreatment::RENEWAL_LABELS;
     $requestStatuses = \App\Models\ServiceRequest::STATUSES;

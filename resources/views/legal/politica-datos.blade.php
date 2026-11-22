@@ -1,5 +1,5 @@
 @php
-    $clinicName = $settings['clinic_name'] ?? 'Doctor Kevin Rejuvenezk';
+    $clinicName = $settings['clinic_name'] ?? 'Dr. Kevin Rejuvenezk';
     $contactEmail = trim((string) ($settings['email'] ?? ''));
     $contactPhone = trim((string) ($settings['phone'] ?? ''));
     $contactAddress = trim((string) ($settings['address'] ?? ''));

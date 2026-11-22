@@ -12,7 +12,7 @@ class SiteBrand
     public static function for(array $settings): array
     {
         $clinic = app()->bound(CurrentClinic::class) ? app(CurrentClinic::class)->clinic() : null;
-        $clinicName = $settings['clinic_name'] ?? $clinic?->name ?? 'Doctor Kevin Rejuvenezk';
+        $clinicName = $settings['clinic_name'] ?? $clinic?->name ?? 'Dr. Kevin Rejuvenezk';
         $doctor = Doctor::query()->where('is_active', true)->orderBy('sort_order')->first(['id', 'name', 'specialty', 'photo_path']);
 
         $whatsappRaw = trim((string) ($settings['whatsapp_url'] ?? ''));
@@ -34,7 +34,10 @@ class SiteBrand
             'logoUrl' => Media::url($clinic?->logo_path),
             'doctor' => $doctor,
             'doctorPhotoUrl' => Media::url($doctor?->photo_path),
-            'tagline' => $doctor?->name ?: 'Medicina estética facial y corporal',
+            // Línea secundaria: el médico; si se llama igual que la marca, la especialidad (no repetir el nombre).
+            'tagline' => $doctor?->name && mb_strtolower($doctor->name) !== mb_strtolower($clinicName)
+                ? $doctor->name
+                : ($doctor?->specialty ?: 'Medicina estética'),
             'hasWhatsapp' => $hasWhatsapp,
             'whatsappUrl' => $whatsappUrl,
             'bookingUrl' => $hasWhatsapp
