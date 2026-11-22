@@ -37,6 +37,8 @@ class PublicContentController extends Controller
 
     public function service(Service $service): JsonResponse
     {
+        abort_unless($service->is_active, 404);
+
         return response()->json($service->load(['category', 'faqs', 'galleryItems']));
     }
 }

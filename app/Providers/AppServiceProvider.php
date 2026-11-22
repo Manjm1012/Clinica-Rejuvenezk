@@ -2,11 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Patient;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('auth-login', function (Request $request) {
-            return Limit::perMinute(5)->by(mb_strtolower((string) $request->input('email')) . '|' . $request->ip());
+            return Limit::perMinute(5)->by(mb_strtolower((string) $request->input('email')).'|'.$request->ip());
         });
 
         // Portal del paciente: 5 intentos/min por IP y 5/min por identificador (correo o teléfono).
@@ -43,17 +44,17 @@ class AppServiceProvider extends ServiceProvider
 
             $identifiers = array_filter([
                 $request->input('login'),
-                \App\Models\Patient::normalizeEmail($request->input('email')),
-                \App\Models\Patient::normalizePhone($request->input('phone')) ?: null,
+                Patient::normalizeEmail($request->input('email')),
+                Patient::normalizePhone($request->input('phone')) ?: null,
             ]);
 
-            $limits = [Limit::perMinute(5)->by('patient-auth-ip:' . $request->ip())->response($response)];
+            $limits = [Limit::perMinute(5)->by('patient-auth-ip:'.$request->ip())->response($response)];
 
             foreach ($identifiers as $identifier) {
                 $key = str_contains((string) $identifier, '@')
-                    ? \App\Models\Patient::normalizeEmail($identifier)
-                    : (\App\Models\Patient::normalizePhone($identifier) ?: mb_strtolower(trim((string) $identifier)));
-                $limits[] = Limit::perMinute(5)->by('patient-auth-id:' . sha1((string) $key))->response($response);
+                    ? Patient::normalizeEmail($identifier)
+                    : (Patient::normalizePhone($identifier) ?: mb_strtolower(trim((string) $identifier)));
+                $limits[] = Limit::perMinute(5)->by('patient-auth-id:'.sha1((string) $key))->response($response);
             }
 
             return $limits;
@@ -64,7 +65,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         config([
-            'livewire.temporary_file_upload.disk' => 'public',
+            'livewire.temporary_file_upload.disk' => 'local',
             'livewire.temporary_file_upload.directory' => 'livewire-tmp',
         ]);
 

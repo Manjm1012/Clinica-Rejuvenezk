@@ -17,10 +17,10 @@ trait BelongsToClinic
                 return;
             }
 
-            $clinicId = app(CurrentClinic::class)->id();
-            if ($clinicId) {
-                $builder->where($builder->getModel()->getTable() . '.clinic_id', $clinicId);
-            }
+            // Falla cerrado: si la petición no tiene clínica resuelta, no se devuelve nada
+            // (antes se devolvían los datos de TODAS las clínicas).
+            $clinicId = app(CurrentClinic::class)->id() ?? 0;
+            $builder->where($builder->getModel()->getTable().'.clinic_id', $clinicId);
         });
 
         static::creating(function ($model): void {

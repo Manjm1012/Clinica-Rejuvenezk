@@ -15,13 +15,20 @@ use Illuminate\Support\Facades\Log;
 class TayraiService
 {
     private string $apiKey;
-    private string $baseUrl = 'https://api.tayrai.com/v1';
-    private bool   $enabled;
+
+    private string $baseUrl;
+
+    private bool $enabled;
 
     public function __construct()
     {
-        $this->apiKey  = SiteSetting::get('tayrai', 'api_key', '');
-        $this->enabled = (bool) SiteSetting::get('tayrai', 'enabled', false);
+        // .env tiene prioridad; los ajustes del panel quedan como respaldo (compatibilidad).
+        $this->apiKey = (string) (config('services.tayrai.api_key') ?: SiteSetting::get('tayrai', 'api_key', ''));
+        $enabled = config('services.tayrai.enabled');
+        $this->enabled = $enabled !== null && $enabled !== ''
+            ? filter_var($enabled, FILTER_VALIDATE_BOOL)
+            : (bool) SiteSetting::get('tayrai', 'enabled', false);
+        $this->baseUrl = rtrim((string) config('services.tayrai.base_url', 'https://api.tayrai.com/v1'), '/');
     }
 
     /**
@@ -35,7 +42,7 @@ class TayraiService
 
         try {
             $response = $this->post('/contacts', [
-                'name'  => $name,
+                'name' => $name,
                 'phone' => $this->normalizePhone($phone),
                 'email' => $email,
             ]);
@@ -46,7 +53,7 @@ class TayraiService
 
             Log::warning('TayrAI upsertContact failed', [
                 'status' => $response->status(),
-                'body'   => $response->body(),
+                'body' => $response->body(),
             ]);
         } catch (\Throwable $e) {
             Log::error('TayrAI upsertContact exception', ['message' => $e->getMessage()]);
@@ -67,16 +74,16 @@ class TayraiService
         try {
             $payload = [
                 'contact_id' => $lead->tayrai_contact_id,
-                'name'       => $lead->name,
-                'phone'      => $this->normalizePhone($lead->phone ?? ''),
-                'email'      => $lead->email ?? '',
-                'source'     => $lead->source,
-                'notes'      => $lead->message,
-                'service'    => $lead->service?->name ?? '',
-                'metadata'   => [
-                    'lead_id'      => $lead->id,
-                    'utm_source'   => $lead->utm_source,
-                    'utm_medium'   => $lead->utm_medium,
+                'name' => $lead->name,
+                'phone' => $this->normalizePhone($lead->phone ?? ''),
+                'email' => $lead->email ?? '',
+                'source' => $lead->source,
+                'notes' => $lead->message,
+                'service' => $lead->service?->name ?? '',
+                'metadata' => [
+                    'lead_id' => $lead->id,
+                    'utm_source' => $lead->utm_source,
+                    'utm_medium' => $lead->utm_medium,
                     'utm_campaign' => $lead->utm_campaign,
                 ],
             ];
@@ -89,7 +96,7 @@ class TayraiService
 
             Log::warning('TayrAI createLead failed', [
                 'status' => $response->status(),
-                'body'   => $response->body(),
+                'body' => $response->body(),
             ]);
         } catch (\Throwable $e) {
             Log::error('TayrAI createLead exception', ['message' => $e->getMessage()]);
@@ -109,7 +116,7 @@ class TayraiService
 
         try {
             $response = $this->post('/whatsapp/send', [
-                'phone'   => $this->normalizePhone($phone),
+                'phone' => $this->normalizePhone($phone),
                 'message' => $message,
             ]);
 
@@ -148,27 +155,30 @@ class TayraiService
      */
     public function verifyWebhookSignature(string $payload, string $signature): bool
     {
-        $secret = SiteSetting::get('tayrai', 'webhook_secret', '');
+        $secret = (string) (config('services.tayrai.webhook_secret') ?: SiteSetting::get('tayrai', 'webhook_secret', ''));
         if (! $secret) {
             return false;
         }
 
         $expected = hash_hmac('sha256', $payload, $secret);
-        return hash_equals($expected, $signature);
+        // Acepta la firma con o sin prefijo "sha256=".
+        $signature = str_starts_with($signature, 'sha256=') ? substr($signature, 7) : $signature;
+
+        return hash_equals($expected, strtolower(trim($signature)));
     }
 
     private function post(string $endpoint, array $data): Response
     {
         return Http::withToken($this->apiKey)
             ->timeout(15)
-            ->post($this->baseUrl . $endpoint, $data);
+            ->post($this->baseUrl.$endpoint, $data);
     }
 
     private function patch(string $endpoint, array $data): Response
     {
         return Http::withToken($this->apiKey)
             ->timeout(15)
-            ->patch($this->baseUrl . $endpoint, $data);
+            ->patch($this->baseUrl.$endpoint, $data);
     }
 
     private function normalizePhone(string $phone): string
@@ -177,8 +187,9 @@ class TayraiService
         $phone = preg_replace('/[^\d+]/', '', $phone);
         // Ensure country code format for Colombia if no prefix
         if (strlen($phone) === 10 && str_starts_with($phone, '3')) {
-            $phone = '+57' . $phone;
+            $phone = '+57'.$phone;
         }
+
         return $phone;
     }
 

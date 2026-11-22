@@ -26,9 +26,12 @@ class TayraiWebhookController extends Controller
         $tayraiLeadId = data_get($data, 'lead_id');
         $status = data_get($data, 'status');
 
-        if ($tayraiLeadId && $status) {
-            Lead::query()->where('tayrai_lead_id', $tayraiLeadId)->update(['status' => $status]);
+        if (! is_scalar($tayraiLeadId) || ! is_string($status) || ! array_key_exists($status, Lead::STATUSES)) {
+            return response()->json(['message' => 'Invalid payload'], 422);
         }
+
+        // El global scope limita la actualización a la clínica resuelta por el host.
+        Lead::query()->where('tayrai_lead_id', (string) $tayraiLeadId)->update(['status' => $status]);
 
         return response()->json(['ok' => true]);
     }
