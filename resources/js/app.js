@@ -595,3 +595,19 @@ document.addEventListener('DOMContentLoaded', () => {
 		observer.observe(card);
 	});
 });
+
+// Comparador antes/después (antes estaba incrustado en la portada).
+document.addEventListener('DOMContentLoaded', () => {
+	document.querySelectorAll('.dk-ba-range').forEach((range) => {
+		const slider = range.closest('.dk-ba-slider');
+		const update = () => {
+			slider.style.setProperty('--dk-pos', range.value + '%');
+			range.setAttribute('aria-valuetext', range.value + '% de la imagen de antes visible');
+		};
+		range.addEventListener('input', update);
+		update();
+	});
+
+	// Formulario con errores de validación: se lleva a la vista.
+	document.querySelector('[data-scroll-into-view]')?.scrollIntoView({ block: 'center' });
+});

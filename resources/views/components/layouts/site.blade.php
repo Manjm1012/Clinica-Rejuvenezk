@@ -1,99 +1,109 @@
+@props([
+    'settings' => [],
+    'title' => null,
+    'description' => null,
+    'image' => null,
+    'bodyClass' => '',
+    'noindex' => false,
+])
+@php
+    $brand = \App\Support\SiteBrand::for($settings);
+    $clinicName = $brand['clinicName'];
+    $pageTitle = $title ?? ($clinicName.' | Medicina estética');
+    $pageDescription = \Illuminate\Support\Str::limit(trim(strip_tags((string) ($description ?? $settings['hero_subtitle'] ?? 'Medicina estética con criterio médico y resultados naturales.'))), 160, '…');
+    $pageImage = $image ?? $brand['doctorPhotoUrl'] ?? $brand['logoUrl'];
+    $onHome = request()->routeIs('home');
+    $isLanding = str_contains($bodyClass, 'landing-body');
+    $linkAttrs = $brand['hasWhatsapp'] ? 'target="_blank" rel="noopener noreferrer"' : '';
+
+    // Datos estructurados (Google): la clínica como MedicalClinic.
+    $schema = array_filter([
+        '@context' => 'https://schema.org',
+        '@type' => 'MedicalClinic',
+        'name' => $clinicName,
+        'url' => route('home'),
+        'image' => $pageImage,
+        'logo' => $brand['logoUrl'],
+        'telephone' => $brand['phone'] ?: null,
+        'email' => $brand['email'] ?: null,
+        'address' => $brand['address'] ? ['@type' => 'PostalAddress', 'streetAddress' => $brand['address'], 'addressCountry' => 'CO'] : null,
+        'sameAs' => collect($brand['social'])->pluck('url')->values()->all() ?: null,
+    ]);
+@endphp
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $title ?? ($settings['clinic_name'] ?? 'Doctor Kevin Rejuvenezk') }}</title>
-    <meta name="description" content="Plataforma web comercializable para clínica estética con CRM y WhatsApp integrados.">
+    <title>{{ $pageTitle }}</title>
+    <meta name="description" content="{{ $pageDescription }}">
+    @if ($noindex)
+        <meta name="robots" content="noindex, nofollow">
+    @else
+        <link rel="canonical" href="{{ url()->current() }}">
+    @endif
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ $clinicName }}">
+    <meta property="og:locale" content="es_CO">
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    @if ($pageImage)
+        <meta property="og:image" content="{{ $pageImage }}">
+    @endif
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#A8BFA3">
+    <link rel="icon" href="{{ asset('favicon.ico') }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    @unless ($noindex)
+        <script type="application/ld+json">{!! json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG) !!}</script>
+    @endunless
+    @stack('head')
 </head>
-<body class="site-body dk-has-mobilebar">
-    @php
-        $publicDisk = \Illuminate\Support\Facades\Storage::disk('public');
-        $clinicName = $settings['clinic_name'] ?? 'Doctor Kevin Rejuvenezk';
-        $topbarCtaLabel = $settings['topbar_cta_label'] ?? 'Agenda ahora';
-        $whatsappRawUrl = trim((string) ($settings['whatsapp_url'] ?? ''));
-        $whatsappDigits = preg_replace('/[^0-9]/', '', $settings['whatsapp_number'] ?? '');
-        $hasWhatsappLink = $whatsappRawUrl !== '' || $whatsappDigits !== '';
-        $whatsappUrl = $whatsappRawUrl !== ''
-            ? $whatsappRawUrl
-            : ($whatsappDigits ? 'https://wa.me/' . $whatsappDigits : route('home') . '#contacto');
-        $logoSourcePath = $currentClinic?->logo_path ?? $clinic?->logo_path ?? null;
-        $normalizeMediaPath = function (?string $path): ?string {
-            if ($path === null || trim($path) === '') {
-                return null;
-            }
+<body class="site-body dk-has-mobilebar {{ $bodyClass }}">
+    <a href="#contenido" class="dk-skip-link">Saltar al contenido</a>
 
-            $normalized = trim($path);
+    @if ($isLanding)
+        <div class="ambient ambient-left"></div>
+        <div class="ambient ambient-right"></div>
+    @endif
 
-            if (filter_var($normalized, FILTER_VALIDATE_URL)) {
-                $normalized = parse_url($normalized, PHP_URL_PATH) ?: $normalized;
-            }
-
-            $normalized = ltrim(rawurldecode($normalized), '/');
-
-            foreach (['media/', 'storage/', 'public/', 'app/public/'] as $prefix) {
-                if (str_starts_with($normalized, $prefix)) {
-                    $normalized = substr($normalized, strlen($prefix));
-                }
-            }
-
-            return $normalized !== '' ? $normalized : null;
-        };
-
-        $logoPath = $normalizeMediaPath($logoSourcePath);
-        $doctorName = \App\Models\Doctor::query()->where('is_active', true)->orderBy('sort_order')->value('name');
-        $brandInitials = collect(preg_split('/\s+/', trim($clinicName)))
-            ->filter()
-            ->take(2)
-            ->map(fn ($segment) => strtoupper(substr($segment, 0, 1)))
-            ->implode('');
-
-        // DK · WhatsApp con mensaje prellenado (o el formulario si no hay WhatsApp configurado).
-        $dkWhatsappText = $settings['whatsapp_booking_text'] ?? 'Hola, quiero agendar una valoración';
-        $dkWhatsappBookingUrl = $hasWhatsappLink
-            ? $whatsappUrl . (str_contains($whatsappUrl, '?') ? '&' : '?') . 'text=' . rawurlencode($dkWhatsappText)
-            : route('home') . '#formulario';
-    @endphp
     <div class="site-shell">
         <header class="topbar">
             <div class="container topbar-inner">
-                <a href="{{ route('home') }}#inicio" class="brand brand-lockup" aria-label="Ir al inicio de {{ $clinicName }}">
-                    @if ($logoPath && $publicDisk->exists($logoPath))
+                <a href="{{ route('home') }}" class="brand brand-lockup" aria-label="Ir al inicio de {{ $clinicName }}">
+                    @if ($brand['logoUrl'])
                         <span class="brand-logo-shell">
-                            <img src="{{ $publicDisk->url($logoPath) }}" alt="Logo de {{ $clinicName }}" class="brand-logo-mark">
+                            <img src="{{ $brand['logoUrl'] }}" alt="Logo de {{ $clinicName }}" class="brand-logo-mark" width="48" height="48">
                         </span>
                     @else
-                        <span class="brand-monogram">{{ $brandInitials ?: 'DK' }}</span>
+                        <span class="brand-monogram">{{ $brand['initials'] }}</span>
                     @endif
                     <span class="brand-copy">
                         <span class="brand-clinic-name">{{ $clinicName }}</span>
-                        <span class="brand-doctor-name">{{ $doctorName ?: 'Medicina estética avanzada' }}</span>
+                        <span class="brand-doctor-name">{{ $brand['tagline'] }}</span>
                     </span>
                 </a>
 
                 <nav class="nav-links" aria-label="Navegación principal">
-                    <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'is-active' : '' }}">Quiénes somos</a>
-                    <a href="{{ route('services.index') }}" class="{{ request()->routeIs('services.*') ? 'is-active' : '' }}">Servicios</a>
-                    <a href="{{ route('home') }}#resultados">Resultados</a>
-                    <a href="{{ route('home') }}#contacto">Contacto</a>
-                    @include('partials.dk-patient-nav-link')
+                    @include('partials.site-nav-links', ['onHome' => $onHome])
                 </nav>
 
                 <div class="topbar-actions">
-                    <a href="{{ $whatsappUrl }}" class="btn btn-outline topbar-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
+                    <a href="{{ $brand['bookingUrl'] }}" class="btn btn-outline topbar-cta" {!! $linkAttrs !!}>{{ $settings['topbar_cta_label'] ?? 'Agenda ahora' }}</a>
                     <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav-panel" aria-label="Abrir menú de navegación">
                         <span class="nav-toggle-icon"><span></span><span></span><span></span></span>
                         <span class="nav-toggle-label">Menú</span>
                     </button>
                 </div>
             </div>
-
         </header>
 
         <div class="mobile-nav-overlay" hidden></div>
@@ -107,36 +117,69 @@
                     <button type="button" class="mobile-nav-close" aria-label="Cerrar menú de navegación">×</button>
                 </div>
                 <nav class="mobile-nav-links" aria-label="Navegación móvil">
-                    <a href="{{ route('home') }}#inicio" class="{{ request()->routeIs('home') ? 'is-active' : '' }}">Inicio</a>
-                    <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'is-active' : '' }}">Quiénes somos</a>
-                    <a href="{{ route('services.index') }}" class="{{ request()->routeIs('services.*') ? 'is-active' : '' }}">Servicios</a>
-                    <a href="{{ route('home') }}#resultados">Resultados</a>
-                    <a href="{{ route('home') }}#contacto">Contacto</a>
-                    @include('partials.dk-patient-nav-link')
+                    <a href="{{ route('home') }}" class="{{ $onHome ? 'is-active' : '' }}" @if($onHome) data-nav-section="inicio" @endif>Inicio</a>
+                    @include('partials.site-nav-links', ['onHome' => $onHome])
+                    <a href="{{ route('faq') }}" class="{{ request()->routeIs('faq') ? 'is-active' : '' }}">Preguntas frecuentes</a>
                 </nav>
-                <a href="{{ $whatsappUrl }}" class="btn btn-primary mobile-nav-cta" @if($hasWhatsappLink) target="_blank" rel="noopener noreferrer" @endif>{{ $topbarCtaLabel }}</a>
+                <a href="{{ $brand['bookingUrl'] }}" class="btn btn-primary mobile-nav-cta" {!! $linkAttrs !!}>{{ $settings['topbar_cta_label'] ?? 'Agenda ahora' }}</a>
             </div>
         </div>
 
         @if (session('success'))
-            <div class="flash-success">{{ session('success') }}</div>
+            @if ($isLanding)
+                <div class="container landing-flash-wrap"><div class="flash-success landing-flash" role="status">{{ session('success') }}</div></div>
+            @else
+                <div class="flash-success" role="status">{{ session('success') }}</div>
+            @endif
         @endif
 
-        {{ $slot }}
+        @if ($isLanding && $brand['social'])
+            <aside class="social-dock" aria-label="Redes sociales de {{ $clinicName }}">
+                @foreach ($brand['social'] as $item)
+                    <a href="{{ $item['url'] }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $item['label'] }}"><x-site-icon :name="$item['icon']" /></a>
+                @endforeach
+            </aside>
+        @endif
 
-        <footer class="site-footer">
-            <div>
-                <strong>{{ $settings['clinic_name'] ?? 'Doctor Kevin Rejuvenezk' }}</strong>
-                <p>{{ $settings['address'] ?? '' }}</p>
-            </div>
-            <div>
-                <p>{{ $settings['phone'] ?? '' }}</p>
-                <p>{{ $settings['email'] ?? '' }}</p>
-                <p><a href="{{ route('legal.data-policy') }}" class="dk-footer-legal">Política de datos</a></p>
+        <div id="contenido">
+            {{ $slot }}
+        </div>
+
+        <footer class="footer">
+            <div class="container footer-inner">
+                <div class="footer-brand-lockup">
+                    @if ($brand['logoUrl'])
+                        <span class="footer-logo-shell">
+                            <img src="{{ $brand['logoUrl'] }}" alt="Logo de {{ $clinicName }}" class="footer-logo-mark" loading="lazy">
+                        </span>
+                    @endif
+                    <div>
+                        <p>{{ $clinicName }}</p>
+                        <small>{{ $brand['address'] ?: $brand['tagline'] }}</small>
+                    </div>
+                </div>
+
+                @if ($brand['social'])
+                    <div class="footer-social" aria-label="Redes sociales">
+                        @foreach ($brand['social'] as $item)
+                            <a href="{{ $item['url'] }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $item['label'] }}" class="footer-social-link"><x-site-icon :name="$item['icon']" /></a>
+                        @endforeach
+                    </div>
+                @endif
+
+                <nav class="dk-footer-meta" aria-label="Enlaces del pie de página">
+                    @if ($brand['phone'])<p><a href="tel:{{ preg_replace('/[^\d+]/', '', $brand['phone']) }}">{{ $brand['phone'] }}</a></p>@endif
+                    @if ($brand['email'])<p><a href="mailto:{{ $brand['email'] }}">{{ $brand['email'] }}</a></p>@endif
+                    <a href="{{ route('services.index') }}" class="dk-footer-legal">Tratamientos</a>
+                    <a href="{{ route('team') }}" class="dk-footer-legal">Equipo médico</a>
+                    <a href="{{ route('faq') }}" class="dk-footer-legal">Preguntas frecuentes</a>
+                    <a href="{{ route('legal.data-policy') }}" class="dk-footer-legal">Política de datos</a>
+                </nav>
             </div>
         </footer>
     </div>
 
-    @include('partials.dk-contact-actions', ['clinicName' => $clinicName, 'bookingUrl' => $dkWhatsappBookingUrl, 'hasWhatsapp' => $hasWhatsappLink, 'phone' => $settings['phone'] ?? ''])
+    @include('partials.dk-contact-actions', ['clinicName' => $clinicName, 'bookingUrl' => $brand['bookingUrl'], 'hasWhatsapp' => $brand['hasWhatsapp'], 'phone' => $brand['phone']])
+    @stack('scripts')
 </body>
 </html>

@@ -4974,3 +4974,167 @@ p {
         justify-content: space-between;
     }
 }
+
+/* ===== Accesibilidad: enlace "Saltar al contenido" (visible solo con teclado) ===== */
+.dk-skip-link {
+	position: absolute;
+	left: 16px;
+	top: -48px;
+	z-index: 1000;
+	padding: 10px 16px;
+	border-radius: 999px;
+	background: #1f2a1d;
+	color: #fff;
+	text-decoration: none;
+	transition: top .2s ease;
+}
+
+.dk-skip-link:focus {
+	top: 12px;
+}
+
+/* ===== Páginas de equipo médico y preguntas frecuentes ===== */
+.dk-page-head {
+	padding: 56px 0 24px;
+}
+
+.dk-page-head .section-title {
+	margin-bottom: 12px;
+}
+
+.dk-team-grid {
+	display: grid;
+	gap: 24px;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+	padding-bottom: 64px;
+}
+
+.dk-team-card {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	border-radius: 24px;
+	background: #fff;
+	box-shadow: 0 18px 40px rgba(31, 42, 29, .08);
+}
+
+.dk-team-photo {
+	aspect-ratio: 4 / 5;
+	width: 100%;
+	object-fit: cover;
+	background: #eef2ec;
+}
+
+.dk-team-photo--empty {
+	display: grid;
+	place-items: center;
+	font-size: 48px;
+	font-weight: 600;
+	color: #7e9c78;
+}
+
+.dk-team-body {
+	display: grid;
+	gap: 8px;
+	padding: 20px 22px 24px;
+}
+
+.dk-team-body h2 {
+	margin: 0;
+	font-size: 1.5rem;
+}
+
+.dk-team-specialty {
+	margin: 0;
+	color: #7e9c78;
+	font-weight: 600;
+}
+
+.dk-team-bio {
+	margin: 0;
+	color: #5d6b59;
+}
+
+.dk-team-credentials {
+	display: grid;
+	gap: 4px;
+	margin: 4px 0 0;
+	padding: 0;
+	list-style: none;
+	font-size: .9rem;
+	color: #3d4a39;
+}
+
+.dk-team-credentials li::before {
+	content: "✓ ";
+	color: #7e9c78;
+}
+
+.dk-faq-list {
+	display: grid;
+	gap: 12px;
+	max-width: 860px;
+	padding-bottom: 64px;
+}
+
+.dk-faq-group-title {
+	margin: 24px 0 4px;
+	font-size: 1.3rem;
+}
+
+.dk-faq-item {
+	border-radius: 16px;
+	background: #fff;
+	box-shadow: 0 8px 24px rgba(31, 42, 29, .06);
+}
+
+.dk-faq-item summary {
+	cursor: pointer;
+	padding: 18px 22px;
+	font-weight: 600;
+	list-style: none;
+}
+
+.dk-faq-item summary::-webkit-details-marker {
+	display: none;
+}
+
+.dk-faq-item summary::after {
+	content: "+";
+	float: right;
+	color: #7e9c78;
+	font-size: 1.3em;
+	line-height: 1;
+}
+
+.dk-faq-item[open] summary::after {
+	content: "–";
+}
+
+.dk-faq-item > div {
+	padding: 0 22px 20px;
+	color: #5d6b59;
+	white-space: pre-line;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*, *::before, *::after {
+		animation-duration: .01ms !important;
+		transition-duration: .01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+.detail-card-media {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.detail-card-media img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	max-height: 420px;
+	object-fit: cover;
+}

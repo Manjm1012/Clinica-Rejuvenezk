@@ -1,2 +1,9 @@
 User-agent: *
-Disallow:
+Disallow: /admin
+Disallow: /medico
+Disallow: /mi-cuenta
+Disallow: /formulas
+Disallow: /ingresar
+Disallow: /registro
+
+# Mapa del sitio: https://<tu-dominio>/sitemap.xml (envíalo en Google Search Console)
