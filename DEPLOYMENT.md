@@ -62,6 +62,17 @@ php artisan route:cache
 php artisan view:cache
 ```
 
+### Administrador inicial
+
+El seeder (`php artisan db:seed --force`) **no tiene credenciales por defecto**. Fuera de `local`/`testing` exige:
+
+```
+ADMIN_EMAIL=correo-real@dominio
+ADMIN_PASSWORD=una-clave-de-al-menos-12-caracteres
+```
+
+Si faltan, falla con un mensaje claro. Si el administrador ya existe, no cambia su clave. Después del primer ingreso, borra `ADMIN_PASSWORD` del entorno. En `local`, si faltan las variables, crea `admin@localhost` con una clave aleatoria y la muestra una sola vez.
+
 Alternativa usando el script del proyecto:
 
 ```bash

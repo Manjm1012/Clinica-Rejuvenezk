@@ -16,6 +16,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use RuntimeException;
 
 class DatabaseSeeder extends Seeder
 {
@@ -37,14 +38,7 @@ class DatabaseSeeder extends Seeder
             'is_active' => true,
         ]);
 
-        User::query()->updateOrCreate([
-            'email' => 'admin@rejuvenezk.test',
-        ], [
-            'clinic_id' => $clinic->id,
-            'name' => 'Administrador',
-            'password' => Hash::make('password'),
-            'is_super_admin' => true,
-        ]);
+        $this->seedAdmin($clinic);
 
         foreach ([
             ['group' => 'branding', 'key' => 'clinic_name', 'value' => 'Doctor Kevin Rejuvenezk', 'type' => 'string', 'label' => 'Nombre clínica'],
@@ -361,7 +355,7 @@ class DatabaseSeeder extends Seeder
             );
         }
 
-        $doctor = Doctor::query()->where('clinic_id', $clinic->id)->orderBy('id')->first() ?? new Doctor();
+        $doctor = Doctor::query()->where('clinic_id', $clinic->id)->orderBy('id')->first() ?? new Doctor;
         $doctor->fill([
             'clinic_id' => $clinic->id,
             'name' => 'Dr Kevin-Rejuvenezk',
@@ -412,5 +406,60 @@ class DatabaseSeeder extends Seeder
             ['clinic_id' => $clinic->id, 'phone' => '3000000000'],
             ['clinic_id' => $clinic->id, 'name' => 'Lead Demo', 'email' => 'lead@example.com', 'status' => 'new', 'source' => 'website']
         );
+    }
+
+    /**
+     * Administrador inicial. Nunca hay una clave fija en el código:
+     * - Fuera de local/testing exige ADMIN_EMAIL y ADMIN_PASSWORD (sin valores por defecto).
+     * - En local/testing, si faltan, usa admin@localhost y genera una clave aleatoria que se muestra una vez.
+     * - Si el administrador ya existe, no se toca (re-ejecutar el seeder no cambia su clave).
+     */
+    private function seedAdmin(Clinic $clinic): void
+    {
+        $email = trim((string) config('seeding.admin_email'));
+        $password = (string) config('seeding.admin_password');
+        $isDevelopment = app()->environment(['local', 'testing']);
+
+        if (! $isDevelopment && ($email === '' || $password === '')) {
+            throw new RuntimeException(
+                'DatabaseSeeder: define ADMIN_EMAIL y ADMIN_PASSWORD en el entorno para crear el administrador inicial '
+                .'(APP_ENV='.app()->environment().'). No hay valores por defecto.'
+            );
+        }
+
+        if (! $isDevelopment && mb_strlen($password) < 12) {
+            throw new RuntimeException('DatabaseSeeder: ADMIN_PASSWORD debe tener al menos 12 caracteres.');
+        }
+
+        if (! $isDevelopment && ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new RuntimeException('DatabaseSeeder: ADMIN_EMAIL no es un correo válido.');
+        }
+
+        $email = $email !== '' ? $email : 'admin@localhost';
+
+        if (User::query()->where('email', $email)->exists()) {
+            $this->command?->info("Administrador {$email} ya existe: no se modificó.");
+
+            return;
+        }
+
+        $generated = $password === '';
+        $password = $generated ? Str::password(20) : $password;
+
+        $admin = new User([
+            'name' => 'Administrador',
+            'email' => $email,
+            'password' => Hash::make($password),
+            'role' => User::ROLE_ADMIN,
+        ]);
+        $admin->clinic_id = $clinic->id;
+        $admin->is_super_admin = true;
+        $admin->save();
+
+        if ($generated) {
+            $this->command?->warn("Administrador de desarrollo creado: {$email} / {$password} (cámbiala; solo se muestra ahora).");
+        } else {
+            $this->command?->info("Administrador {$email} creado.");
+        }
     }
 }
