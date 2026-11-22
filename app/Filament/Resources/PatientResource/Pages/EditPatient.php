@@ -14,7 +14,7 @@ class EditPatient extends EditRecord
     {
         return [
             // La historia clínica no se elimina (Resolución 1995 de 1999).
-            Actions\DeleteAction::make()->visible(fn () => ! $this->record->hasClinicalRecords()),
+            Actions\DeleteAction::make()->visible(fn () => PatientResource::canDelete($this->record)),
         ];
     }
 }

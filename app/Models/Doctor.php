@@ -17,6 +17,9 @@ class Doctor extends Model
         'professional_registration', 'signature_path',
     ];
 
+    /** Datos internos: nunca salen en la API pública ni en serializaciones. */
+    protected $hidden = ['user_id', 'signature_path'];
+
     protected $casts = [
         'is_active' => 'boolean',
     ];

@@ -9,9 +9,9 @@ use App\Support\Audit;
 use App\Support\CurrentClinic;
 use App\Support\PublicSettings;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\View\View;
 
 /**
  * Fórmula imprimible (el navegador la guarda como PDF).
@@ -20,7 +20,7 @@ use Illuminate\View\View;
 class PrescriptionPrintController extends Controller
 {
     /** Equipo: médicos y administradores de la clínica. Los borradores solo los ve su autor. */
-    public function staff(Request $request, int $prescription): View
+    public function staff(Request $request, int $prescription): Response
     {
         $user = Auth::guard('web')->user();
         $doctor = $user?->activeDoctor();
@@ -38,7 +38,7 @@ class PrescriptionPrintController extends Controller
     }
 
     /** Paciente: solo sus fórmulas emitidas (o anuladas, marcadas como tales). */
-    public function patient(Request $request, int $prescription): View
+    public function patient(Request $request, int $prescription): Response
     {
         $patient = Auth::guard('patient')->user();
 
@@ -53,7 +53,8 @@ class PrescriptionPrintController extends Controller
         return $this->render($record);
     }
 
-    private function render(Prescription $prescription): View
+    /** Datos clínicos: el navegador y los proxies no deben guardar copia (no-store). */
+    private function render(Prescription $prescription): Response
     {
         $clinic = Clinic::query()->find($prescription->clinic_id);
 
@@ -66,12 +67,16 @@ class PrescriptionPrintController extends Controller
             'doctor' => fn ($q) => $q->withoutGlobalScope('clinic'),
         ]);
 
-        return view('prescriptions.print', [
+        return response()->view('prescriptions.print', [
             'prescription' => $prescription,
             'clinic' => $clinic,
             'settings' => PublicSettings::all(),
             'signature' => $this->signatureDataUri($prescription->doctor?->signature_path),
             'logoUrl' => $clinic?->logo_path ? route('media.public', ['path' => ltrim($clinic->logo_path, '/')]) : null,
+        ])->withHeaders([
+            'Cache-Control' => 'no-store, private, max-age=0',
+            'Pragma' => 'no-cache',
+            'X-Robots-Tag' => 'noindex, nofollow',
         ]);
     }
 

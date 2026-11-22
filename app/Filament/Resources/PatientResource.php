@@ -15,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 class PatientResource extends Resource
@@ -179,6 +180,12 @@ class PatientResource extends Resource
             ])
             // Sin borrado masivo: un paciente con historia clínica no se puede eliminar.
             ->bulkActions([]);
+    }
+
+    /** Solo administradores eliminan pacientes, y nunca si tienen historia clínica. */
+    public static function canDelete(Model $record): bool
+    {
+        return (bool) auth()->user()?->isClinicAdmin() && ! $record->hasClinicalRecords();
     }
 
     public static function getRelations(): array

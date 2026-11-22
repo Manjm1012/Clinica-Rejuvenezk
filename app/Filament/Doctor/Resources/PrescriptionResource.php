@@ -6,6 +6,7 @@ use App\Filament\Doctor\Resources\PrescriptionResource\Pages;
 use App\Models\Consultation;
 use App\Models\Prescription;
 use App\Support\AdminClinic;
+use App\Support\ClinicRule;
 use App\Support\CurrentDoctor;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -68,6 +69,7 @@ class PrescriptionResource extends Resource
         return $form->schema([
             Forms\Components\Section::make()->schema([
                 Forms\Components\Select::make('patient_id')
+                    ->rule(fn () => ClinicRule::exists('patients'))
                     ->label('Paciente')
                     ->options(fn () => ConsultationResource::patientOptions())
                     ->searchable()

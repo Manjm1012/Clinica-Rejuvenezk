@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AppointmentResource\Pages;
 use App\Models\Appointment;
 use App\Models\Patient;
+use App\Support\ClinicRule;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -28,14 +29,17 @@ class AppointmentResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('lead_id')
+                    ->rule(fn () => ClinicRule::exists('leads'))
                     ->relationship('lead', 'name')
                     ->searchable()
                     ->preload(),
                 Forms\Components\Select::make('service_id')
+                    ->rule(fn () => ClinicRule::exists('services'))
                     ->relationship('service', 'name')
                     ->searchable()
                     ->preload(),
                 Forms\Components\Select::make('patient_id')
+                    ->rule(fn () => ClinicRule::exists('patients'))
                     ->label('Paciente registrado')
                     ->relationship('patient', 'name')
                     ->searchable()
@@ -50,6 +54,7 @@ class AppointmentResource extends Resource
                         }
                     }),
                 Forms\Components\Select::make('doctor_id')
+                    ->rule(fn () => ClinicRule::exists('doctors'))
                     ->label('Médico')
                     ->relationship('doctor', 'name')
                     ->searchable()
@@ -65,6 +70,7 @@ class AppointmentResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('status')
                     ->options(Appointment::STATUSES)
+                    ->in(array_keys(Appointment::STATUSES))
                     ->required()
                     ->default('pending'),
                 Forms\Components\Textarea::make('notes')

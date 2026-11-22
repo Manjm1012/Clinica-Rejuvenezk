@@ -39,6 +39,10 @@ class PublicContentController extends Controller
     {
         abort_unless($service->is_active, 404);
 
-        return response()->json($service->load(['category', 'faqs', 'galleryItems']));
+        return response()->json($service->load([
+            'category',
+            'faqs' => fn ($query) => $query->where('is_active', true)->orderBy('sort_order'),
+            'galleryItems' => fn ($query) => $query->where('is_active', true)->orderBy('sort_order'),
+        ]));
     }
 }

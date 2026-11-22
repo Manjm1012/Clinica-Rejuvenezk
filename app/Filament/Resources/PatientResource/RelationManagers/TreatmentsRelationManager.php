@@ -5,6 +5,7 @@ namespace App\Filament\Resources\PatientResource\RelationManagers;
 use App\Models\Doctor;
 use App\Models\PatientTreatment;
 use App\Models\Service;
+use App\Support\ClinicRule;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -29,12 +30,14 @@ class TreatmentsRelationManager extends RelationManager
 
         return $form->schema([
             Forms\Components\Select::make('service_id')
+                ->rule(fn () => ClinicRule::exists('services', $clinicId))
                 ->label('Servicio')
                 ->options(fn () => Service::query()->withoutGlobalScope('clinic')
                     ->where('clinic_id', $clinicId)->orderBy('name')->pluck('name', 'id'))
                 ->searchable()
                 ->helperText('La renovación se calcula con "Renovar cada (días)" del servicio.'),
             Forms\Components\Select::make('doctor_id')
+                ->rule(fn () => ClinicRule::exists('doctors', $clinicId))
                 ->label('Doctor')
                 ->options(fn () => Doctor::query()->withoutGlobalScope('clinic')
                     ->where('clinic_id', $clinicId)->orderBy('name')->pluck('name', 'id'))

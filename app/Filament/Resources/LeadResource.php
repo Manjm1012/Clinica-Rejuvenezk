@@ -15,8 +15,11 @@ class LeadResource extends Resource
     protected static ?string $model = Lead::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
+
     protected static ?string $navigationGroup = 'CRM & Leads';
+
     protected static ?string $navigationLabel = 'Leads';
+
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -26,7 +29,7 @@ class LeadResource extends Resource
                 Forms\Components\TextInput::make('name')->required()->maxLength(200),
                 Forms\Components\TextInput::make('phone')->required()->maxLength(30),
                 Forms\Components\TextInput::make('email')->email()->maxLength(200),
-                Forms\Components\Select::make('status')->options(Lead::STATUSES)->required(),
+                Forms\Components\Select::make('status')->options(Lead::STATUSES)->in(array_keys(Lead::STATUSES))->required(),
                 // La columna es NOT NULL: si se deja vacío se guarda 'website' (antes daba error 500).
                 Forms\Components\TextInput::make('source')
                     ->maxLength(100)

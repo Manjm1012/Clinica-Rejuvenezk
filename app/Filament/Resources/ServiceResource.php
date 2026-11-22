@@ -7,6 +7,7 @@ use App\Filament\Resources\ServiceResource\Pages;
 use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Support\AdminClinic;
+use App\Support\ClinicRule;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -57,6 +58,7 @@ class ServiceResource extends Resource
                         ->unique(Service::class, 'slug', ignoreRecord: true, modifyRuleUsing: fn (Unique $rule) => $rule->where('clinic_id', AdminClinic::idOrNone()))
                         ->maxLength(220),
                     Forms\Components\Select::make('service_category_id')
+                        ->rule(fn () => ClinicRule::exists('service_categories'))
                         ->label('Categoría')
                         ->options(ServiceCategory::pluck('name', 'id'))
                         ->searchable()

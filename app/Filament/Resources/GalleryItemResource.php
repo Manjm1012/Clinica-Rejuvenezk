@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Concerns\AdminOnly;
 use App\Filament\Resources\GalleryItemResource\Pages;
 use App\Models\GalleryItem;
+use App\Support\ClinicRule;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -28,6 +29,7 @@ class GalleryItemResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('service_id')
+                    ->rule(fn () => ClinicRule::exists('services'))
                     ->relationship('service', 'name')
                     ->searchable()
                     ->preload(),

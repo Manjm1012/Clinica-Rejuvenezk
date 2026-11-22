@@ -7,6 +7,7 @@ use App\Models\Consultation;
 use App\Models\Patient;
 use App\Models\Service;
 use App\Support\AdminClinic;
+use App\Support\ClinicRule;
 use App\Support\CurrentDoctor;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -75,6 +76,7 @@ class ConsultationResource extends Resource
         return $form->schema([
             Forms\Components\Section::make()->schema([
                 Forms\Components\Select::make('patient_id')
+                    ->rule(fn () => ClinicRule::exists('patients'))
                     ->label('Paciente')
                     ->options(fn () => static::patientOptions())
                     ->searchable()
@@ -83,6 +85,7 @@ class ConsultationResource extends Resource
                     ->disabledOn('edit')
                     ->dehydrated(fn (string $operation) => $operation === 'create'),
                 Forms\Components\Select::make('service_id')
+                    ->rule(fn () => ClinicRule::exists('services'))
                     ->label('Servicio / procedimiento')
                     ->options(fn () => static::serviceOptions())
                     ->searchable(),
