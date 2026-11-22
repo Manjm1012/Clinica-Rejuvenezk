@@ -262,3 +262,54 @@ Panel `/admin`:
 - Codigo: vuelve al commit anterior y redeploya.
 - El aislamiento del panel esta en un commit propio (`feat(admin): aislamiento por clínica en todo el panel Filament`); se puede revertir con `git revert` sin tocar el portal.
 - Datos: no ejecutes `migrate:rollback` en produccion sin backup; restaura el dump si necesitas volver atras.
+## Panel médico, roles y seguridad (noviembre 2026)
+
+### Antes del deploy
+
+1. **Respaldo de la base de datos.** Las migraciones nuevas solo agregan tablas y columnas, pero la historia clínica no se debe arriesgar.
+2. **Mueve las claves de TayrAI a variables de entorno** (tienen prioridad sobre Ajustes del sitio):
+   ```
+   TAYRAI_ENABLED=true
+   TAYRAI_API_KEY=...
+   TAYRAI_WEBHOOK_SECRET=...
+   SANCTUM_EXPIRATION=43200
+   ```
+   Luego borra `tayrai.api_key` y `tayrai.webhook_secret` de Ajustes del sitio.
+3. **`APP_KEY` no puede cambiar nunca**: cifra las notas clínicas, las alergias y los antecedentes. Si se pierde o se cambia, esos datos quedan ilegibles. Guárdala en un gestor de secretos.
+4. **Base de datos de producción**: para historia clínica usa MySQL o PostgreSQL con respaldos automáticos diarios, no SQLite.
+
+### Migraciones nuevas
+
+- `2026_11_22_000100_add_roles_and_doctor_accounts`: `users.role` (los usuarios existentes quedan como `admin`), `doctors.user_id`, registro profesional, firma y datos clínicos del paciente.
+- `2026_11_22_000200_create_clinical_records_tables`: consultas, notas aclaratorias, fórmulas y medicamentos.
+- `2026_11_22_000300_create_service_requests_and_audit_logs`: solicitudes de renovación, auditoría y vínculo de citas con paciente y médico.
+
+### Después del deploy: dar acceso a un médico
+
+1. Admin → **Contenido del sitio → Médicos / Especialistas**: crea o edita el perfil (registro profesional y firma en PNG).
+2. Admin → **Configuración → Usuarios y roles**: crea el usuario con rol **Médico** y elige su perfil.
+3. El médico entra por **`/medico`**. Un administrador que también atiende pacientes puede tener perfil y entra a ambos paneles.
+
+| Rol | `/admin` | `/medico` |
+|---|---|---|
+| Administrador | Todo | Solo si tiene perfil de médico |
+| Recepción | Leads, citas, pacientes, solicitudes | No |
+| Médico | No | Pacientes, consultas, fórmulas, solicitudes |
+
+### Reglas de la historia clínica
+
+- Una **consulta firmada** no se modifica ni se borra; solo admite notas aclaratorias.
+- Una **fórmula emitida** no se modifica; se anula con motivo y se crea otra. El paciente la ve en `/mi-cuenta`.
+- Un paciente con consultas o fórmulas **no se puede eliminar**.
+- Cada apertura de una historia, impresión o cambio queda en **Configuración → Auditoría**.
+- Las plantillas de cuidados posteriores están en `config/clinical.php`: **deben revisarlas y aprobarlas los médicos** antes de usarlas.
+
+### Archivos
+
+- Las subidas temporales de Livewire ahora van al disco privado (`storage/app/private/livewire-tmp`). Ese directorio debe estar en un volumen persistente igual que `storage/app/public`.
+- Las firmas de los médicos se guardan en `storage/app/private/signatures` y no tienen URL pública.
+
+### SEO
+
+- Envía `https://<tu-dominio>/sitemap.xml` en Google Search Console.
+- Páginas nuevas: `/resultados`, `/equipo-medico` y `/preguntas-frecuentes`.

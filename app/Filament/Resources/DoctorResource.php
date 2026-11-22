@@ -21,7 +21,7 @@ class DoctorResource extends Resource
 
     protected static ?string $navigationGroup = 'Contenido del Sitio';
 
-    protected static ?string $navigationLabel = 'Doctor / Especialista';
+    protected static ?string $navigationLabel = 'Médicos / Especialistas';
 
     public static function form(Form $form): Form
     {
@@ -42,6 +42,22 @@ class DoctorResource extends Resource
                 Forms\Components\TextInput::make('certifications')->maxLength(255),
                 Forms\Components\TextInput::make('linkedin_url')->url()->maxLength(255),
                 Forms\Components\TextInput::make('instagram_url')->url()->maxLength(255),
+                Forms\Components\Section::make('Datos para la fórmula médica')
+                    ->description('Aparecen en las fórmulas que emite este médico.')
+                    ->schema([
+                        Forms\Components\TextInput::make('professional_registration')
+                            ->label('Registro profesional (RETHUS / tarjeta profesional)')
+                            ->maxLength(60),
+                        // Disco privado: la firma nunca tiene URL pública; se incrusta al imprimir.
+                        Forms\Components\FileUpload::make('signature_path')
+                            ->label('Firma escaneada (PNG con fondo transparente)')
+                            ->image()
+                            ->disk('local')
+                            ->directory('signatures')
+                            ->visibility('private')
+                            ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/webp'])
+                            ->maxSize(1024),
+                    ])->columns(2)->columnSpanFull(),
                 Forms\Components\Toggle::make('is_active')->default(true),
                 Forms\Components\TextInput::make('sort_order')->numeric()->default(0),
             ]);

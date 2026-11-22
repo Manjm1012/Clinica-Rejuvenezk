@@ -13,7 +13,8 @@ class EditPatient extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            // La historia clínica no se elimina (Resolución 1995 de 1999).
+            Actions\DeleteAction::make()->visible(fn () => ! $this->record->hasClinicalRecords()),
         ];
     }
 }

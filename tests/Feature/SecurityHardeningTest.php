@@ -6,6 +6,7 @@ use App\Filament\Resources\LeadResource;
 use App\Filament\Resources\SiteSettingResource;
 use App\Filament\Resources\UserResource;
 use App\Models\Clinic;
+use App\Models\Doctor;
 use App\Models\Lead;
 use App\Models\Service;
 use App\Models\SiteSetting;
@@ -168,6 +169,21 @@ class SecurityHardeningTest extends TestCase
         $this->get(LeadResource::getUrl('index'))->assertOk();
         $this->get(SiteSettingResource::getUrl('index'))->assertForbidden();
         $this->get(UserResource::getUrl('index'))->assertForbidden();
+    }
+
+    public function test_medico_no_entra_al_panel_admin(): void
+    {
+        $user = User::factory()->create(['clinic_id' => $this->clinic->id, 'role' => User::ROLE_DOCTOR]);
+        $doctor = new Doctor(['name' => 'Dra. Ruiz', 'is_active' => true]);
+        $doctor->clinic_id = $this->clinic->id;
+        $doctor->save();
+        $doctor->user_id = $user->id;
+        $doctor->save();
+
+        $this->actingAs($user);
+
+        $this->get('/admin')->assertForbidden();
+        $this->get('/medico')->assertOk();
     }
 
     public function test_los_secretos_no_se_muestran_en_ajustes(): void

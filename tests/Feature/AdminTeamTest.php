@@ -3,10 +3,15 @@
 namespace Tests\Feature;
 
 use App\Filament\Resources\AppointmentResource;
+use App\Filament\Resources\AuditLogResource;
 use App\Filament\Resources\DoctorResource;
+use App\Filament\Resources\PatientResource;
+use App\Filament\Resources\ServiceRequestResource;
 use App\Filament\Resources\UserResource;
 use App\Models\Clinic;
+use App\Models\Consultation;
 use App\Models\Doctor;
+use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Concerns\CallsLivewireOverHttp;
@@ -58,6 +63,9 @@ class AdminTeamTest extends TestCase
         $this->assertSame($this->clinic->id, $user->clinic_id);
         $this->assertFalse($user->is_super_admin);
         $this->assertSame($user->id, $doctor->fresh()->user_id);
+
+        $this->flushSession();
+        $this->actingAs($user)->get('/medico')->assertOk();
     }
 
     public function test_paginas_nuevas_del_admin_responden(): void
@@ -68,6 +76,8 @@ class AdminTeamTest extends TestCase
         foreach ([
             UserResource::getUrl('index'),
             UserResource::getUrl('create'),
+            AuditLogResource::getUrl('index'),
+            ServiceRequestResource::getUrl('index'),
             AppointmentResource::getUrl('create'),
             DoctorResource::getUrl('edit', ['record' => $doctor]),
         ] as $url) {
@@ -75,4 +85,22 @@ class AdminTeamTest extends TestCase
         }
     }
 
+    public function test_paciente_con_historia_clinica_no_muestra_boton_eliminar(): void
+    {
+        $doctor = $this->doctorProfile();
+        $patient = new Patient(['name' => 'Ana Pérez', 'phone' => '3001234567']);
+        $patient->clinic_id = $this->clinic->id;
+        $patient->save();
+
+        $this->actingAs($this->admin);
+        $this->get(PatientResource::getUrl('edit', ['record' => $patient]))->assertOk()->assertSee('Borrar');
+
+        $consultation = new Consultation(['consulted_at' => now(), 'reason' => 'Valoración']);
+        $consultation->clinic_id = $this->clinic->id;
+        $consultation->patient_id = $patient->id;
+        $consultation->doctor_id = $doctor->id;
+        $consultation->save();
+
+        $this->get(PatientResource::getUrl('edit', ['record' => $patient]))->assertOk()->assertDontSee('Borrar');
+    }
 }

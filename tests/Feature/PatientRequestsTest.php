@@ -9,6 +9,7 @@ use App\Models\Clinic;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\PatientTreatment;
+use App\Models\Prescription;
 use App\Models\Service;
 use App\Models\ServiceRequest;
 use App\Models\User;
@@ -17,7 +18,8 @@ use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 /**
- * Portal del paciente: solicitar la renovación de un tratamiento ya realizado y ver el estado de la solicitud.
+ * Portal del paciente: solicitar la renovación de un tratamiento ya realizado,
+ * ver el estado de la solicitud y las fórmulas emitidas.
  */
 class PatientRequestsTest extends TestCase
 {
@@ -172,4 +174,32 @@ class PatientRequestsTest extends TestCase
         $this->get('/mi-cuenta')->assertOk()->assertSee('Agendada')->assertSee('Tu cita');
     }
 
+    public function test_el_paciente_ve_solo_sus_formulas_emitidas(): void
+    {
+        $issued = $this->makePrescription($this->ana, 'Usar protector solar');
+        $issued->issue();
+        $draft = $this->makePrescription($this->ana, 'Borrador secreto');
+
+        $luis = $this->makePatient('Luis Díaz', 'luis@example.com', '3007654321');
+        $foreign = $this->makePrescription($luis, 'Fórmula de Luis');
+        $foreign->issue();
+
+        $this->loginAs($this->ana);
+
+        $this->get('/mi-cuenta')->assertOk()->assertSee('Mis fórmulas e indicaciones')->assertSee($issued->fresh()->code);
+        $this->get(route('patient.prescriptions.show', $issued->id))->assertOk()->assertSee('Usar protector solar');
+        $this->get(route('patient.prescriptions.show', $draft->id))->assertNotFound();
+        $this->get(route('patient.prescriptions.show', $foreign->id))->assertNotFound();
+    }
+
+    private function makePrescription(Patient $patient, string $instructions): Prescription
+    {
+        $prescription = new Prescription(['care_instructions' => $instructions]);
+        $prescription->clinic_id = $patient->clinic_id;
+        $prescription->patient_id = $patient->id;
+        $prescription->doctor_id = $this->doctor->id;
+        $prescription->save();
+
+        return $prescription;
+    }
 }

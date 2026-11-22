@@ -8,6 +8,7 @@ use App\Http\Controllers\Patient\AuthController as PatientAuthController;
 use App\Http\Controllers\Patient\DashboardController as PatientDashboardController;
 use App\Http\Controllers\Patient\ProfileController as PatientProfileController;
 use App\Http\Controllers\Patient\ServiceRequestController as PatientServiceRequestController;
+use App\Http\Controllers\PrescriptionPrintController;
 use App\Http\Controllers\PublicMediaController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\TayraiWebhookController;
@@ -55,4 +56,12 @@ Route::middleware(AuthenticatePatient::class)->group(function () {
     Route::get('/mi-cuenta/renovar/{treatment}', [PatientServiceRequestController::class, 'create'])->whereNumber('treatment')->name('patient.requests.create');
     Route::post('/mi-cuenta/renovar/{treatment}', [PatientServiceRequestController::class, 'store'])->whereNumber('treatment')->middleware('throttle:10,1')->name('patient.requests.store');
     Route::post('/mi-cuenta/solicitudes/{serviceRequest}/cancelar', [PatientServiceRequestController::class, 'cancel'])->whereNumber('serviceRequest')->name('patient.requests.cancel');
+
+    // Fórmulas e indicaciones emitidas por el médico.
+    Route::get('/mi-cuenta/formulas/{prescription}', [PrescriptionPrintController::class, 'patient'])->whereNumber('prescription')->name('patient.prescriptions.show');
 });
+
+// Fórmula imprimible para el equipo médico (sesión del panel).
+Route::middleware('auth')->get('/formulas/{prescription}/imprimir', [PrescriptionPrintController::class, 'staff'])
+    ->whereNumber('prescription')
+    ->name('prescriptions.print');

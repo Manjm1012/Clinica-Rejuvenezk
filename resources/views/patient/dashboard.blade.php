@@ -5,6 +5,7 @@
     $labels = \App\Models\PatientTreatment::RENEWAL_LABELS;
     $requestStatuses = \App\Models\ServiceRequest::STATUSES;
     $times = \App\Models\ServiceRequest::TIMES;
+    $prescriptionStatuses = \App\Models\Prescription::STATUSES;
     // Botón de renovación: formulario interno si el tratamiento tiene servicio; si no, WhatsApp/formulario.
     $renewTarget = fn ($t) => $t->service_id ? route('patient.requests.create', $t->id) : ($renewUrls[$t->id] ?? null);
 @endphp
@@ -141,5 +142,31 @@
             @endforelse
         </section>
 
+        @if ($prescriptions->isNotEmpty())
+            <section class="dk-history" aria-labelledby="dk-prescriptions-title">
+                <h2 id="dk-prescriptions-title" class="dk-section-title">Mis fórmulas e indicaciones</h2>
+
+                @foreach ($prescriptions as $prescription)
+                    <article class="dk-treatment">
+                        <div class="dk-treatment-main">
+                            <h3>Fórmula {{ $prescription->code }}</h3>
+                            <p class="dk-treatment-meta">
+                                {{ $prescription->issued_at ? $fmtDate($prescription->issued_at) : '' }}
+                                @if ($prescription->doctor) · {{ $prescription->doctor->name }} @endif
+                            </p>
+                            @if ($prescription->valid_until && $prescription->status === 'issued')
+                                <p class="dk-treatment-due">Válida hasta: {{ $fmtDate($prescription->valid_until) }}</p>
+                            @endif
+                        </div>
+                        <div class="dk-treatment-side">
+                            <span class="dk-badge dk-badge--{{ $prescription->status === 'issued' ? 'vigente' : 'vencido' }}">
+                                {{ $prescriptionStatuses[$prescription->status] ?? $prescription->status }}
+                            </span>
+                            <a href="{{ route('patient.prescriptions.show', $prescription->id) }}" class="dk-btn-agendar" target="_blank" rel="noopener">Ver o descargar</a>
+                        </div>
+                    </article>
+                @endforeach
+            </section>
+        @endif
     </main>
 </x-layouts.site>

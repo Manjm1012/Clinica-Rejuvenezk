@@ -54,6 +54,14 @@ class PatientResource extends Resource
                         ->label('Nombre completo')
                         ->required()
                         ->maxLength(200),
+                    Forms\Components\Grid::make(2)->schema([
+                        Forms\Components\Select::make('document_type')
+                            ->label('Tipo de documento')
+                            ->options(Patient::DOCUMENT_TYPES),
+                        Forms\Components\TextInput::make('document_number')
+                            ->label('Número de documento')
+                            ->maxLength(30),
+                    ])->columnSpan(1),
                     Forms\Components\TextInput::make('phone')
                         ->label('Celular (WhatsApp)')
                         ->tel()
@@ -71,6 +79,9 @@ class PatientResource extends Resource
                         ->native(false)
                         ->displayFormat('d/m/Y')
                         ->maxDate(now()),
+                    Forms\Components\Select::make('gender')
+                        ->label('Sexo')
+                        ->options(Patient::GENDERS),
                 ])->columns(2),
 
             Forms\Components\Section::make('Acceso y consentimientos')
@@ -111,7 +122,7 @@ class PatientResource extends Resource
     }
 
     /** Único por clínica comparando el valor ya normalizado (teléfono en dígitos, correo en minúsculas). */
-    protected static function uniqueInClinicRule(string $column, ?Patient $record): Closure
+    public static function uniqueInClinicRule(string $column, ?Patient $record): Closure
     {
         return function (string $attribute, $value, Closure $fail) use ($column, $record): void {
             $normalized = $column === 'phone' ? Patient::normalizePhone($value) : Patient::normalizeEmail($value);
@@ -142,6 +153,7 @@ class PatientResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('Nombre')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('phone')->label('Celular')->searchable(),
+                Tables\Columns\TextColumn::make('document_number')->label('Documento')->searchable()->toggleable(),
                 Tables\Columns\TextColumn::make('email')->label('Correo')->searchable()->toggleable(),
                 Tables\Columns\IconColumn::make('marketing_consent')->label('Marketing')->boolean()->alignCenter(),
                 Tables\Columns\TextColumn::make('treatments_count')->label('Tratamientos')->alignCenter()->sortable(),
@@ -165,11 +177,8 @@ class PatientResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            // Sin borrado masivo: un paciente con historia clínica no se puede eliminar.
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array

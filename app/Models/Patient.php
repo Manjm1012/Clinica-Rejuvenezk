@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Auditable;
 use App\Models\Concerns\BelongsToClinic;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,7 +14,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class Patient extends Authenticatable
 {
-    use BelongsToClinic;
+    use Auditable, BelongsToClinic;
 
     /** Versión del texto de la política de datos que acepta el registro. */
     public const DATA_POLICY_VERSION = '2026-11';
@@ -24,10 +25,27 @@ class Patient extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'phone', 'birth_date', 'password', 'marketing_consent',
+        'document_type', 'document_number', 'gender',
+        'allergies', 'medical_history', 'current_medications',
     ];
 
+    /** Datos clínicos: nunca salen en una serialización (API, JSON, logs). */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'allergies', 'medical_history', 'current_medications',
+    ];
+
+    public const DOCUMENT_TYPES = [
+        'CC' => 'Cédula de ciudadanía',
+        'CE' => 'Cédula de extranjería',
+        'TI' => 'Tarjeta de identidad',
+        'PA' => 'Pasaporte',
+        'PPT' => 'Permiso por protección temporal',
+    ];
+
+    public const GENDERS = [
+        'F' => 'Femenino',
+        'M' => 'Masculino',
+        'O' => 'Otro / prefiere no decir',
     ];
 
     protected function casts(): array
@@ -38,6 +56,9 @@ class Patient extends Authenticatable
             'marketing_consent' => 'boolean',
             'marketing_consent_at' => 'datetime',
             'data_policy_accepted_at' => 'datetime',
+            'allergies' => 'encrypted',
+            'medical_history' => 'encrypted',
+            'current_medications' => 'encrypted',
         ];
     }
 
@@ -83,6 +104,28 @@ class Patient extends Authenticatable
     public function treatments(): HasMany
     {
         return $this->hasMany(PatientTreatment::class);
+    }
+
+    public function consultations(): HasMany
+    {
+        return $this->hasMany(Consultation::class);
+    }
+
+    public function prescriptions(): HasMany
+    {
+        return $this->hasMany(Prescription::class);
+    }
+
+    public function serviceRequests(): HasMany
+    {
+        return $this->hasMany(ServiceRequest::class);
+    }
+
+    /** La historia clínica no se elimina: un paciente con consultas o fórmulas no se puede borrar. */
+    public function hasClinicalRecords(): bool
+    {
+        return Consultation::query()->withoutGlobalScope('clinic')->where('patient_id', $this->getKey())->exists()
+            || Prescription::query()->withoutGlobalScope('clinic')->where('patient_id', $this->getKey())->exists();
     }
 
     public function lead(): BelongsTo
