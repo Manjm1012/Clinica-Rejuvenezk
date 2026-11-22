@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AppointmentResource\Pages;
 use App\Models\Appointment;
+use App\Models\Patient;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,8 +16,11 @@ class AppointmentResource extends Resource
     protected static ?string $model = Appointment::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
+
     protected static ?string $navigationGroup = 'CRM & Leads';
+
     protected static ?string $navigationLabel = 'Citas';
+
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
@@ -29,6 +33,25 @@ class AppointmentResource extends Resource
                     ->preload(),
                 Forms\Components\Select::make('service_id')
                     ->relationship('service', 'name')
+                    ->searchable()
+                    ->preload(),
+                Forms\Components\Select::make('patient_id')
+                    ->label('Paciente registrado')
+                    ->relationship('patient', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->live()
+                    ->afterStateUpdated(function (?string $state, Forms\Set $set): void {
+                        $patient = $state ? Patient::query()->find($state) : null;
+                        if ($patient) {
+                            $set('patient_name', $patient->name);
+                            $set('patient_phone', $patient->phone);
+                            $set('patient_email', $patient->email);
+                        }
+                    }),
+                Forms\Components\Select::make('doctor_id')
+                    ->label('Médico')
+                    ->relationship('doctor', 'name')
                     ->searchable()
                     ->preload(),
                 Forms\Components\TextInput::make('patient_name')
@@ -66,10 +89,16 @@ class AppointmentResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('patient_email')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('doctor.name')
+                    ->label('Médico')
+                    ->placeholder('—'),
                 Tables\Columns\TextColumn::make('appointment_at')
-                    ->dateTime()
+                    ->label('Fecha')
+                    ->dateTime('d/m/Y H:i')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
+                    ->label('Estado')
+                    ->formatStateUsing(fn (?string $state) => Appointment::STATUSES[$state] ?? $state)
                     ->badge(),
                 Tables\Columns\TextColumn::make('tayrai_appointment_id')
                     ->searchable(),
@@ -82,8 +111,10 @@ class AppointmentResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('appointment_at', 'desc')
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')->label('Estado')->options(Appointment::STATUSES),
+                Tables\Filters\SelectFilter::make('doctor_id')->label('Médico')->relationship('doctor', 'name'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

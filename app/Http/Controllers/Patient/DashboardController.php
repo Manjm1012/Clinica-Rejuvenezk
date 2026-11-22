@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Patient;
 
 use App\Http\Controllers\Controller;
 use App\Models\PatientTreatment;
+use App\Models\ServiceRequest;
 use App\Support\PublicSettings;
 use App\Support\Renewals;
 use Illuminate\Http\Request;
@@ -51,7 +52,23 @@ class DashboardController extends Controller
             ->sortBy(fn (PatientTreatment $t) => $t->due_date->toDateString())
             ->first();
 
+        $requests = ServiceRequest::query()->withoutGlobalScope('clinic')
+            ->where('patient_id', $patient->getKey())
+            ->with([
+                'service' => fn ($q) => $q->withoutGlobalScope('clinic')->select(['id', 'name']),
+                'appointment' => fn ($q) => $q->withoutGlobalScope('clinic')->select(['id', 'appointment_at']),
+            ])
+            ->latest('id')
+            ->limit(10)
+            ->get();
+
+        // Servicios con una solicitud en curso: el botón de renovar muestra "Solicitud enviada".
+        $openServiceIds = $requests->filter->isOpen()->pluck('service_id')->filter()->unique()->all();
+
+
         return view('patient.dashboard', [
+            'requests' => $requests,
+            'openServiceIds' => $openServiceIds,
             'settings' => $settings,
             'patient' => $patient,
             'treatments' => $treatments,

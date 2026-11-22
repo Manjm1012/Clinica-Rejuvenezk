@@ -7,6 +7,7 @@ use App\Http\Controllers\LegalController;
 use App\Http\Controllers\Patient\AuthController as PatientAuthController;
 use App\Http\Controllers\Patient\DashboardController as PatientDashboardController;
 use App\Http\Controllers\Patient\ProfileController as PatientProfileController;
+use App\Http\Controllers\Patient\ServiceRequestController as PatientServiceRequestController;
 use App\Http\Controllers\PublicMediaController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\TayraiWebhookController;
@@ -49,4 +50,9 @@ Route::middleware(AuthenticatePatient::class)->group(function () {
     Route::get('/mi-cuenta', PatientDashboardController::class)->name('patient.dashboard');
     Route::get('/mi-cuenta/perfil', [PatientProfileController::class, 'edit'])->name('patient.profile');
     Route::put('/mi-cuenta/perfil', [PatientProfileController::class, 'update'])->name('patient.profile.update');
+
+    // Solicitar / agendar la renovación de un tratamiento ya realizado.
+    Route::get('/mi-cuenta/renovar/{treatment}', [PatientServiceRequestController::class, 'create'])->whereNumber('treatment')->name('patient.requests.create');
+    Route::post('/mi-cuenta/renovar/{treatment}', [PatientServiceRequestController::class, 'store'])->whereNumber('treatment')->middleware('throttle:10,1')->name('patient.requests.store');
+    Route::post('/mi-cuenta/solicitudes/{serviceRequest}/cancelar', [PatientServiceRequestController::class, 'cancel'])->whereNumber('serviceRequest')->name('patient.requests.cancel');
 });
