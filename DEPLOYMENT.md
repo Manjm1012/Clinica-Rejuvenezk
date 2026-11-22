@@ -41,9 +41,9 @@ MAIL_FROM_ADDRESS="no-reply@tu-dominio.com"
 MAIL_FROM_NAME="${APP_NAME}"
 ```
 
-La configuracion de TayrAI se gestiona en la base de datos mediante los ajustes del sitio.
+La configuracion de TayrAI se toma de las variables `TAYRAI_*` y, si estan vacias, de los ajustes del sitio (ver "Paso a produccion").
 
-Si los archivos subidos desde Filament deben sobrevivir a rebuilds, monta un volumen persistente para `storage/app/public` o mueve el disco `public` a S3.
+Para que los archivos sobrevivan a los rebuilds, monta volumenes persistentes para **`storage/app/public`** (imagenes y videos subidos desde Filament) y **`storage/app/private`** (firmas de los medicos y subidas temporales), o mueve el disco `public` a S3.
 
 ## Primer despliegue
 
@@ -154,7 +154,8 @@ composer run deploy:full
 
 Monta al menos estos paths si el contenedor se reemplaza en cada rebuild:
 
-- `storage/app/public`
+- `storage/app/public`: imagenes, videos y logos subidos desde el panel (se sirven en `/storage` y `/media`).
+- `storage/app/private`: firmas de los medicos, subidas temporales de Livewire y otros archivos sin URL publica. **Obligatorio desde la version con portal/roles**: sin el volumen, las firmas se pierden en cada rebuild.
 - `database` solo si aun insistes en SQLite
 
 Si vas a usar MySQL, no montes `database/database.sqlite` como estrategia principal.
@@ -205,7 +206,7 @@ Esta version agrega el portal de pacientes (`/ingresar`, `/registro`, `/mi-cuent
    mysqldump --single-transaction --routines -h <host> -u <usuario> -p <base> > backup-antes-portal-$(date +%F).sql
    ```
 
-2. Confirma que el servicio usa **MySQL persistente** (no SQLite dentro del contenedor) y que `storage/app/public` esta en un **volumen persistente**. Sin eso, los pacientes, tratamientos e imagenes se pierden en el siguiente rebuild.
+2. Confirma que el servicio usa **MySQL persistente** (no SQLite dentro del contenedor) y que `storage/app/public` y `storage/app/private` estan en **volumenes persistentes**. Sin eso, los pacientes, tratamientos e imagenes se pierden en el siguiente rebuild.
 3. Verifica en las variables de entorno `APP_LOCALE=es`. Las fechas de renovacion usan la zona de la clinica (`clinics.timezone`, por defecto `America/Bogota`); no hace falta cambiar `APP_TIMEZONE`.
 
 ### Migraciones nuevas
@@ -309,7 +310,7 @@ Para activarlo: define `MEDICAL_PANEL_ENABLED=true` y ejecuta `php artisan optim
    SANCTUM_EXPIRATION=43200
    ```
    Luego borra `tayrai.api_key` y `tayrai.webhook_secret` de Ajustes del sitio.
-3. **`APP_KEY` no puede cambiar nunca**: cifra las notas clínicas, las alergias y los antecedentes. Si se pierde o se cambia, esos datos quedan ilegibles. Guárdala en un gestor de secretos.
+3. **`APP_KEY`: se cambia una sola vez, antes del primer deploy con datos cifrados, y nunca más.** Cifra las notas clínicas, las alergias y los antecedentes. Si se pierde o se cambia después, esos datos quedan ilegibles. Guárdala en un gestor de secretos (ver "Paso a producción").
 4. **Base de datos de producción**: para historia clínica usa MySQL o PostgreSQL con respaldos automáticos diarios, no SQLite.
 
 ### Migraciones nuevas
@@ -356,7 +357,7 @@ Esta sección reúne todo lo necesario para desplegar la rama `feat/doctor-kevin
 
 | Variable | Para qué sirve | Valor por defecto | ¿Obligatoria? | Si falta |
 |---|---|---|---|---|
-| `APP_KEY` | **No es nueva, pero ahora es crítica**: cifra alergias, antecedentes, medicamentos, consultas y fórmulas. | — | **Sí, y no puede cambiar nunca** | Sin la misma clave, los datos clínicos cifrados quedan ilegibles. Para rotarla, usa `APP_PREVIOUS_KEYS`. |
+| `APP_KEY` | **No es nueva, pero ahora es crítica**: cifra alergias, antecedentes, medicamentos, consultas y fórmulas. | — | **Sí. Se cambia una sola vez ANTES del primer deploy con datos cifrados y nunca más** | Sin la misma clave, los datos clínicos cifrados quedan ilegibles. |
 | `APP_NAME` | Nombre en correos y títulos internos. | `"Dr. Kevin Rejuvenezk"` (antes `"Clinica Rejuvenezk"`) | No | Se usa el valor anterior; la web toma el nombre de *Ajustes → branding.clinic_name*. |
 | `MEDICAL_PANEL_ENABLED` | Activa `/medico`, la historia clínica, las fórmulas del portal y el rol Médico. | `false` | No | Panel apagado (404). **Solo `true` tras la revisión médico-legal.** |
 | `TAYRAI_ENABLED` | Activa la sincronización de leads con TayrAI. Reemplaza el ajuste `tayrai.enabled`. | vacío → usa `tayrai.enabled` de la base | No | Se usa el valor de la base; si tampoco existe, la integración queda apagada. |
@@ -390,6 +391,8 @@ Ninguna toca leads, servicios, galería, ajustes (salvo el nombre de marca), usu
 
 ### Prueba previa con el respaldo (recomendada)
 
+> **Probado el 22/11/2026** con un respaldo real de producción sobre MariaDB **11.8.9** (`SELECT VERSION()` = `11.8.9-MariaDB`). Las 5 migraciones aplicaron sin errores; el rollback del lote y la reaplicación también. El usuario existente (id 1) quedó con `role = admin` y entró a `/admin` con el menú completo. Servicios (24), ajustes (38), leads y galería se ven con sus datos, sin errores 500 ni de JavaScript. La marca se renombró en `clinics.name` y `branding.clinic_name`.
+
 En una máquina con Docker, sin tocar producción:
 
 ```bash
@@ -413,12 +416,17 @@ docker rm -f rejuv-prueba               # limpiar al terminar
 
 **Antes del deploy**
 
-1. Confirma que el servicio de la app tiene `APP_KEY` y que **no la cambiarás**. Guarda una copia en un gestor de secretos.
+1. **Cambia `APP_KEY` una sola vez, ahora, antes del primer deploy con datos cifrados**, y no la vuelvas a cambiar:
+   - Genera la nueva clave en tu máquina: `php artisan key:generate --show` (copia el valor `base64:…`; no edites `.env`).
+   - En Dokploy → *Environment*, reemplaza `APP_KEY` por ese valor y **guárdalo en un gestor de secretos** junto con la fecha.
+   - Es seguro hacerlo ahora porque todavía no hay datos cifrados en la base: las tablas de pacientes e historia clínica se crean en este deploy y, con `MEDICAL_PANEL_ENABLED=false`, siguen vacías.
+   - Efectos del cambio: se cierran todas las sesiones del panel y del portal (hay que volver a ingresar) y se invalidan los "recordarme". Los tokens de la API (Sanctum) **no** se ven afectados.
+   - **Desde ese momento, `APP_KEY` no se vuelve a cambiar nunca.** Si alguna vez fuera imprescindible, la clave anterior debe ir en `APP_PREVIOUS_KEYS` y hay que volver a cifrar los datos. Nunca reemplaces la clave sin más.
 2. Haz un **respaldo** de la base de producción y descárgalo:
    ```bash
    mariadb-dump --single-transaction --routines --triggers -h <host> -u <usuario> -p <base> > respaldo-antes-portal-$(date +%F).sql
    ```
-   Respalda también los volúmenes `storage/app/public` (y `storage/app/private` si ya existe).
+   Respalda también los volúmenes `storage/app/public` y `storage/app/private` (si ya existe).
 3. (Recomendado) Ejecuta la **prueba previa con el respaldo** de la sección anterior.
 4. En Dokploy → *Environment*, agrega:
    ```dotenv
@@ -431,7 +439,10 @@ docker rm -f rejuv-prueba               # limpiar al terminar
    TAYRAI_WEBHOOK_SECRET=
    ```
    Comprueba `APP_ENV=production` y `APP_DEBUG=false`. No agregues `ADMIN_EMAIL`/`ADMIN_PASSWORD`: no se usan en este deploy.
-5. En Dokploy → *Volumes*, agrega un volumen persistente para **`storage/app/private`**: ahí quedan las firmas de los médicos y las subidas temporales. Mantén el de `storage/app/public`.
+5. En Dokploy → *Volumes*, deben quedar **dos volúmenes persistentes**, uno junto al otro:
+   - `storage/app/public`: ya existe; imágenes, videos y logos.
+   - `storage/app/private`: **nuevo**; firmas de los médicos y subidas temporales de Livewire.
+   Créalo antes del deploy para que la primera ejecución ya escriba en el volumen.
 6. Anota el commit que está desplegado hoy (`origin/main` = `efad3b7`) para un posible rollback.
 
 **Durante el deploy**
