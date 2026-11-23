@@ -17,7 +17,7 @@ class PublicContentController extends Controller
     {
         return response()->json([
             'branding' => [
-                'clinic_name' => SiteSetting::get('branding', 'clinic_name', 'Clínica Rejuvenezk'),
+                'clinic_name' => SiteSetting::get('branding', 'clinic_name', 'Dr. Kevin Rejuvenezk'),
                 'hero_title' => SiteSetting::get('branding', 'hero_title', ''),
                 'hero_subtitle' => SiteSetting::get('branding', 'hero_subtitle', ''),
             ],
@@ -37,6 +37,12 @@ class PublicContentController extends Controller
 
     public function service(Service $service): JsonResponse
     {
-        return response()->json($service->load(['category', 'faqs', 'galleryItems']));
+        abort_unless($service->is_active, 404);
+
+        return response()->json($service->load([
+            'category',
+            'faqs' => fn ($query) => $query->where('is_active', true)->orderBy('sort_order'),
+            'galleryItems' => fn ($query) => $query->where('is_active', true)->orderBy('sort_order'),
+        ]));
     }
 }

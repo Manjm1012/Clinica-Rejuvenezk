@@ -2,12 +2,14 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Concerns\AdminOnly;
 use App\Models\SiteSetting;
 use Filament\Pages\Page;
-use Illuminate\Support\Facades\Storage;
 
 class HomeBanners extends Page
 {
+    use AdminOnly;
+
     protected static ?string $navigationIcon = 'heroicon-o-photo';
 
     protected static ?string $navigationGroup = 'Configuración';
@@ -35,10 +37,10 @@ class HomeBanners extends Page
 
     public function getBannerUrl(?string $path): ?string
     {
-        if (!$path) {
+        if (! $path) {
             return null;
         }
 
-        return asset('storage/' . ltrim($path, '/'));
+        return route('media.public', ['path' => ltrim($path, '/')]);
     }
 }

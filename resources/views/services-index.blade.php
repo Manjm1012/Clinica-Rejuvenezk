@@ -1,30 +1,6 @@
-@php
-    $clinicName = $settings['clinic_name'] ?? 'Clínica Rejuvenezk';
-    $publicDisk = \Illuminate\Support\Facades\Storage::disk('public');
-    $normalizeMediaPath = function (?string $path): ?string {
-        if ($path === null || trim($path) === '') {
-            return null;
-        }
+@php($clinicName = $settings['clinic_name'] ?? 'Dr. Kevin Rejuvenezk')
 
-        $normalized = trim($path);
-
-        if (filter_var($normalized, FILTER_VALIDATE_URL)) {
-            $normalized = parse_url($normalized, PHP_URL_PATH) ?: $normalized;
-        }
-
-        $normalized = ltrim(rawurldecode($normalized), '/');
-
-        foreach (['media/', 'storage/', 'public/', 'app/public/'] as $prefix) {
-            if (str_starts_with($normalized, $prefix)) {
-                $normalized = substr($normalized, strlen($prefix));
-            }
-        }
-
-        return $normalized !== '' ? $normalized : null;
-    };
-@endphp
-
-<x-layouts.site :settings="$settings" :title="'Tratamientos | ' . $clinicName">
+<x-layouts.site :settings="$settings" :title="'Tratamientos | ' . $clinicName" :description="'Catálogo de tratamientos faciales y corporales de ' . $clinicName . ': valoración médica, tecnología y resultados naturales.'">
     <main class="services-catalog-page">
         <section class="detail-hero services-catalog-hero">
             <div>
@@ -49,11 +25,11 @@
 
                 <div class="services-grid services-grid-catalog">
                     @foreach ($category->services as $service)
-                        @php($serviceImagePath = $normalizeMediaPath($service->image_path))
+                        @php($serviceImageUrl = \App\Support\Media::url($service->image_path))
                         <article class="landing-service-card">
-                            @if ($serviceImagePath && $publicDisk->exists($serviceImagePath))
+                            @if ($serviceImageUrl)
                                 <figure class="media-placeholder media-placeholder-service service-media">
-                                    <img src="{{ $publicDisk->url($serviceImagePath) }}" alt="{{ $service->name }}" loading="lazy">
+                                    <img src="{{ $serviceImageUrl }}" alt="{{ $service->name }}" loading="lazy" decoding="async">
                                 </figure>
                             @else
                                 <figure class="media-placeholder media-placeholder-service service-media service-media-empty" aria-hidden="true">

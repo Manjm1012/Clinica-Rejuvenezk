@@ -45,6 +45,7 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'clinic_id' => $user->clinic_id,
+                'role' => $user->role,
                 'is_super_admin' => $user->is_super_admin,
             ],
         ]);
@@ -52,8 +53,10 @@ class AuthController extends Controller
 
     public function me(Request $request): JsonResponse
     {
+        $user = $request->user();
+
         return response()->json([
-            'user' => $request->user(),
+            'user' => $user->only(['id', 'name', 'email', 'clinic_id', 'role', 'is_super_admin']),
         ]);
     }
 

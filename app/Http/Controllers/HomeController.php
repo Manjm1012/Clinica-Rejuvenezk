@@ -2,105 +2,138 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Clinic;
 use App\Models\Doctor;
+use App\Models\Faq;
 use App\Models\GalleryItem;
 use App\Models\Service;
 use App\Models\ServiceCategory;
-use App\Models\SiteSetting;
 use App\Models\Stat;
-use App\Models\Technology;
 use App\Models\Testimonial;
+use App\Support\CurrentClinic;
+use App\Support\PublicSettings;
+use App\View\HomePage;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    public function __invoke(): View
+    public function __invoke(CurrentClinic $currentClinic): View
     {
-        return view('home', $this->pageData());
+        $data = [
+            'settings' => PublicSettings::all(),
+            'clinic' => $currentClinic->clinic(),
+            'services' => Service::query()->where('is_active', true)->orderBy('sort_order')->get(['id', 'name', 'slug']),
+            'serviceCategories' => $this->activeCategories(),
+            'featuredServices' => Service::query()->where('is_active', true)->where('is_featured', true)->orderBy('sort_order')->limit(6)->get(),
+            'doctor' => Doctor::query()->where('is_active', true)->orderBy('sort_order')->first(),
+            'galleryItems' => $this->galleryItems(12),
+            'stats' => Stat::query()->where('is_active', true)->orderBy('sort_order')->get(),
+            'testimonials' => Testimonial::query()->where('is_active', true)->orderByDesc('is_featured')->orderBy('sort_order')->limit(8)->get(),
+        ];
+
+        return view('home', $data + ['page' => HomePage::build($data)]);
     }
 
     public function about(): View
     {
-        return view('about', $this->pageData());
+        return view('about', [
+            'settings' => PublicSettings::all(),
+            'doctor' => Doctor::query()->where('is_active', true)->orderBy('sort_order')->first(),
+        ]);
     }
 
-    private function pageData(): array
+    /** Resultados: antes/después, galería y videos completos + testimonios reales. */
+    public function results(): View
     {
-        $branding = array_merge([
-            'clinic_name' => 'Clínica Rejuvenezk',
-            'hero_kicker' => 'Medicina estética avanzada',
-            'hero_title' => 'Cirugía y medicina estética premium',
-            'hero_subtitle' => 'Sitio administrable y comercializable para clínicas.',
-            'hero_primary_cta' => 'Reservar valoración',
-            'hero_secondary_cta' => 'Ver tratamientos',
-            'hero_card_kicker' => 'Primera cita',
-            'hero_card_title' => 'Diagnóstico inteligente de piel',
-            'hero_card_text' => 'Análisis de calidad cutánea y plan estético por etapas para resultados armónicos y progresivos.',
-            'hero_stack_primary_label' => 'Protocolo estrella',
-            'hero_stack_secondary_label' => 'Especialista',
-            'services_kicker' => 'Nuestros tratamientos',
-            'services_title' => 'Tecnología, precisión y naturalidad',
-            'testimonials_kicker' => 'Resultados',
-            'testimonials_title' => 'Resultados y testimonios reales',
-            'social_kicker' => 'Comunidad Rejuvenezk',
-            'social_title' => 'Conecta con nuestras redes y canales',
-            'social_lead' => 'Comparte resultados, conoce casos reales y recibe novedades de nuestros tratamientos en tiempo real.',
-            'cta_kicker' => 'Agenda tu cita',
-            'cta_title' => 'Empieza hoy tu protocolo personalizado.',
-            'cta_body' => 'Atención presencial y seguimiento digital para una experiencia comercial ordenada.',
-            'topbar_cta_label' => 'Agenda ahora',
-            'cta_whatsapp_label' => 'WhatsApp',
-            'cta_email_label' => 'Solicitar información',
-            'home_banner_1_image' => '',
-            'home_banner_2_image' => '',
-            'home_banner_3_image' => '',
-        ], SiteSetting::group('branding'));
+        $items = $this->galleryItems(60);
+        $settings = PublicSettings::all();
 
-        $contact = array_merge([
-            'whatsapp_url' => '',
-            'whatsapp_number' => '',
-            'phone' => '',
-            'email' => '',
-            'address' => '',
-        ], SiteSetting::group('contact'));
+        return view('results', [
+            'settings' => $settings,
+            'beforeAfter' => HomePage::beforeAfter($items, 24),
+            'gallery' => HomePage::gallery($items, 24),
+            'videos' => HomePage::videos($items, 12),
+            'testimonials' => Testimonial::query()->where('is_active', true)->orderByDesc('is_featured')->orderBy('sort_order')->get(),
+            'page' => ['texts' => HomePage::texts($settings)],
+        ]);
+    }
 
-        $social = array_merge([
-            'instagram_url' => '',
-            'facebook_url' => '',
-            'tiktok_url' => '',
-            'youtube_url' => '',
-        ], SiteSetting::group('social'));
-
-        return [
-            'settings' => array_merge($branding, $contact, $social),
-            'clinic' => Clinic::query()->where('is_active', true)->orderBy('id')->first(),
-            'services' => Service::query()->where('is_active', true)->orderBy('sort_order')->get(),
-            'serviceCategories' => ServiceCategory::query()
+    /** Equipo médico: todos los médicos activos con su formación. */
+    public function team(): View
+    {
+        return view('team', [
+            'settings' => PublicSettings::all(),
+            'doctors' => Doctor::query()
                 ->where('is_active', true)
-                ->whereHas('services', fn ($query) => $query->where('is_active', true))
-                ->with([
-                    'services' => fn ($query) => $query->where('is_active', true)->orderBy('sort_order'),
+                ->with('credentials')
+                ->orderBy('sort_order')
+                ->get(),
+        ]);
+    }
+
+    /** Preguntas frecuentes agrupadas por tratamiento. */
+    public function faq(): View
+    {
+        $faqs = Faq::query()
+            ->where('is_active', true)
+            ->with(['service' => fn ($q) => $q->select(['id', 'name', 'slug', 'is_active'])])
+            ->orderBy('sort_order')
+            ->get()
+            ->filter(fn (Faq $faq) => ! $faq->service || $faq->service->is_active);
+
+        return view('faq', [
+            'settings' => PublicSettings::all(),
+            'groups' => $faqs->groupBy(fn (Faq $faq) => $faq->service?->name ?? 'Generales')
+                ->sortBy(fn ($items, $name) => $name === 'Generales' ? '' : $name),
+        ]);
+    }
+
+    public function sitemap(): Response
+    {
+        $urls = collect([
+            ['loc' => route('home'), 'priority' => '1.0'],
+            ['loc' => route('services.index'), 'priority' => '0.9'],
+            ['loc' => route('results'), 'priority' => '0.8'],
+            ['loc' => route('team'), 'priority' => '0.8'],
+            ['loc' => route('about'), 'priority' => '0.7'],
+            ['loc' => route('faq'), 'priority' => '0.6'],
+            ['loc' => route('legal.data-policy'), 'priority' => '0.3'],
+        ])->merge(
+            Service::query()->where('is_active', true)->orderBy('sort_order')->get(['slug', 'updated_at'])
+                ->map(fn (Service $service) => [
+                    'loc' => route('services.show', $service),
+                    'lastmod' => $service->updated_at?->toAtomString(),
+                    'priority' => '0.8',
                 ])
-                ->orderBy('sort_order')
-                ->get(),
-            'featuredServices' => Service::query()->where('is_active', true)->where('is_featured', true)->orderBy('sort_order')->limit(6)->get(),
-            'doctor' => Doctor::query()->where('is_active', true)->orderBy('sort_order')->first(),
-            'galleryItems' => GalleryItem::query()
-                ->where('is_active', true)
-                ->where(function ($query) {
-                    $query->whereNotNull('image_path')
-                        ->orWhereNotNull('before_image_path')
-                        ->orWhereNotNull('after_image_path')
-                        ->orWhereNotNull('video_url');
-                })
-                ->orderByDesc('is_featured')
-                ->orderBy('sort_order')
-                ->limit(12)
-                ->get(),
-            'stats' => Stat::query()->where('is_active', true)->orderBy('sort_order')->get(),
-            'technologies' => Technology::query()->where('is_active', true)->orderBy('sort_order')->get(),
-            'testimonials' => Testimonial::query()->where('is_active', true)->orderByDesc('is_featured')->orderBy('sort_order')->limit(8)->get(),
-        ];
+        );
+
+        return response()
+            ->view('sitemap', ['urls' => $urls])
+            ->header('Content-Type', 'application/xml; charset=UTF-8');
+    }
+
+    private function activeCategories()
+    {
+        return ServiceCategory::query()
+            ->where('is_active', true)
+            ->whereHas('services', fn ($query) => $query->where('is_active', true))
+            ->with(['services' => fn ($query) => $query->where('is_active', true)->orderBy('sort_order')])
+            ->orderBy('sort_order')
+            ->get();
+    }
+
+    private function galleryItems(int $limit)
+    {
+        return GalleryItem::query()
+            ->where('is_active', true)
+            ->where(fn ($query) => $query->whereNotNull('image_path')
+                ->orWhereNotNull('before_image_path')
+                ->orWhereNotNull('after_image_path')
+                ->orWhereNotNull('video_url'))
+            ->with('service:id,name')
+            ->orderByDesc('is_featured')
+            ->orderBy('sort_order')
+            ->limit($limit)
+            ->get();
     }
 }

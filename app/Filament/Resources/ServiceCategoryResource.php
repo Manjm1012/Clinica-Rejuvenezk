@@ -2,21 +2,29 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AdminOnly;
 use App\Filament\Resources\ServiceCategoryResource\Pages;
 use App\Models\ServiceCategory;
+use App\Support\AdminClinic;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Validation\Rules\Unique;
 
 class ServiceCategoryResource extends Resource
 {
+    use AdminOnly;
+
     protected static ?string $model = ServiceCategory::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
+
     protected static ?string $navigationGroup = 'Procedimientos';
+
     protected static ?string $navigationLabel = 'Categorías';
+
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
@@ -24,7 +32,7 @@ class ServiceCategoryResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')->required()->maxLength(150),
-                Forms\Components\TextInput::make('slug')->required()->unique(ServiceCategory::class, 'slug', ignoreRecord: true)->maxLength(160),
+                Forms\Components\TextInput::make('slug')->required()->unique(ServiceCategory::class, 'slug', ignoreRecord: true, modifyRuleUsing: fn (Unique $rule) => $rule->where('clinic_id', AdminClinic::idOrNone()))->maxLength(160),
                 Forms\Components\TextInput::make('icon')->maxLength(100),
                 Forms\Components\Textarea::make('description')->columnSpanFull(),
                 Forms\Components\FileUpload::make('image_path')

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AdminOnly;
 use App\Filament\Resources\TestimonialResource\Pages;
 use App\Models\Testimonial;
 use Filament\Forms;
@@ -12,10 +13,14 @@ use Filament\Tables\Table;
 
 class TestimonialResource extends Resource
 {
+    use AdminOnly;
+
     protected static ?string $model = Testimonial::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-star';
+
     protected static ?string $navigationGroup = 'Contenido del Sitio';
+
     protected static ?string $navigationLabel = 'Testimonios';
 
     public static function form(Form $form): Form

@@ -3683,3 +3683,1543 @@ a {
         -webkit-line-clamp: 2;
     }
 }
+
+/* ==========================================================================
+   DK · Marca "Dr. Kevin Rejuvenezk" (Fase 0)
+   Nombre más largo: evitar desbordes del encabezado en móvil y tablet.
+   ========================================================================== */
+.brand-lockup .brand-copy strong {
+    min-width: 0;
+    line-height: 1.08;
+    overflow-wrap: break-word;
+}
+
+/* Escritorio (layout de componentes): nombre y lema compactos para que quepan junto al menú */
+@media (min-width: 981px) {
+    .brand-lockup .brand-clinic-name {
+        white-space: normal;
+        font-size: clamp(1.5rem, 2.2vw, 2.1rem);
+        line-height: 1.05;
+    }
+
+    .brand-lockup .brand-doctor-name {
+        font-size: clamp(0.72rem, 0.8vw, 0.85rem);
+        letter-spacing: 0.1em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+@media (max-width: 980px) {
+    .brand-lockup .brand-copy strong {
+        line-height: 1.1;
+    }
+}
+
+/* Móvil: el nombre cabe en su caja sin montarse sobre el botón de menú */
+@media (max-width: 640px) {
+    .brand-lockup .brand-clinic-name {
+        font-size: clamp(0.98rem, 4.4vw, 1.15rem);
+        line-height: 1.1;
+        overflow-wrap: anywhere;
+    }
+}
+
+/* ==========================================================================
+   DK · Rediseño para conectar más rápido (Fase 1)
+   Clases nuevas con prefijo dk-; solo se sobrescriben reglas existentes
+   donde el rediseño lo pide (legibilidad, botón flotante de WhatsApp).
+   ========================================================================== */
+:root {
+    --text-secondary: #55494a;
+    --dk-cta: #3d5636;            /* verde oscuro: blanco sobre este fondo ≈ 8:1 */
+    --dk-cta-hover: #2f4529;
+    --dk-gold-ink: #7a5d2a;       /* dorado oscuro legible sobre fondos claros */
+    --dk-wa: #25d366;
+    --dk-wa-ink: #0f7a3f;         /* verde WhatsApp oscuro: blanco ≈ 5.4:1 */
+    --dk-radius: 18px;
+    --dk-mobilebar-h: 64px;
+}
+
+/* 1.5 Legibilidad */
+p {
+    font-weight: 400;
+}
+
+.lead,
+.hero-copy .lead,
+.quote-card p,
+.landing-hero-card p,
+.cta p,
+.svc-card-copy p {
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 16px;
+    }
+
+    :root {
+        --fs-body: 1rem;
+    }
+}
+
+/* Foco visible en todo lo nuevo */
+.dk-btn-primary:focus-visible,
+.dk-hero-wa:focus-visible,
+.dk-doctor-chip:focus-visible,
+.dk-btn-agendar:focus-visible,
+.dk-svc-shortcuts a:focus-visible,
+.dk-nav-account:focus-visible,
+.dk-mobilebar-btn:focus-visible,
+.dk-wa-fab:focus-visible,
+.dk-form-legal a:focus-visible,
+.dk-lead-form input:focus-visible,
+.dk-lead-form select:focus-visible {
+    outline: 3px solid var(--dk-cta);
+    outline-offset: 3px;
+}
+
+/* 1.4 Botón principal: el elemento más llamativo de la página */
+.dk-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 56px;
+    padding: 0 30px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--dk-cta);
+    color: #fff;
+    font-family: var(--font-sans);
+    font-size: 1.02rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 12px 28px rgba(47, 69, 41, 0.28);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.dk-btn-primary:hover {
+    background: var(--dk-cta-hover);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 18px 36px rgba(47, 69, 41, 0.34);
+}
+
+.dk-btn-block {
+    width: 100%;
+}
+
+/* 1.2 Héroe */
+.dk-hero {
+    position: relative;
+    z-index: 1;
+    padding: clamp(24px, 5vw, 64px) 0 clamp(20px, 3vw, 36px);
+}
+
+.dk-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(24px, 4vw, 56px);
+    align-items: center;
+}
+
+.dk-hero-copy {
+    min-width: 0;
+}
+
+.dk-hero-kicker {
+    color: var(--dk-gold-ink);
+}
+
+.dk-hero-title {
+    margin: 12px 0 14px;
+    font-family: var(--font-serif);
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 600;
+    line-height: 1.04;
+    color: var(--text-primary);
+    overflow-wrap: break-word;
+}
+
+.dk-hero-subtitle {
+    max-width: 34rem;
+    margin: 0 0 26px;
+    font-size: clamp(1rem, 1.3vw, 1.12rem);
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.dk-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 22px;
+}
+
+.dk-hero-wa {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    color: var(--dk-wa-ink);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+}
+
+.dk-hero-wa:hover {
+    text-decoration-thickness: 2px;
+}
+
+.dk-hero-wa-icon svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    display: block;
+}
+
+.dk-doctor-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 100%;
+    margin-top: 26px;
+    padding: 6px 16px 6px 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid rgba(198, 160, 98, 0.3);
+    box-shadow: 0 6px 18px rgba(43, 43, 43, 0.06);
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.dk-doctor-chip-avatar {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #d6bc8b 0%, #b99654 100%);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.dk-doctor-chip-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dk-doctor-chip-copy {
+    display: grid;
+    min-width: 0;
+    line-height: 1.25;
+}
+
+.dk-doctor-chip-copy strong {
+    font-size: 0.92rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dk-doctor-chip-copy small {
+    color: var(--dk-gold-ink);
+    font-size: 0.78rem;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dk-hero-media {
+    margin: 0;
+    min-width: 0;
+    aspect-ratio: 4 / 5;
+    max-height: 600px;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 28px;
+    background: linear-gradient(160deg, #e9dfd3 0%, #d8c39b 100%);
+    box-shadow: 0 26px 60px rgba(41, 29, 24, 0.16);
+}
+
+.dk-hero-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+}
+
+.dk-hero-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18%;
+}
+
+.dk-hero-fallback span {
+    font-family: var(--font-sans);
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.dk-hero-fallback img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* 1.3 Franja de confianza */
+.dk-trust {
+    position: relative;
+    z-index: 1;
+    padding: 0 0 clamp(28px, 4vw, 48px);
+}
+
+.dk-trust-list {
+    list-style: none;
+    margin: 0;
+    padding: 18px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    border-radius: var(--dk-radius);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(198, 160, 98, 0.22);
+    box-shadow: 0 14px 34px rgba(43, 43, 43, 0.06);
+}
+
+.dk-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.dk-trust-icon {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(61, 86, 54, 0.1);
+    color: var(--dk-cta);
+}
+
+.dk-trust-icon svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+}
+
+.dk-trust-copy {
+    display: grid;
+    min-width: 0;
+    line-height: 1.3;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.dk-trust-copy strong {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    line-height: 1.1;
+}
+
+.dk-trust-copy span {
+    overflow-wrap: break-word;
+}
+
+/* Servicios: accesos rápidos y botón Agendar */
+.dk-svc-shortcuts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 0 22px;
+}
+
+.dk-svc-shortcuts a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 40px;
+    padding: 0 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(122, 93, 42, 0.3);
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--dk-gold-ink);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.dk-svc-shortcuts a:hover {
+    background: #fff;
+    border-color: var(--dk-gold-ink);
+}
+
+.dk-svc-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.svc-card-copy .dk-svc-actions .svc-card-link {
+    padding-left: 0;
+    color: var(--dk-gold-ink);
+}
+
+.dk-btn-agendar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 18px;
+    border-radius: 999px;
+    background: var(--dk-cta);
+    color: #fff;
+    font-size: 0.86rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.dk-btn-agendar:hover {
+    background: var(--dk-cta-hover);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.svc-card-copy p {
+    -webkit-line-clamp: 3;
+}
+
+/* 1.9 Antes / después */
+.dk-ba .section-title {
+    margin-bottom: 24px;
+}
+
+.dk-ba-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 20px;
+}
+
+.dk-ba-item {
+    margin: 0;
+    min-width: 0;
+}
+
+.dk-ba-slider {
+    --dk-pos: 50%;
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: var(--dk-radius);
+    background: #e9dfd3;
+    box-shadow: 0 18px 40px rgba(41, 29, 24, 0.12);
+    user-select: none;
+}
+
+.dk-ba-slider:focus-within {
+    outline: 3px solid var(--dk-cta);
+    outline-offset: 3px;
+}
+
+.dk-ba-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+.dk-ba-before {
+    clip-path: inset(0 calc(100% - var(--dk-pos)) 0 0);
+}
+
+.dk-ba-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--dk-pos);
+    width: 3px;
+    transform: translateX(-50%);
+    background: #fff;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+    pointer-events: none;
+}
+
+.dk-ba-handle::after {
+    content: "\2039\00a0\203A";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: #fff;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-weight: 700;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dk-ba-tag {
+    position: absolute;
+    top: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(35, 31, 32, 0.72);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    pointer-events: none;
+}
+
+.dk-ba-tag-before {
+    left: 12px;
+}
+
+.dk-ba-tag-after {
+    right: 12px;
+}
+
+/* El range ocupa toda la imagen: arrastre con mouse o dedo y control con teclado */
+.dk-ba-range {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+    touch-action: pan-y;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.dk-ba-item figcaption {
+    display: grid;
+    gap: 2px;
+    margin-top: 10px;
+}
+
+.dk-ba-item figcaption span {
+    color: var(--text-secondary);
+    font-size: 0.86rem;
+}
+
+.dk-ba-note {
+    margin: 18px 0 0;
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    font-style: italic;
+}
+
+/* Carrusel de banners: ahora va después de resultados */
+.banners-carousel-wrap.dk-promos {
+    margin-top: 0;
+    margin-bottom: clamp(40px, 6vw, 72px);
+}
+
+/* 1.10 Formulario corto */
+.dk-form-title {
+    margin: 0 0 4px;
+    font-family: var(--font-serif);
+    font-size: clamp(1.4rem, 2.4vw, 1.8rem);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.dk-field {
+    display: grid;
+    gap: 6px;
+}
+
+.dk-field label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.dk-lead-form input,
+.dk-lead-form select {
+    min-height: 50px;
+    font-size: 1rem;
+    border-color: rgba(37, 22, 26, 0.22);
+}
+
+.dk-lead-form [aria-invalid="true"] {
+    border-color: #b42318;
+}
+
+.dk-field-error {
+    margin: 0;
+    color: #b42318;
+    font-size: 0.86rem;
+    font-weight: 500;
+}
+
+.dk-form-errors {
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #fef3f2;
+    border: 1px solid #fecdca;
+    color: #912018;
+    font-size: 0.9rem;
+}
+
+.dk-form-errors p {
+    margin: 0 0 4px;
+    font-weight: 600;
+}
+
+.dk-form-errors ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.dk-form-legal {
+    margin: 2px 0 0;
+    color: var(--text-secondary);
+    font-size: 0.84rem;
+    text-align: center;
+}
+
+.dk-form-legal a {
+    color: var(--dk-cta);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* 1.11 Enlace del portal del paciente en el menú */
+.nav-links a.dk-nav-account {
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(61, 86, 54, 0.35);
+    color: var(--dk-cta);
+}
+
+.nav-links a.dk-nav-account::after {
+    display: none;
+}
+
+.nav-links a.dk-nav-account:hover,
+.nav-links a.dk-nav-account.is-active {
+    background: var(--dk-cta);
+    color: #fff;
+}
+
+.mobile-nav-links a.dk-nav-account {
+    color: var(--dk-cta);
+    font-weight: 700;
+}
+
+/* 1.6 Botón flotante de WhatsApp */
+.whatsapp-fab.dk-wa-fab {
+    gap: 10px;
+    padding: 8px 18px 8px 8px;
+    background: #fff;
+    color: #17331f;
+    border: 1px solid rgba(15, 122, 63, 0.25);
+    box-shadow: 0 14px 32px rgba(19, 79, 43, 0.22);
+    text-decoration: none;
+}
+
+.dk-wa-fab-icon {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--dk-wa);
+    color: #fff;
+}
+
+.dk-wa-fab-icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.dk-wa-fab-icon::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.55);
+    animation: dk-wa-pulse 2.4s ease-out infinite;
+}
+
+@keyframes dk-wa-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.55);
+    }
+
+    70% {
+        box-shadow: 0 0 0 14px rgba(37, 211, 102, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+    }
+}
+
+/* 1.7 Barra inferior fija (solo móvil) */
+.dk-mobilebar {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .dk-has-mobilebar {
+        padding-bottom: calc(var(--dk-mobilebar-h) + env(safe-area-inset-bottom, 0px));
+    }
+
+    .dk-has-mobilebar .dk-wa-fab {
+        display: none;
+    }
+
+    .dk-mobilebar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 60;
+        display: flex;
+        gap: 10px;
+        padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+        background: rgba(255, 253, 249, 0.97);
+        border-top: 1px solid rgba(198, 160, 98, 0.3);
+        box-shadow: 0 -8px 24px rgba(35, 22, 22, 0.1);
+    }
+
+    .dk-mobilebar-btn {
+        flex: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 46px;
+        border-radius: 999px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .dk-mobilebar-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .dk-mobilebar-call {
+        border: 1.5px solid var(--dk-cta);
+        color: var(--dk-cta);
+        background: #fff;
+    }
+
+    .dk-mobilebar-wa {
+        background: var(--dk-wa-ink);
+        color: #fff;
+    }
+}
+
+/* El dock de redes (fijo a la izquierda) no debe tapar el texto del héroe en laptops */
+@media (min-width: 981px) and (max-width: 1320px) {
+    .dk-hero-copy {
+        padding-left: 28px;
+    }
+}
+
+/* Héroe y franja en tablet / móvil */
+@media (max-width: 980px) {
+    .dk-trust-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .dk-hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .dk-hero-media {
+        aspect-ratio: 4 / 3;
+        max-height: 360px;
+    }
+
+    .dk-hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .dk-hero-wa {
+        justify-content: center;
+    }
+
+    .dk-doctor-chip {
+        margin-top: 18px;
+    }
+}
+
+@media (max-width: 420px) {
+    .dk-trust-list {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 14px;
+        gap: 10px;
+    }
+}
+
+/* Movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    .dk-wa-fab-icon::after {
+        animation: none;
+    }
+
+    .dk-btn-primary,
+    .dk-btn-agendar {
+        transition: none;
+    }
+
+    .dk-btn-primary:hover,
+    .dk-btn-agendar:hover {
+        transform: none;
+    }
+}
+
+/* ==========================================================================
+   DK · Portal del paciente y política de datos (Fase 2)
+   ========================================================================== */
+.dk-portal {
+    width: min(560px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: clamp(24px, 5vw, 48px) 0 clamp(40px, 7vw, 72px);
+}
+
+.dk-portal-wide {
+    width: min(880px, calc(100% - 32px));
+}
+
+.dk-portal-card,
+.dk-legal {
+    padding: clamp(22px, 4vw, 36px);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(198, 160, 98, 0.24);
+    box-shadow: 0 22px 54px rgba(43, 43, 43, 0.08);
+}
+
+.dk-portal-kicker {
+    color: var(--dk-gold-ink);
+}
+
+.dk-portal-title {
+    margin: 8px 0 8px;
+    font-family: var(--font-serif);
+    font-size: clamp(1.9rem, 4.5vw, 2.6rem);
+    font-weight: 600;
+    line-height: 1.1;
+    color: var(--text-primary);
+}
+
+.dk-portal-lead {
+    margin: 0 0 20px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.dk-portal-form {
+    display: grid;
+    gap: 16px;
+}
+
+.dk-portal-form input[type="text"],
+.dk-portal-form input[type="email"],
+.dk-portal-form input[type="tel"],
+.dk-portal-form input[type="password"] {
+    width: 100%;
+    min-height: 50px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(37, 22, 26, 0.24);
+    background: #fff;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+}
+
+.dk-portal-form input:disabled {
+    background: #f4efe8;
+    color: var(--text-secondary);
+}
+
+.dk-portal-form input:focus-visible,
+.dk-check input:focus-visible,
+.dk-portal a:focus-visible,
+.dk-btn-outline:focus-visible,
+.dk-btn-link:focus-visible,
+.dk-footer-legal:focus-visible {
+    outline: 3px solid var(--dk-cta);
+    outline-offset: 2px;
+}
+
+.dk-portal-form [aria-invalid="true"] {
+    border-color: #b42318;
+}
+
+.dk-field-help {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.84rem;
+}
+
+.dk-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.dk-check input {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    accent-color: var(--dk-cta);
+}
+
+.dk-check a,
+.dk-portal-foot a,
+.dk-portal-back a,
+.dk-legal a {
+    color: var(--dk-cta);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.dk-fieldset {
+    display: grid;
+    gap: 14px;
+    margin: 4px 0 0;
+    padding: 16px;
+    border: 1px solid rgba(198, 160, 98, 0.3);
+    border-radius: 14px;
+}
+
+.dk-fieldset legend {
+    padding: 0 6px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.dk-fieldset legend span {
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+.dk-portal-foot {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(198, 160, 98, 0.22);
+    display: grid;
+    gap: 6px;
+    text-align: center;
+}
+
+.dk-portal-foot p,
+.dk-portal-back {
+    margin: 0;
+}
+
+.dk-portal-small {
+    color: var(--text-secondary);
+    font-size: 0.86rem;
+}
+
+/* Avisos */
+.dk-alert {
+    margin: 0 0 16px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
+
+.dk-alert p {
+    margin: 0;
+}
+
+.dk-alert ul {
+    margin: 4px 0 0;
+    padding-left: 18px;
+}
+
+.dk-alert-info {
+    background: #eef6ec;
+    border: 1px solid #b9d8b2;
+    color: #1f4a1a;
+}
+
+.dk-alert-error {
+    background: #fef3f2;
+    border: 1px solid #fecdca;
+    color: #912018;
+}
+
+.dk-alert-warn {
+    background: #fff7e6;
+    border: 1px solid #f3d38b;
+    color: #6b4300;
+}
+
+.dk-alert-action {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    margin-top: 10px;
+    padding: 0 16px;
+    border-radius: 999px;
+    background: var(--dk-wa-ink);
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/* Dashboard */
+.dk-dash-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px 20px;
+    margin-bottom: 20px;
+}
+
+.dk-dash-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dk-dash-actions form {
+    margin: 0;
+}
+
+.dk-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 1.5px solid var(--dk-cta);
+    background: #fff;
+    color: var(--dk-cta);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.dk-btn-link {
+    min-height: 44px;
+    padding: 0 6px;
+    border: 0;
+    background: none;
+    color: var(--text-secondary);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+
+.dk-next-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding: 22px 24px;
+    border-radius: 22px;
+    background: linear-gradient(140deg, #fffdf8 0%, #f3e8d6 100%);
+    border: 1px solid rgba(198, 160, 98, 0.35);
+    border-left: 6px solid var(--dk-cta);
+    box-shadow: 0 16px 40px rgba(43, 43, 43, 0.08);
+}
+
+.dk-next-card--proxima {
+    border-left-color: #b7791f;
+}
+
+.dk-next-card--vencido {
+    border-left-color: #b42318;
+}
+
+.dk-next-card h2 {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dk-gold-ink);
+}
+
+.dk-next-name {
+    margin: 6px 0 2px;
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 3.5vw, 1.9rem);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.dk-next-date {
+    margin: 0;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.dk-section-title {
+    margin: 0 0 14px;
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 3vw, 1.9rem);
+    font-weight: 600;
+}
+
+.dk-history {
+    display: grid;
+    gap: 12px;
+}
+
+.dk-treatment {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px 20px;
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid rgba(198, 160, 98, 0.22);
+}
+
+.dk-treatment-main {
+    flex: 1 1 260px;
+    min-width: 0;
+}
+
+.dk-treatment-main h3 {
+    margin: 0 0 4px;
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.dk-treatment-meta,
+.dk-treatment-due {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.dk-treatment-notes {
+    margin: 8px 0;
+    color: var(--text-primary);
+    font-size: 0.94rem;
+    line-height: 1.55;
+}
+
+.dk-treatment-side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.dk-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.dk-badge--vigente {
+    background: #e3f2e1;
+    color: #1d5b2c;
+}
+
+.dk-badge--proxima {
+    background: #fdf0d5;
+    color: #7a4b00;
+}
+
+.dk-badge--vencido {
+    background: #fde8e7;
+    color: #9b1c14;
+}
+
+.dk-badge--no_aplica {
+    background: #f0ece6;
+    color: #55494a;
+}
+
+.dk-empty {
+    padding: 28px 22px;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px dashed rgba(198, 160, 98, 0.5);
+    text-align: center;
+}
+
+.dk-empty p {
+    margin: 0 0 8px;
+    color: var(--text-secondary);
+}
+
+.dk-empty .dk-btn-primary {
+    margin-top: 10px;
+}
+
+/* Política de datos */
+.dk-legal h2 {
+    margin: 26px 0 8px;
+    font-family: var(--font-serif);
+    font-size: clamp(1.3rem, 2.6vw, 1.6rem);
+    font-weight: 600;
+}
+
+.dk-legal p,
+.dk-legal li {
+    color: var(--text-primary);
+    line-height: 1.65;
+}
+
+.dk-legal ul {
+    padding-left: 20px;
+}
+
+.dk-legal-draft {
+    margin-bottom: 20px;
+}
+
+/* Footer: enlace a la política */
+.dk-footer-meta {
+    display: grid;
+    gap: 4px;
+    justify-items: end;
+}
+
+.dk-footer-meta p {
+    margin: 0;
+}
+
+.dk-footer-legal {
+    color: inherit;
+    font-size: 0.88rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+    .dk-treatment-side {
+        align-items: flex-start;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .dk-footer-meta {
+        justify-items: start;
+    }
+
+    .dk-dash-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+/* ===== Accesibilidad: enlace "Saltar al contenido" (visible solo con teclado) ===== */
+.dk-skip-link {
+	position: absolute;
+	left: 16px;
+	top: -48px;
+	z-index: 1000;
+	padding: 10px 16px;
+	border-radius: 999px;
+	background: #1f2a1d;
+	color: #fff;
+	text-decoration: none;
+	transition: top .2s ease;
+}
+
+.dk-skip-link:focus {
+	top: 12px;
+}
+
+/* ===== Páginas de equipo médico y preguntas frecuentes ===== */
+.dk-page-head {
+	padding: 56px 0 24px;
+}
+
+.dk-page-head .section-title {
+	margin-bottom: 12px;
+}
+
+.dk-team-grid {
+	display: grid;
+	gap: 24px;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+	padding-bottom: 64px;
+}
+
+.dk-team-card {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	border-radius: 24px;
+	background: #fff;
+	box-shadow: 0 18px 40px rgba(31, 42, 29, .08);
+}
+
+.dk-team-photo {
+	aspect-ratio: 4 / 5;
+	width: 100%;
+	object-fit: cover;
+	background: #eef2ec;
+}
+
+.dk-team-photo--empty {
+	display: grid;
+	place-items: center;
+	font-size: 48px;
+	font-weight: 600;
+	color: #7e9c78;
+}
+
+.dk-team-body {
+	display: grid;
+	gap: 8px;
+	padding: 20px 22px 24px;
+}
+
+.dk-team-body h2 {
+	margin: 0;
+	font-size: 1.5rem;
+}
+
+.dk-team-specialty {
+	margin: 0;
+	color: #7e9c78;
+	font-weight: 600;
+}
+
+.dk-team-bio {
+	margin: 0;
+	color: #5d6b59;
+}
+
+.dk-team-credentials {
+	display: grid;
+	gap: 4px;
+	margin: 4px 0 0;
+	padding: 0;
+	list-style: none;
+	font-size: .9rem;
+	color: #3d4a39;
+}
+
+.dk-team-credentials li::before {
+	content: "✓ ";
+	color: #7e9c78;
+}
+
+.dk-faq-list {
+	display: grid;
+	gap: 12px;
+	max-width: 860px;
+	padding-bottom: 64px;
+}
+
+.dk-faq-group-title {
+	margin: 24px 0 4px;
+	font-size: 1.3rem;
+}
+
+.dk-faq-item {
+	border-radius: 16px;
+	background: #fff;
+	box-shadow: 0 8px 24px rgba(31, 42, 29, .06);
+}
+
+.dk-faq-item summary {
+	cursor: pointer;
+	padding: 18px 22px;
+	font-weight: 600;
+	list-style: none;
+}
+
+.dk-faq-item summary::-webkit-details-marker {
+	display: none;
+}
+
+.dk-faq-item summary::after {
+	content: "+";
+	float: right;
+	color: #7e9c78;
+	font-size: 1.3em;
+	line-height: 1;
+}
+
+.dk-faq-item[open] summary::after {
+	content: "–";
+}
+
+.dk-faq-item > div {
+	padding: 0 22px 20px;
+	color: #5d6b59;
+	white-space: pre-line;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*, *::before, *::after {
+		animation-duration: .01ms !important;
+		transition-duration: .01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+.detail-card-media {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.detail-card-media img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	max-height: 420px;
+	object-fit: cover;
+}
+
+/* ==========================================================================
+   DK · Encabezado con 6 enlaces y marca "Dr. Kevin Rejuvenezk" (revisión visual)
+   - Escritorio: la marca no se parte ni se corta; el menú se ajusta.
+   - Menos de 1180px: el menú pasa al botón "Menú" (no cabe junto a la marca).
+   ========================================================================== */
+@media (min-width: 981px) {
+    .topbar-inner .brand-lockup {
+        flex-shrink: 0;
+    }
+
+    .topbar-inner .brand-lockup .brand-clinic-name {
+        white-space: nowrap;
+        overflow: visible;
+        font-size: clamp(1.3rem, 1.55vw, 1.75rem);
+        line-height: 1.1;
+    }
+
+    .topbar-inner .brand-lockup .brand-doctor-name {
+        max-width: 100%;
+    }
+
+    .topbar-inner .nav-links {
+        min-width: max-content; /* nunca se monta sobre los botones */
+        gap: clamp(12px, 1.35vw, 24px);
+        font-size: clamp(0.88rem, 0.92vw, 1rem);
+        white-space: nowrap;
+    }
+
+    .topbar-inner .topbar-actions {
+        flex-shrink: 0;
+    }
+}
+
+@media (min-width: 981px) and (max-width: 1179px) {
+    .topbar-inner .nav-links {
+        display: none;
+    }
+
+    .topbar-inner .nav-toggle {
+        display: inline-flex;
+    }
+}
+
+/* Contacto: un correo largo en el botón no debe ensanchar la tarjeta en móvil */
+.contact-layout > * {
+    min-width: 0;
+}
+
+.cta-actions .btn {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: center;
+}
+
+/* 1180–1365px: menú visible pero compacto para que quepa con la marca y los botones */
+@media (min-width: 1180px) and (max-width: 1365px) {
+    .topbar-inner {
+        gap: 14px;
+    }
+
+    .topbar-inner .nav-links {
+        gap: 13px;
+        font-size: 0.86rem;
+    }
+
+    .topbar-inner .nav-links a.dk-nav-account {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .topbar-inner .topbar-cta {
+        min-width: 0;
+        padding: 0 14px;
+        font-size: 0.86rem;
+    }
+}
+
+/* Iconos sociales fijos: se ocultan donde se montarían sobre el encabezado */
+@media (max-width: 1240px) {
+    .social-dock {
+        display: none;
+    }
+}

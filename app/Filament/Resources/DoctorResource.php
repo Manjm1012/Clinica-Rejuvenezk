@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AdminOnly;
 use App\Filament\Resources\DoctorResource\Pages;
 use App\Models\Doctor;
+use App\Support\MedicalPanel;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,11 +14,15 @@ use Filament\Tables\Table;
 
 class DoctorResource extends Resource
 {
+    use AdminOnly;
+
     protected static ?string $model = Doctor::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
+
     protected static ?string $navigationGroup = 'Contenido del Sitio';
-    protected static ?string $navigationLabel = 'Doctor / Especialista';
+
+    protected static ?string $navigationLabel = 'Médicos / Especialistas';
 
     public static function form(Form $form): Form
     {
@@ -37,6 +43,23 @@ class DoctorResource extends Resource
                 Forms\Components\TextInput::make('certifications')->maxLength(255),
                 Forms\Components\TextInput::make('linkedin_url')->url()->maxLength(255),
                 Forms\Components\TextInput::make('instagram_url')->url()->maxLength(255),
+                Forms\Components\Section::make('Datos para la fórmula médica')
+                    ->visible(fn () => MedicalPanel::enabled())
+                    ->description('Aparecen en las fórmulas que emite este médico.')
+                    ->schema([
+                        Forms\Components\TextInput::make('professional_registration')
+                            ->label('Registro profesional (RETHUS / tarjeta profesional)')
+                            ->maxLength(60),
+                        // Disco privado: la firma nunca tiene URL pública; se incrusta al imprimir.
+                        Forms\Components\FileUpload::make('signature_path')
+                            ->label('Firma escaneada (PNG con fondo transparente)')
+                            ->image()
+                            ->disk('local')
+                            ->directory('signatures')
+                            ->visibility('private')
+                            ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/webp'])
+                            ->maxSize(1024),
+                    ])->columns(2)->columnSpanFull(),
                 Forms\Components\Toggle::make('is_active')->default(true),
                 Forms\Components\TextInput::make('sort_order')->numeric()->default(0),
             ]);

@@ -16,6 +16,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use RuntimeException;
 
 class DatabaseSeeder extends Seeder
 {
@@ -29,7 +30,7 @@ class DatabaseSeeder extends Seeder
         $clinic = Clinic::query()->updateOrCreate([
             'slug' => 'clinica-rejuvenezk',
         ], [
-            'name' => 'Clinica Rejuvenezk',
+            'name' => 'Dr. Kevin Rejuvenezk',
             'logo_path' => 'branding/logos/logo-clinica.webp',
             'domain' => null,
             'timezone' => 'America/Bogota',
@@ -37,20 +38,13 @@ class DatabaseSeeder extends Seeder
             'is_active' => true,
         ]);
 
-        User::query()->updateOrCreate([
-            'email' => 'admin@rejuvenezk.test',
-        ], [
-            'clinic_id' => $clinic->id,
-            'name' => 'Administrador',
-            'password' => Hash::make('password'),
-            'is_super_admin' => true,
-        ]);
+        $this->seedAdmin($clinic);
 
         foreach ([
-            ['group' => 'branding', 'key' => 'clinic_name', 'value' => 'Clínica Rejuvenezk', 'type' => 'string', 'label' => 'Nombre clínica'],
+            ['group' => 'branding', 'key' => 'clinic_name', 'value' => 'Dr. Kevin Rejuvenezk', 'type' => 'string', 'label' => 'Nombre clínica'],
             ['group' => 'branding', 'key' => 'hero_kicker', 'value' => 'Medicina estética avanzada', 'type' => 'string', 'label' => 'Etiqueta hero'],
-            ['group' => 'branding', 'key' => 'hero_title', 'value' => 'Medicina estética y cirugía con enfoque premium', 'type' => 'string', 'label' => 'Título principal'],
-            ['group' => 'branding', 'key' => 'hero_subtitle', 'value' => 'Una plataforma comercializable para clínicas estéticas con sitio web, CRM y WhatsApp integrados.', 'type' => 'text', 'label' => 'Subtítulo principal'],
+            ['group' => 'branding', 'key' => 'hero_title', 'value' => 'Medicina estética y cirugía con enfoque médico', 'type' => 'string', 'label' => 'Título principal'],
+            ['group' => 'branding', 'key' => 'hero_subtitle', 'value' => 'Valoración personalizada con médico certificado y resultados naturales, sin perder tu expresión.', 'type' => 'text', 'label' => 'Subtítulo principal'],
             ['group' => 'branding', 'key' => 'hero_primary_cta', 'value' => 'Reservar valoración', 'type' => 'string', 'label' => 'CTA principal hero'],
             ['group' => 'branding', 'key' => 'hero_secondary_cta', 'value' => 'Ver tratamientos', 'type' => 'string', 'label' => 'CTA secundario hero'],
             ['group' => 'branding', 'key' => 'hero_card_kicker', 'value' => 'Primera cita', 'type' => 'string', 'label' => 'Etiqueta tarjeta hero'],
@@ -67,7 +61,7 @@ class DatabaseSeeder extends Seeder
             ['group' => 'branding', 'key' => 'social_lead', 'value' => 'Comparte resultados, conoce casos reales y recibe novedades de nuestros tratamientos en tiempo real.', 'type' => 'text', 'label' => 'Texto redes'],
             ['group' => 'branding', 'key' => 'cta_kicker', 'value' => 'Agenda tu cita', 'type' => 'string', 'label' => 'Etiqueta CTA final'],
             ['group' => 'branding', 'key' => 'cta_title', 'value' => 'Empieza hoy tu protocolo personalizado.', 'type' => 'string', 'label' => 'Título CTA final'],
-            ['group' => 'branding', 'key' => 'cta_body', 'value' => 'Atención presencial y seguimiento digital para una experiencia comercial ordenada.', 'type' => 'text', 'label' => 'Texto CTA final'],
+            ['group' => 'branding', 'key' => 'cta_body', 'value' => 'Atención presencial y seguimiento cercano después de cada tratamiento.', 'type' => 'text', 'label' => 'Texto CTA final'],
             ['group' => 'branding', 'key' => 'topbar_cta_label', 'value' => 'Agenda ahora', 'type' => 'string', 'label' => 'CTA topbar'],
             ['group' => 'branding', 'key' => 'cta_whatsapp_label', 'value' => 'WhatsApp', 'type' => 'string', 'label' => 'Texto botón WhatsApp'],
             ['group' => 'branding', 'key' => 'cta_email_label', 'value' => 'Solicitar información', 'type' => 'string', 'label' => 'Texto botón correo'],
@@ -361,10 +355,10 @@ class DatabaseSeeder extends Seeder
             );
         }
 
-        $doctor = Doctor::query()->where('clinic_id', $clinic->id)->orderBy('id')->first() ?? new Doctor();
+        $doctor = Doctor::query()->where('clinic_id', $clinic->id)->orderBy('id')->first() ?? new Doctor;
         $doctor->fill([
             'clinic_id' => $clinic->id,
-            'name' => 'Dr Kevin-Rejuvenezk',
+            'name' => 'Dr. Kevin Rejuvenezk',
             'specialty' => 'Medicina Estética Facial',
             'subtitle' => 'Armonización facial y procedimientos mínimamente invasivos',
             'photo_path' => 'doctors/doctor-kevin-perfil.jpg',
@@ -396,21 +390,78 @@ class DatabaseSeeder extends Seeder
             );
         }
 
-        Testimonial::query()->updateOrCreate(
-            ['clinic_id' => $clinic->id, 'patient_name' => 'Paciente Demo'],
-            [
-                'clinic_id' => $clinic->id,
-                'content' => 'Excelente atención, seguimiento y resultados. Este bloque también es editable desde Filament.',
-                'rating' => 5,
-                'source' => 'google',
-                'is_featured' => true,
-                'is_active' => true,
-            ],
-        );
+        // Datos de ejemplo SOLO en desarrollo: un testimonio ficticio en producción sería publicidad engañosa.
+        if (app()->environment(['local', 'testing'])) {
+            Testimonial::query()->updateOrCreate(
+                ['clinic_id' => $clinic->id, 'patient_name' => 'Ejemplo (solo desarrollo)'],
+                [
+                    'clinic_id' => $clinic->id,
+                    'content' => 'Testimonio de ejemplo para desarrollo local. No se crea en producción.',
+                    'rating' => 5,
+                    'is_featured' => true,
+                    'is_active' => true,
+                ],
+            );
 
-        Lead::query()->firstOrCreate(
-            ['clinic_id' => $clinic->id, 'phone' => '3000000000'],
-            ['clinic_id' => $clinic->id, 'name' => 'Lead Demo', 'email' => 'lead@example.com', 'status' => 'new', 'source' => 'website']
-        );
+            Lead::query()->firstOrCreate(
+                ['clinic_id' => $clinic->id, 'phone' => '3000000000'],
+                ['clinic_id' => $clinic->id, 'name' => 'Lead de ejemplo', 'email' => 'lead@example.com', 'status' => 'new', 'source' => 'website']
+            );
+        }
+    }
+
+    /**
+     * Administrador inicial. Nunca hay una clave fija en el código:
+     * - Fuera de local/testing exige ADMIN_EMAIL y ADMIN_PASSWORD (sin valores por defecto).
+     * - En local/testing, si faltan, usa admin@localhost y genera una clave aleatoria que se muestra una vez.
+     * - Si el administrador ya existe, no se toca (re-ejecutar el seeder no cambia su clave).
+     */
+    private function seedAdmin(Clinic $clinic): void
+    {
+        $email = trim((string) config('seeding.admin_email'));
+        $password = (string) config('seeding.admin_password');
+        $isDevelopment = app()->environment(['local', 'testing']);
+
+        if (! $isDevelopment && ($email === '' || $password === '')) {
+            throw new RuntimeException(
+                'DatabaseSeeder: define ADMIN_EMAIL y ADMIN_PASSWORD en el entorno para crear el administrador inicial '
+                .'(APP_ENV='.app()->environment().'). No hay valores por defecto.'
+            );
+        }
+
+        if (! $isDevelopment && mb_strlen($password) < 12) {
+            throw new RuntimeException('DatabaseSeeder: ADMIN_PASSWORD debe tener al menos 12 caracteres.');
+        }
+
+        if (! $isDevelopment && ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new RuntimeException('DatabaseSeeder: ADMIN_EMAIL no es un correo válido.');
+        }
+
+        $email = $email !== '' ? $email : 'admin@localhost';
+
+        if (User::query()->where('email', $email)->exists()) {
+            $this->command?->info("Administrador {$email} ya existe: no se modificó.");
+
+            return;
+        }
+
+        $generated = $password === '';
+        $password = $generated ? Str::password(20) : $password;
+
+        $admin = new User([
+            'name' => 'Administrador',
+            'email' => $email,
+            'password' => Hash::make($password),
+            'role' => User::ROLE_ADMIN,
+        ]);
+        $admin->clinic_id = $clinic->id;
+        $admin->is_super_admin = true;
+        $admin->save();
+
+        if ($generated) {
+            $this->command?->warn("Administrador de desarrollo creado: {$email} / {$password} (cámbiala; solo se muestra ahora).");
+        } else {
+            $this->command?->info("Administrador {$email} creado.");
+        }
     }
 }

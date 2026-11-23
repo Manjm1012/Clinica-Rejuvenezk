@@ -12,14 +12,15 @@ trait BelongsToClinic
     public static function bootBelongsToClinic(): void
     {
         static::addGlobalScope('clinic', function (Builder $builder): void {
-            if (app()->runningInConsole() || ! app()->bound(CurrentClinic::class)) {
+            // En consola (artisan, colas, seeders) no se filtra; en las pruebas sí, para validar el aislamiento.
+            if ((app()->runningInConsole() && ! app()->runningUnitTests()) || ! app()->bound(CurrentClinic::class)) {
                 return;
             }
 
-            $clinicId = app(CurrentClinic::class)->id();
-            if ($clinicId) {
-                $builder->where($builder->getModel()->getTable() . '.clinic_id', $clinicId);
-            }
+            // Falla cerrado: si la petición no tiene clínica resuelta, no se devuelve nada
+            // (antes se devolvían los datos de TODAS las clínicas).
+            $clinicId = app(CurrentClinic::class)->id() ?? 0;
+            $builder->where($builder->getModel()->getTable().'.clinic_id', $clinicId);
         });
 
         static::creating(function ($model): void {

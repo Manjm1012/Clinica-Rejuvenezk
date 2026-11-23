@@ -2,9 +2,12 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AdminOnly;
 use App\Filament\Resources\ServiceResource\Pages;
 use App\Models\Service;
 use App\Models\ServiceCategory;
+use App\Support\AdminClinic;
+use App\Support\ClinicRule;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -12,15 +15,24 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Unique;
 
 class ServiceResource extends Resource
 {
+    use AdminOnly;
+
     protected static ?string $model = Service::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-sparkles';
+
     protected static ?string $navigationGroup = 'Procedimientos';
+
     protected static ?string $navigationLabel = 'Servicios / Procedimientos';
+
     protected static ?int $navigationSort = 1;
+
     protected static ?string $modelLabel = 'Servicio';
+
     protected static ?string $pluralModelLabel = 'Servicios';
 
     public static function form(Form $form): Form
@@ -33,15 +45,20 @@ class ServiceResource extends Resource
                         ->required()
                         ->maxLength(200)
                         ->live(onBlur: true)
-                        ->afterStateUpdated(fn (Forms\Set $set, ?string $state) =>
-                            $set('slug', Str::slug($state ?? ''))
-                        ),
+                        // El slug se genera solo al crear: al editar no se reescribe (cambiaría la URL pública).
+                        ->afterStateUpdated(function (Forms\Set $set, ?string $state, string $operation): void {
+                            if ($operation === 'create') {
+                                $set('slug', Str::slug($state ?? ''));
+                            }
+                        }),
                     Forms\Components\TextInput::make('slug')
                         ->label('URL amigable (slug)')
                         ->required()
-                        ->unique(Service::class, 'slug', ignoreRecord: true)
+                        // Único por clínica (el índice de BD es clinic_id + slug).
+                        ->unique(Service::class, 'slug', ignoreRecord: true, modifyRuleUsing: fn (Unique $rule) => $rule->where('clinic_id', AdminClinic::idOrNone()))
                         ->maxLength(220),
                     Forms\Components\Select::make('service_category_id')
+                        ->rule(fn () => ClinicRule::exists('service_categories'))
                         ->label('Categoría')
                         ->options(ServiceCategory::pluck('name', 'id'))
                         ->searchable()
@@ -134,6 +151,14 @@ class ServiceResource extends Resource
                         ->label('Orden de aparición')
                         ->numeric()
                         ->default(0),
+                    Forms\Components\TextInput::make('renewal_interval_days')
+                        ->label('Renovar cada (días)')
+                        ->helperText('Ej.: 180 para toxina botulínica; vacío si no aplica.')
+                        ->numeric()
+                        ->integer()
+                        ->minValue(1)
+                        ->maxValue(3650)
+                        ->nullable(),
                 ])->columns(2),
         ]);
     }
@@ -190,9 +215,9 @@ class ServiceResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListServices::route('/'),
+            'index' => Pages\ListServices::route('/'),
             'create' => Pages\CreateService::route('/create'),
-            'edit'   => Pages\EditService::route('/{record}/edit'),
+            'edit' => Pages\EditService::route('/{record}/edit'),
         ];
     }
 }

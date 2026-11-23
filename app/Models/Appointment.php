@@ -12,7 +12,7 @@ class Appointment extends Model
 
     protected $fillable = [
         'clinic_id', 'lead_id', 'service_id', 'patient_name', 'patient_phone', 'patient_email',
-        'appointment_at', 'status', 'notes', 'tayrai_appointment_id',
+        'appointment_at', 'status', 'notes', 'tayrai_appointment_id', 'patient_id', 'doctor_id',
     ];
 
     protected $casts = [
@@ -20,16 +20,26 @@ class Appointment extends Model
     ];
 
     public const STATUSES = [
-        'pending'   => 'Pendiente',
+        'pending' => 'Pendiente',
         'confirmed' => 'Confirmado',
         'cancelled' => 'Cancelado',
         'completed' => 'Completado',
-        'no_show'   => 'No asistió',
+        'no_show' => 'No asistió',
     ];
 
     public function lead(): BelongsTo
     {
         return $this->belongsTo(Lead::class);
+    }
+
+    public function patient(): BelongsTo
+    {
+        return $this->belongsTo(Patient::class);
+    }
+
+    public function doctor(): BelongsTo
+    {
+        return $this->belongsTo(Doctor::class);
     }
 
     public function service(): BelongsTo

@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\Auth\Login as AdminLogin;
+use App\Http\Middleware\SetAdminClinic;
 use App\Models\Clinic;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -45,7 +46,7 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
-            ->brandName('Rejuvenezk Admin')
+            ->brandName('Dr. Kevin Rejuvenezk')
             ->brandLogo(fn (): ?string => $this->getBrandLogo())
             ->darkModeBrandLogo(fn (): ?string => $this->getBrandLogo())
             ->brandLogoHeight('2.5rem')
@@ -54,6 +55,7 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Contenido del Sitio',
                 'Procedimientos',
+                'Pacientes',
                 'CRM & Leads',
                 'Configuración',
             ])
@@ -70,7 +72,12 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            // Aislamiento por clínica: persistente para que también corra en las peticiones de Livewire.
+            // Para revertir, basta con quitar este bloque.
+            ->authMiddleware([
+                SetAdminClinic::class,
+            ], isPersistent: true);
     }
 
     protected function getBrandLogo(): ?string

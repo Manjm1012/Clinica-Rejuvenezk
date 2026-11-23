@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    // TayrAI (CRM/WhatsApp). Las claves van en .env; los ajustes del panel quedan solo como respaldo.
+    'tayrai' => [
+        'enabled' => env('TAYRAI_ENABLED'),
+        'api_key' => env('TAYRAI_API_KEY'),
+        'webhook_secret' => env('TAYRAI_WEBHOOK_SECRET'),
+        'base_url' => env('TAYRAI_BASE_URL', 'https://api.tayrai.com/v1'),
+    ],
+
 ];

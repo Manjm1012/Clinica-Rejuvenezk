@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AdminOnly;
 use App\Filament\Resources\GalleryItemResource\Pages;
 use App\Models\GalleryItem;
+use App\Support\ClinicRule;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,10 +14,14 @@ use Filament\Tables\Table;
 
 class GalleryItemResource extends Resource
 {
+    use AdminOnly;
+
     protected static ?string $model = GalleryItem::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
+
     protected static ?string $navigationGroup = 'Contenido del Sitio';
+
     protected static ?string $navigationLabel = 'Galería';
 
     public static function form(Form $form): Form
@@ -23,6 +29,7 @@ class GalleryItemResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('service_id')
+                    ->rule(fn () => ClinicRule::exists('services'))
                     ->relationship('service', 'name')
                     ->searchable()
                     ->preload(),

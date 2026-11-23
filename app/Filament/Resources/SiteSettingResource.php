@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AdminOnly;
 use App\Filament\Resources\SiteSettingResource\Pages;
 use App\Models\SiteSetting;
 use Filament\Forms;
@@ -16,11 +17,16 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class SiteSettingResource extends Resource
 {
+    use AdminOnly;
+
     protected static ?string $model = SiteSetting::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
+
     protected static ?string $navigationGroup = 'Configuración';
+
     protected static ?string $navigationLabel = 'Ajustes del Sitio';
+
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -62,7 +68,7 @@ class SiteSettingResource extends Resource
                                 ->downloadable()
                                 ->saveUploadedFileUsing(function (Forms\Components\BaseFileUpload $component, TemporaryUploadedFile $file): ?string {
                                     $extension = $file->getClientOriginalExtension() ?: $file->guessExtension() ?: 'bin';
-                                    $path = trim('branding/banners/' . Str::ulid() . '.' . $extension, '/');
+                                    $path = trim('branding/banners/'.Str::ulid().'.'.$extension, '/');
                                     $stream = fopen($file->getRealPath(), 'r');
 
                                     if ($stream === false) {
@@ -96,7 +102,9 @@ class SiteSettingResource extends Resource
                 Tables\Columns\TextColumn::make('key')->searchable(),
                 Tables\Columns\TextColumn::make('label')->searchable(),
                 Tables\Columns\TextColumn::make('type')->badge(),
-                Tables\Columns\TextColumn::make('value')->limit(40)->wrap(),
+                Tables\Columns\TextColumn::make('value')->limit(40)->wrap()
+                    // Claves y secretos nunca se muestran en la tabla.
+                    ->formatStateUsing(fn (?string $state, SiteSetting $record) => static::isSecret($record->key) && filled($state) ? '•••••••• (oculto)' : $state),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('group')
@@ -111,6 +119,11 @@ class SiteSettingResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function isSecret(?string $key): bool
+    {
+        return (bool) preg_match('/(key|secret|token|password)/i', (string) $key);
     }
 
     public static function getRelations(): array

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use App\Models\ServiceCategory;
-use App\Models\SiteSetting;
+use App\Support\PublicSettings;
 use Illuminate\View\View;
 
 class ServiceController extends Controller
@@ -12,14 +12,7 @@ class ServiceController extends Controller
     public function index(): View
     {
         return view('services-index', [
-            'settings' => [
-                'clinic_name' => SiteSetting::get('branding', 'clinic_name', 'Clínica Rejuvenezk'),
-                'whatsapp_url' => SiteSetting::get('contact', 'whatsapp_url', ''),
-                'whatsapp_number' => SiteSetting::get('contact', 'whatsapp_number', ''),
-                'phone' => SiteSetting::get('contact', 'phone', ''),
-                'email' => SiteSetting::get('contact', 'email', ''),
-                'address' => SiteSetting::get('contact', 'address', ''),
-            ],
+            'settings' => PublicSettings::all(),
             'serviceCategories' => ServiceCategory::query()
                 ->where('is_active', true)
                 ->whereHas('services', fn ($query) => $query->where('is_active', true))
@@ -33,15 +26,15 @@ class ServiceController extends Controller
 
     public function show(Service $service): View
     {
+        abort_unless($service->is_active, 404);
+
         return view('service-show', [
-            'service' => $service->load(['category', 'faqs', 'galleryItems']),
-            'settings' => [
-                'clinic_name' => SiteSetting::get('branding', 'clinic_name', 'Clínica Rejuvenezk'),
-                'whatsapp_url' => SiteSetting::get('contact', 'whatsapp_url', ''),
-                'whatsapp_number' => SiteSetting::get('contact', 'whatsapp_number', ''),
-                'phone' => SiteSetting::get('contact', 'phone', ''),
-                'email' => SiteSetting::get('contact', 'email', ''),
-            ],
+            'service' => $service->load([
+                'category',
+                'faqs' => fn ($query) => $query->where('is_active', true)->orderBy('sort_order'),
+                'galleryItems' => fn ($query) => $query->where('is_active', true)->orderBy('sort_order'),
+            ]),
+            'settings' => PublicSettings::all(),
             'relatedServices' => Service::query()
                 ->where('is_active', true)
                 ->whereKeyNot($service->getKey())
