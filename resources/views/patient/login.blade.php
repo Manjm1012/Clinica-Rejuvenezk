@@ -49,7 +49,7 @@
                     @if ($forgotUrl)
                         <a href="{{ $forgotUrl }}" target="_blank" rel="noopener noreferrer">Escríbenos por WhatsApp</a>
                     @else
-                        <a href="{{ route('home') }}#formulario">Contáctanos</a>
+                        <a href="{{ route('contact') }}">Contáctanos</a>
                     @endif
                     y te ayudamos a recuperarla.
                 </p>

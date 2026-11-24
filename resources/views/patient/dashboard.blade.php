@@ -137,7 +137,7 @@
                 <div class="dk-empty">
                     <p><strong>Aún no tienes procedimientos registrados.</strong></p>
                     <p>Cuando te realices un tratamiento con nosotros, aquí verás la fecha y cuándo te toca renovarlo.</p>
-                    <a href="{{ route('home') }}#formulario" class="dk-btn-primary">Reservar valoración</a>
+                    <a href="{{ route('contact') }}" class="dk-btn-primary">Reservar valoración</a>
                 </div>
             @endforelse
         </section>

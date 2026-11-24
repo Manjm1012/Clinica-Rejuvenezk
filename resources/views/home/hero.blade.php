@@ -7,7 +7,7 @@
             <p class="dk-hero-subtitle">{{ $hero['subtitle'] }}</p>
 
             <div class="dk-hero-actions">
-                <a href="#formulario" class="dk-btn-primary">{{ $hero['primaryCta'] }}</a>
+                <a href="{{ $brand['contactUrl'] }}" class="dk-btn-primary">{{ $hero['primaryCta'] }}</a>
                 <a href="{{ $brand['bookingUrl'] }}" class="dk-hero-wa" @if($brand['hasWhatsapp']) target="_blank" rel="noopener noreferrer" @endif>
                     @if ($brand['hasWhatsapp'])
                         <span class="dk-hero-wa-icon"><x-site-icon name="whatsapp" /></span>

@@ -21,7 +21,7 @@
         @unless ($hasContent)
             <section class="container dk-page-body">
                 <p>Pronto publicaremos aquí casos y opiniones de nuestros pacientes.</p>
-                <a href="{{ route('home') }}#formulario" class="dk-btn-primary">Reservar valoración</a>
+                <a href="{{ $brand['contactUrl'] }}" class="dk-btn-primary">Reservar valoración</a>
             </section>
         @endunless
     </main>

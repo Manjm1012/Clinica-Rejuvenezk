@@ -1,6 +1,6 @@
 {{--
     Botón flotante de WhatsApp + barra inferior fija (solo móvil).
-    Parámetros: $clinicName, $bookingUrl (WhatsApp con mensaje prellenado o #formulario),
+    Parámetros: $clinicName, $bookingUrl (WhatsApp con mensaje prellenado o /contacto),
     $hasWhatsapp (bool), $phone (string|null).
 --}}
 @php

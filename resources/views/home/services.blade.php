@@ -49,7 +49,7 @@
                             <div class="svc-card-cta-inner">
                                 <strong>¿No encuentras lo que buscas?</strong>
                                 <p>Agenda una valoración y diseñamos un protocolo a tu medida.</p>
-                                <a href="{{ $brand['bookingUrl'] }}" class="btn btn-primary" @if($brand['hasWhatsapp']) target="_blank" rel="noopener noreferrer" @endif>WhatsApp</a>
+                                <a href="{{ $brand['contactUrl'] }}" class="btn btn-primary">Agendar valoración</a>
                                 <a href="{{ route('services.index') }}" class="btn btn-ghost">Ver catálogo completo</a>
                             </div>
                         </article>

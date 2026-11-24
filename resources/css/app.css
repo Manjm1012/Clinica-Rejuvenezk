@@ -5460,3 +5460,29 @@ p {
     .topbar-actions .topbar-cta { transition: none; }
     .topbar-actions .topbar-cta:hover { transform: none; }
 }
+
+/* Portada: resumen de contacto (el formulario está en /contacto) */
+.dk-home-contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px 32px;
+}
+
+.dk-home-contact > * {
+    min-width: 0;
+}
+
+.dk-home-contact .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 0;
+}
+
+@media (max-width: 820px) {
+    .dk-home-contact .cta-actions > * {
+        width: 100%;
+    }
+}
