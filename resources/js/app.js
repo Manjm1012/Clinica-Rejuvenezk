@@ -415,87 +415,98 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 });
 
-// Banners Carousel Auto-Rotation
+// Carrusel de banners: flechas, puntos, teclado (← →), deslizamiento táctil y autoplay.
 document.addEventListener('DOMContentLoaded', () => {
 	const carousel = document.querySelector('.banners-carousel');
-	const carouselInner = document.querySelector('.banners-carousel-inner');
-	const slides = document.querySelectorAll('.banner-slide');
-	const indicators = document.querySelectorAll('.banner-indicator');
+	const slides = Array.from(document.querySelectorAll('.banner-slide'));
+	const indicators = Array.from(document.querySelectorAll('.banner-indicator'));
 	const prevBtn = document.querySelector('.banner-prev');
 	const nextBtn = document.querySelector('.banner-next');
 
 	if (!carousel || !slides.length) return;
 
+	const AUTO_PLAY_DELAY = 10000; // 10 segundos
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	let currentSlide = 0;
 	let autoPlayInterval = null;
-	const AUTO_PLAY_DELAY = 10000; // 10 seconds
+	let hovering = false;
+	let focused = false;
 
 	const updateSlide = (index) => {
-		// Remove active from all slides and indicators
-		slides.forEach((slide) => slide.classList.remove('active'));
-		indicators.forEach((indicator) => indicator.classList.remove('active'));
+		slides.forEach((slide, i) => {
+			const active = i === index;
+			slide.classList.toggle('active', active);
+			slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+		});
 
-		// Add active to current slide and indicator
-		slides[index].classList.add('active');
-		indicators[index].classList.add('active');
+		indicators.forEach((indicator, i) => {
+			indicator.classList.toggle('active', i === index);
+			if (i === index) {
+				indicator.setAttribute('aria-current', 'true');
+			} else {
+				indicator.removeAttribute('aria-current');
+			}
+		});
 
 		currentSlide = index;
 	};
 
-	const nextSlide = () => {
-		const next = (currentSlide + 1) % slides.length;
-		updateSlide(next);
-	};
+	const go = (step) => updateSlide((currentSlide + step + slides.length) % slides.length);
 
-	const prevSlide = () => {
-		const prev = (currentSlide - 1 + slides.length) % slides.length;
-		updateSlide(prev);
-	};
-
-	const goToSlide = (index) => {
-		updateSlide(index);
-		resetAutoPlay();
+	const stopAutoPlay = () => {
+		clearInterval(autoPlayInterval);
+		autoPlayInterval = null;
 	};
 
 	const startAutoPlay = () => {
-		autoPlayInterval = setInterval(nextSlide, AUTO_PLAY_DELAY);
+		stopAutoPlay();
+		if (reduceMotion || slides.length < 2 || hovering || focused) return;
+		autoPlayInterval = setInterval(() => go(1), AUTO_PLAY_DELAY);
 	};
 
-	const resetAutoPlay = () => {
-		if (autoPlayInterval) {
-			clearInterval(autoPlayInterval);
-		}
-		startAutoPlay();
-	};
-
-	// Event listeners for buttons
-	prevBtn?.addEventListener('click', () => {
-		prevSlide();
-		resetAutoPlay();
-	});
-
-	nextBtn?.addEventListener('click', () => {
-		nextSlide();
-		resetAutoPlay();
-	});
-
-	// Event listeners for indicators
+	prevBtn?.addEventListener('click', () => { go(-1); startAutoPlay(); });
+	nextBtn?.addEventListener('click', () => { go(1); startAutoPlay(); });
 	indicators.forEach((indicator, index) => {
-		indicator.addEventListener('click', () => goToSlide(index));
+		indicator.addEventListener('click', () => { updateSlide(index); startAutoPlay(); });
 	});
 
-	// Pause on hover
-	carousel?.addEventListener('mouseenter', () => {
-		if (autoPlayInterval) {
-			clearInterval(autoPlayInterval);
+	// Teclado: flechas cuando el foco está dentro del carrusel.
+	carousel.addEventListener('keydown', (event) => {
+		if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+			event.preventDefault();
+			go(event.key === 'ArrowLeft' ? -1 : 1);
 		}
 	});
 
-	carousel?.addEventListener('mouseleave', () => {
-		startAutoPlay();
+	// Deslizamiento táctil horizontal (el desplazamiento vertical de la página no cambia).
+	let touchX = null;
+	let touchY = null;
+	carousel.addEventListener('touchstart', (event) => {
+		touchX = event.touches[0].clientX;
+		touchY = event.touches[0].clientY;
+	}, { passive: true });
+	carousel.addEventListener('touchend', (event) => {
+		if (touchX === null) return;
+		const dx = event.changedTouches[0].clientX - touchX;
+		const dy = event.changedTouches[0].clientY - touchY;
+		touchX = null;
+		if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+			go(dx < 0 ? 1 : -1);
+			startAutoPlay();
+		}
+	}, { passive: true });
+
+	// Pausa mientras el cursor o el foco están en el carrusel.
+	carousel.addEventListener('mouseenter', () => { hovering = true; stopAutoPlay(); });
+	carousel.addEventListener('mouseleave', () => { hovering = false; startAutoPlay(); });
+	carousel.addEventListener('focusin', () => { focused = true; stopAutoPlay(); });
+	carousel.addEventListener('focusout', (event) => {
+		if (!carousel.contains(event.relatedTarget)) {
+			focused = false;
+			startAutoPlay();
+		}
 	});
 
-	// Initialize
 	updateSlide(0);
 	startAutoPlay();
 });
