@@ -118,6 +118,23 @@ class PublicSiteTest extends TestCase
         $this->get(route('services.index'))->assertOk();
     }
 
+    public function test_las_paginas_publicas_tienen_un_solo_h1_y_encabezado_comun(): void
+    {
+        $this->make(Testimonial::class, ['patient_name' => 'Laura', 'content' => 'Excelente atención', 'rating' => 5, 'is_active' => true]);
+
+        foreach (['/', route('services.index'), route('results'), route('team'), route('faq'), route('about')] as $url) {
+            $html = $this->get($url)->assertOk()->getContent();
+            $this->assertSame(1, substr_count($html, '<h1'), "Debe haber un solo <h1> en {$url}");
+        }
+
+        foreach ([route('services.index'), route('results'), route('team'), route('faq')] as $url) {
+            $this->get($url)->assertSee('class="container dk-page-head"', false);
+        }
+
+        $results = $this->get(route('results'))->getContent();
+        $this->assertSame(1, substr_count($results, '<p class="kicker">Resultados</p>'), 'El kicker "Resultados" no debe repetirse');
+    }
+
     public function test_sitemap_incluye_servicios_activos(): void
     {
         $this->make(Service::class, ['name' => 'Peeling', 'slug' => 'peeling', 'is_active' => true]);

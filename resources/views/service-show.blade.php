@@ -6,9 +6,9 @@
     :image="$serviceImage"
 >
     <main>
-        <section class="detail-hero">
+        <section class="container detail-hero">
             <div>
-                <span class="eyebrow">{{ $service->category?->name }}</span>
+                <p class="kicker">{{ $service->category?->name }}</p>
                 @if (!empty($service->meta['subcategory']))
                     <span class="detail-subcategory">{{ $service->meta['subcategory'] }}</span>
                 @endif
@@ -30,7 +30,7 @@
             @endif
         </section>
 
-        <section class="section-block split-section">
+        <section class="container section-block split-section">
             <article class="rich-copy {{ data_get($service->meta, 'justify_description', true) ? 'rich-copy-justified' : '' }}">{!! $service->description !!}</article>
             <aside class="doctor-box">
                 <h3>Contacto rápido</h3>
@@ -41,9 +41,9 @@
         </section>
 
         @if ($service->faqs->isNotEmpty())
-            <section class="section-block">
+            <section class="container section-block">
                 <div class="section-head">
-                    <span class="eyebrow">Preguntas frecuentes</span>
+                    <p class="kicker">Preguntas frecuentes</p>
                     <h2>Antes de tu valoración</h2>
                 </div>
                 <div class="faq-list">
@@ -58,9 +58,9 @@
         @endif
 
         @if ($relatedServices->isNotEmpty())
-            <section class="section-block">
+            <section class="container section-block">
                 <div class="section-head">
-                    <span class="eyebrow">Procedimientos relacionados</span>
+                    <p class="kicker">Procedimientos relacionados</p>
                     <h2>También puede interesarte</h2>
                 </div>
                 <div class="card-grid">

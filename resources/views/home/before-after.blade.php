@@ -1,9 +1,14 @@
-{{-- Comparador antes/después. Recibe $pairs (App\Support\Media::beforeAfter). El deslizador está en resources/js/app.js. --}}
+{{--
+    Comparador antes/después. Recibe $pairs (App\Support\Media::beforeAfter). El deslizador está en resources/js/app.js.
+    Opcionales: $sectionTitle y $showKicker (la página de Resultados los usa para no repetir su encabezado).
+--}}
 @if ($pairs->isNotEmpty())
     <section id="antes-despues" class="section dk-ba" aria-labelledby="dk-ba-title">
         <div class="container">
-            <p class="kicker">{{ $settings['before_after_kicker'] ?? 'Antes y después' }}</p>
-            <h2 id="dk-ba-title" class="section-title">{{ $settings['before_after_title'] ?? 'Cambios reales, resultados naturales' }}</h2>
+            @if ($showKicker ?? true)
+                <p class="kicker">{{ $settings['before_after_kicker'] ?? 'Antes y después' }}</p>
+            @endif
+            <h2 id="dk-ba-title" class="section-title">{{ $sectionTitle ?? $settings['before_after_title'] ?? 'Cambios reales, resultados naturales' }}</h2>
 
             <div class="dk-ba-grid">
                 @foreach ($pairs as $pair)

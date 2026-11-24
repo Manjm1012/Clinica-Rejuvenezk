@@ -1,23 +1,16 @@
 @php($clinicName = $settings['clinic_name'] ?? 'Dr. Kevin Rejuvenezk')
 
 <x-layouts.site :settings="$settings" :title="'Tratamientos | ' . $clinicName" :description="'Catálogo de tratamientos faciales y corporales de ' . $clinicName . ': valoración médica, tecnología y resultados naturales.'">
-    <main class="services-catalog-page">
-        <section class="detail-hero services-catalog-hero">
-            <div>
-                <span class="eyebrow">Catálogo de tratamientos</span>
-                <h1>Explora todas nuestras categorías y procedimientos</h1>
-                <p>Un recorrido completo por las soluciones faciales, corporales y médicas disponibles, organizado para ayudarte a comparar con claridad.</p>
-            </div>
-            <div class="detail-card">
-                <p>{{ $serviceCategories->count() }} categorías activas y {{ $serviceCategories->sum(fn ($category) => $category->services->count()) }} tratamientos publicados.</p>
-            </div>
-        </section>
+    <main>
+        <x-page-header kicker="Catálogo de tratamientos" title="Explora todas nuestras categorías y procedimientos">
+            Un recorrido completo por las soluciones faciales, corporales y médicas disponibles: {{ $serviceCategories->count() }} categorías y {{ $serviceCategories->sum(fn ($category) => $category->services->count()) }} tratamientos.
+        </x-page-header>
 
         @foreach ($serviceCategories as $category)
-            <section id="cat-{{ $category->slug ?: $category->id }}" class="section-block services-catalog-block">
+            <section id="cat-{{ $category->slug ?: $category->id }}" class="container dk-page-body">
                 <div class="section-head services-catalog-head">
                     <div>
-                        <span class="eyebrow">Categoría</span>
+                        <p class="kicker">Categoría</p>
                         <h2>{{ $category->name }}</h2>
                     </div>
                     <p>{{ $category->description ?: 'Selección completa de procedimientos y alternativas terapéuticas dentro de esta categoría.' }}</p>

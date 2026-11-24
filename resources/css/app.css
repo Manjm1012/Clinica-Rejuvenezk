@@ -1401,7 +1401,7 @@ a {
     .split-section,
     .contact-section,
     .detail-hero {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 20px;
     }
 
@@ -3353,19 +3353,6 @@ a {
 }
 
 /* Services Catalog Page */
-.services-catalog-page {
-    padding-top: 42px;
-}
-
-.services-catalog-hero {
-    margin-bottom: 10px;
-}
-
-.services-catalog-hero .detail-card {
-    display: grid;
-    align-content: center;
-}
-
 .services-catalog-head {
     display: grid;
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -3469,10 +3456,6 @@ a {
 }
 
 @media (max-width: 760px) {
-    .services-catalog-page {
-        padding-top: 30px;
-    }
-
     .services-grid-catalog {
         grid-template-columns: 1fr;
     }
@@ -4798,6 +4781,16 @@ p {
 
 .dk-page-head .section-title {
 	margin-bottom: 12px;
+}
+
+/* Bloques de contenido de las páginas internas (mismo .container que el encabezado). */
+.dk-page-body {
+	padding-bottom: 56px;
+}
+
+/* Correos y enlaces largos (p. ej. en "Contacto rápido") no deben ensanchar la columna. */
+.doctor-box a {
+	overflow-wrap: anywhere;
 }
 
 .dk-team-grid {
