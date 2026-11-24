@@ -16,7 +16,7 @@
                 <p>{{ $service->short_description }}</p>
                 <div class="hero-actions">
                     <a href="{{ $service->whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn-primary">Solicitar información</a>
-                    <a href="{{ route('home') }}#contacto" class="btn-secondary">Agendar valoración</a>
+                    <a href="{{ \App\Support\SiteBrand::contactUrl($service->slug) }}" class="btn-secondary">Agendar valoración</a>
                 </div>
             </div>
             @if ($serviceImage)

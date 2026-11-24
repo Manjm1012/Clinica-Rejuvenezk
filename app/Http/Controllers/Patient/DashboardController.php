@@ -39,7 +39,7 @@ class DashboardController extends Controller
             ->filter(fn (PatientTreatment $t) => in_array($t->renewal_status, ['proxima', 'vencido'], true))
             ->mapWithKeys(function (PatientTreatment $t) use ($settings, $hasWhatsapp) {
                 if (! $hasWhatsapp) {
-                    return [$t->id => route('home').'#formulario'];
+                    return [$t->id => route('contact', array_filter(['servicio' => $t->service?->slug])).'#formulario'];
                 }
 
                 $url = $t->service

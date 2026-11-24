@@ -14,7 +14,6 @@
     $pageImage = $image ?? $brand['doctorPhotoUrl'] ?? $brand['logoUrl'];
     $onHome = request()->routeIs('home');
     $isLanding = str_contains($bodyClass, 'landing-body');
-    $linkAttrs = $brand['hasWhatsapp'] ? 'target="_blank" rel="noopener noreferrer"' : '';
 
     // Datos estructurados (Google): la clínica como MedicalClinic.
     $schema = array_filter([
@@ -93,11 +92,13 @@
                 </a>
 
                 <nav class="nav-links" aria-label="Navegación principal">
-                    @include('partials.site-nav-links', ['onHome' => $onHome])
+                    @include('partials.site-nav-links', ['onHome' => $onHome, 'withAccount' => false])
                 </nav>
 
                 <div class="topbar-actions">
-                    <a href="{{ $brand['bookingUrl'] }}" class="btn btn-outline topbar-cta" {!! $linkAttrs !!}>{{ $settings['topbar_cta_label'] ?? 'Agenda ahora' }}</a>
+                    {{-- "Ingresar" (secundario, borde) + "Agenda ahora" (CTA principal) a la derecha de la barra. --}}
+                    @include('partials.dk-patient-nav-link')
+                    <a href="{{ $brand['contactUrl'] }}" class="topbar-cta" @if(request()->routeIs('contact')) aria-current="page" @endif>{{ $settings['topbar_cta_label'] ?? 'Agenda ahora' }}</a>
                     <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav-panel" aria-label="Abrir menú de navegación">
                         <span class="nav-toggle-icon"><span></span><span></span><span></span></span>
                         <span class="nav-toggle-label">Menú</span>
@@ -121,7 +122,7 @@
                     @include('partials.site-nav-links', ['onHome' => $onHome])
                     <a href="{{ route('faq') }}" class="{{ request()->routeIs('faq') ? 'is-active' : '' }}">Preguntas frecuentes</a>
                 </nav>
-                <a href="{{ $brand['bookingUrl'] }}" class="btn btn-primary mobile-nav-cta" {!! $linkAttrs !!}>{{ $settings['topbar_cta_label'] ?? 'Agenda ahora' }}</a>
+                <a href="{{ $brand['contactUrl'] }}" class="btn btn-primary mobile-nav-cta">{{ $settings['topbar_cta_label'] ?? 'Agenda ahora' }}</a>
             </div>
         </div>
 

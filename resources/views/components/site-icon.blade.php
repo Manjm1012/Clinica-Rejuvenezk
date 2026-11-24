@@ -19,6 +19,9 @@
     @case('mail')
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" {{ $attributes }}><path d="M3 5.5h18A1.5 1.5 0 0 1 22.5 7v10A1.5 1.5 0 0 1 21 18.5H3A1.5 1.5 0 0 1 1.5 17V7A1.5 1.5 0 0 1 3 5.5Zm0 1.7a.3.3 0 0 0-.3.3v.2l9.3 6.3 9.3-6.3v-.2a.3.3 0 0 0-.3-.3H3Zm18 9.6a.3.3 0 0 0 .3-.3V9.8l-8.8 6a.9.9 0 0 1-1 0l-8.8-6v6.7c0 .2.1.3.3.3H21Z"/></svg>
         @break
+    @case('phone')
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" {{ $attributes }}><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8Z"/></svg>
+        @break
     @case('shield')
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" {{ $attributes }}><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Zm-1.2 13.6-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3Z"/></svg>
         @break

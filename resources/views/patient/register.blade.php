@@ -13,7 +13,7 @@
             @if (session('patient_exists'))
                 <div class="dk-alert dk-alert-warn" role="alert">
                     <p>Ya tenemos un registro con estos datos. Escríbenos por WhatsApp para activar tu cuenta.</p>
-                    <a href="{{ $activationWhatsappUrl ?? route('home') . '#formulario' }}" class="dk-alert-action"
+                    <a href="{{ $activationWhatsappUrl ?? route('contact') }}" class="dk-alert-action"
                         @if($activationWhatsappUrl) target="_blank" rel="noopener noreferrer" @endif>
                         {{ $activationWhatsappUrl ? 'Escribir por WhatsApp' : 'Contactar a la clínica' }}
                     </a>

@@ -46,7 +46,9 @@ class PublicSiteTest extends TestCase
             ->assertOk()
             ->assertSee('id="servicios"', false)
             ->assertSee('id="contacto"', false)
-            ->assertSee('id="formulario"', false)
+            // El formulario vive en /contacto: la portada solo trae un resumen con el botón.
+            ->assertDontSee('id="formulario"', false)
+            ->assertSee('href="'.route('contact').'"', false)
             ->assertSee('Toxina botulínica')
             ->assertSee('Dr. Kevin')
             ->assertSee('<link rel="canonical"', false)
@@ -99,9 +101,13 @@ class PublicSiteTest extends TestCase
 
     public function test_el_formulario_conserva_las_utm_de_la_campana(): void
     {
-        $this->get('/?utm_source=instagram&utm_campaign=noviembre')->assertOk()
+        $this->get('/contacto?utm_source=instagram&utm_campaign=noviembre')->assertOk()
             ->assertSee('name="utm_source" value="instagram"', false)
             ->assertSee('name="utm_campaign" value="noviembre"', false);
+
+        // Desde la portada, el botón a /contacto lleva las UTM de la visita.
+        $this->get('/?utm_source=instagram&utm_campaign=noviembre')->assertOk()
+            ->assertSee(e(route('contact', ['utm_source' => 'instagram', 'utm_campaign' => 'noviembre'])), false);
     }
 
     public function test_paginas_nuevas_responden(): void
@@ -122,12 +128,12 @@ class PublicSiteTest extends TestCase
     {
         $this->make(Testimonial::class, ['patient_name' => 'Laura', 'content' => 'Excelente atención', 'rating' => 5, 'is_active' => true]);
 
-        foreach (['/', route('services.index'), route('results'), route('team'), route('faq'), route('about')] as $url) {
+        foreach (['/', route('services.index'), route('results'), route('team'), route('faq'), route('about'), route('contact')] as $url) {
             $html = $this->get($url)->assertOk()->getContent();
             $this->assertSame(1, substr_count($html, '<h1'), "Debe haber un solo <h1> en {$url}");
         }
 
-        foreach ([route('services.index'), route('results'), route('team'), route('faq')] as $url) {
+        foreach ([route('services.index'), route('results'), route('team'), route('faq'), route('contact')] as $url) {
             $this->get($url)->assertSee('class="container dk-page-head"', false);
         }
 
@@ -144,6 +150,7 @@ class PublicSiteTest extends TestCase
             ->assertOk()
             ->assertHeader('Content-Type', 'application/xml; charset=UTF-8')
             ->assertSee(route('services.show', 'peeling'), false)
+            ->assertSee('<loc>'.route('contact').'</loc>', false)
             ->assertDontSee('/procedimientos/oculto', false);
     }
 

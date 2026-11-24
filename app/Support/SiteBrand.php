@@ -18,7 +18,7 @@ class SiteBrand
         $whatsappRaw = trim((string) ($settings['whatsapp_url'] ?? ''));
         $whatsappDigits = preg_replace('/\D+/', '', (string) ($settings['whatsapp_number'] ?? ''));
         $hasWhatsapp = $whatsappRaw !== '' || $whatsappDigits !== '';
-        $whatsappUrl = $whatsappRaw !== '' ? $whatsappRaw : ($whatsappDigits !== '' ? 'https://wa.me/'.$whatsappDigits : route('home').'#contacto');
+        $whatsappUrl = $whatsappRaw !== '' ? $whatsappRaw : ($whatsappDigits !== '' ? 'https://wa.me/'.$whatsappDigits : self::contactUrl());
         $bookingText = $settings['whatsapp_booking_text'] ?? 'Hola, quiero agendar una valoración';
 
         $social = collect([
@@ -42,11 +42,27 @@ class SiteBrand
             'whatsappUrl' => $whatsappUrl,
             'bookingUrl' => $hasWhatsapp
                 ? $whatsappUrl.(str_contains($whatsappUrl, '?') ? '&' : '?').'text='.rawurlencode($bookingText)
-                : route('home').'#formulario',
+                : self::contactUrl(),
+            // Página de contacto/agenda: destino de "Agenda ahora", "Agendar" y "Contáctanos".
+            'contactUrl' => self::contactUrl(),
             'social' => $social,
             'phone' => $settings['phone'] ?? '',
             'email' => $settings['email'] ?? '',
             'address' => $settings['address'] ?? '',
         ];
+    }
+
+    /**
+     * URL de /contacto, con el servicio preseleccionado (?servicio=slug) y las UTM de la
+     * visita actual, para que la campaña siga llegando al lead aunque el formulario esté en otra página.
+     */
+    public static function contactUrl(?string $serviceSlug = null): string
+    {
+        $utm = array_filter(
+            request()->only(['utm_source', 'utm_medium', 'utm_campaign']),
+            fn ($value) => is_string($value) && $value !== '',
+        );
+
+        return route('contact', array_filter(['servicio' => $serviceSlug]) + $utm);
     }
 }

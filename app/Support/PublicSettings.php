@@ -48,6 +48,8 @@ class PublicSettings
             'phone' => '',
             'email' => '',
             'address' => '',
+            // Horarios de atención (texto libre, grupo "contact"). Vacío = no se muestran.
+            'business_hours' => '',
         ], SiteSetting::group('contact'));
 
         $social = array_merge([

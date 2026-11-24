@@ -12,6 +12,7 @@ use App\Models\Testimonial;
 use App\Support\CurrentClinic;
 use App\Support\PublicSettings;
 use App\View\HomePage;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
@@ -88,6 +89,20 @@ class HomeController extends Controller
         ]);
     }
 
+    /** Contacto y agenda: formulario de leads + canales tomados de los ajustes públicos. */
+    public function contact(Request $request): View
+    {
+        $services = Service::query()->where('is_active', true)->orderBy('sort_order')->get(['id', 'name', 'slug']);
+        $slug = $request->query('servicio');
+
+        return view('contact', [
+            'settings' => PublicSettings::all(),
+            'services' => $services,
+            // ?servicio=slug (desde una tarjeta) preselecciona el tratamiento; un valor ya enviado manda.
+            'selectedServiceId' => is_string($slug) ? $services->firstWhere('slug', $slug)?->id : null,
+        ]);
+    }
+
     public function sitemap(): Response
     {
         $urls = collect([
@@ -96,6 +111,7 @@ class HomeController extends Controller
             ['loc' => route('results'), 'priority' => '0.8'],
             ['loc' => route('team'), 'priority' => '0.8'],
             ['loc' => route('about'), 'priority' => '0.7'],
+            ['loc' => route('contact'), 'priority' => '0.8'],
             ['loc' => route('faq'), 'priority' => '0.6'],
             ['loc' => route('legal.data-policy'), 'priority' => '0.3'],
         ])->merge(
