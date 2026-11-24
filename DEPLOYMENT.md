@@ -136,19 +136,55 @@ QUEUE_CONNECTION=database
 composer install --no-dev --prefer-dist --optimize-autoloader && npm ci && npm run build
 ```
 
-### Start o Post-Deploy Command
+### Arranque del contenedor (automático, sin migraciones)
 
-Si Dokploy te permite comando post-deploy, usa:
+El repositorio incluye `nixpacks.toml`, que define el comando de inicio. **No hay que configurarlo en Dokploy.** En cada arranque o reinicio del contenedor, `scripts/container-start.sh`:
+
+1. Crea las carpetas de `storage/` y `bootstrap/cache` (`scripts/deploy/ensure-storage.php`).
+2. Ejecuta `php artisan storage:link` solo si `public/storage` no existe (`scripts/deploy/storage-link.php`).
+3. Regenera `config:cache`, `route:cache` y `view:cache`.
+4. Genera `/nginx.conf` con la plantilla de Nixpacks, fija `client_max_body_size 200M` y arranca `php-fpm` y `nginx`, igual que el inicio por defecto de Nixpacks.
+
+**El arranque nunca ejecuta migraciones.** Si falla alguno de los pasos 1 a 3, queda un aviso `[arranque] AVISO: …` en el log y la web arranca igual. Si falta la plantilla de nginx, el contenedor se detiene con `[arranque] ERROR: …`.
+
+> Si en Dokploy → *General* (o *Advanced*) hay un **Start Command personalizado**, bórralo o déjalo en `sh scripts/container-start.sh`: un comando ahí reemplaza al de `nixpacks.toml`. En particular, no pongas `composer run deploy` como comando de inicio, porque no arranca nginx.
+>
+> `docker-entrypoint.sh` y `build.sh` quedan solo como referencia: su ajuste de nginx ya lo hace `container-start.sh`.
+
+### Post-deploy: migraciones
+
+Las migraciones se ejecutan **una vez por deploy**, no en cada arranque. Si Dokploy te permite un comando post-deploy, usa:
 
 ```bash
 composer run deploy
 ```
 
-Si solo te permite un comando unico de despliegue, usa:
+Ejecuta, en este orden: carpetas de storage, `migrate --force`, `storage:link` si falta, limpieza de cachés, `filament:upgrade` y `config/route/view:cache`. Funciona en Linux y en Windows: ya no usa `php -r "…$variable…"`, que el shell de Linux rompía.
+
+Si Dokploy no tiene post-deploy, ejecuta las migraciones a mano desde la terminal del contenedor después de cada deploy que las traiga:
 
 ```bash
-composer run deploy:full
+php artisan migrate --force
 ```
+
+`composer run deploy:full` (instalar, compilar y luego `deploy`) sigue disponible para servidores sin Nixpacks.
+
+### Verificar el arranque
+
+En los logs del contenedor deben aparecer, en orden:
+
+```
+Carpetas de storage: listas
+public/storage ya existe          (o "The [public/storage] link has been connected…")
+INFO  Configuration cached successfully.
+INFO  Routes cached successfully.
+INFO  Blade templates cached successfully.
+[arranque] Iniciando php-fpm y nginx
+```
+
+### Entorno local (Windows/XAMPP)
+
+Nada de lo anterior se ejecuta en local: `nixpacks.toml` y `container-start.sh` solo los usa Nixpacks. `composer run deploy` también funciona en Windows; si lo pruebas en local, ten en cuenta que ejecuta migraciones sobre la base de tu `.env`. Para quitar las cachés que genera, usa `php artisan config:clear && php artisan route:clear && php artisan view:clear` (no `optimize:clear`, que con `CACHE_STORE=database` vacía la tabla `cache`).
 
 ### Volumenes persistentes
 
@@ -448,7 +484,7 @@ docker rm -f rejuv-prueba               # limpiar al terminar
 **Durante el deploy**
 
 7. Despliega la rama o commit nuevo. El *Build Command* no cambia (`composer install … && npm ci && npm run build`).
-8. El post-deploy (`composer run deploy`) ejecuta, en este orden: `migrate --force`, `storage:link`, `optimize:clear`, `filament:upgrade`, `config:cache`, `route:cache` y `view:cache`. Revisa en el log del deploy que las **5 migraciones** aparezcan como `DONE`.
+8. Al arrancar, el contenedor prepara storage y cachés **sin migrar** (ver "Arranque del contenedor"). Las migraciones las ejecuta el post-deploy (`composer run deploy`): carpetas de storage, `migrate --force`, `storage:link`, limpieza de cachés, `filament:upgrade`, `config:cache`, `route:cache` y `view:cache`. Revisa en el log del deploy que las **5 migraciones** aparezcan como `DONE`.
    Si tu servicio no ejecuta el post-deploy, lánzalo a mano desde la terminal del contenedor:
    ```bash
    php artisan migrate --force

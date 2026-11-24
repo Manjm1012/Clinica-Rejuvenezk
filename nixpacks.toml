@@ -1,0 +1,7 @@
+# Dokploy / Nixpacks.
+# El comando de inicio reemplaza al de Nixpacks: prepara Laravel (storage, public/storage y
+# cachés) y luego arranca php-fpm + nginx igual que Nixpacks. NO ejecuta migraciones.
+# Ver scripts/container-start.sh y DEPLOYMENT.md.
+
+[start]
+cmd = "sh scripts/container-start.sh"
