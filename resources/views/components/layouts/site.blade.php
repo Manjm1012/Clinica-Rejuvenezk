@@ -10,7 +10,7 @@
     $brand = \App\Support\SiteBrand::for($settings);
     $clinicName = $brand['clinicName'];
     $pageTitle = $title ?? ($clinicName.' | Medicina estética');
-    $pageDescription = \Illuminate\Support\Str::limit(trim(strip_tags((string) ($description ?? $settings['hero_subtitle'] ?? 'Medicina estética con criterio médico y resultados naturales.'))), 160, '…');
+    $pageDescription = \Illuminate\Support\Str::limit(trim(strip_tags((string) ($description ?? \App\View\HomePage::publicText($settings['hero_subtitle'] ?? null, 'Medicina estética con criterio médico y resultados naturales.')))), 160, '…');
     $pageImage = $image ?? $brand['doctorPhotoUrl'] ?? $brand['logoUrl'];
     $onHome = request()->routeIs('home');
     $isLanding = str_contains($bodyClass, 'landing-body');

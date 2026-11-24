@@ -7,7 +7,6 @@ use App\Models\Faq;
 use App\Models\GalleryItem;
 use App\Models\Service;
 use App\Models\ServiceCategory;
-use App\Models\Stat;
 use App\Models\Testimonial;
 use App\Support\CurrentClinic;
 use App\Support\PublicSettings;
@@ -28,8 +27,7 @@ class HomeController extends Controller
             'featuredServices' => Service::query()->where('is_active', true)->where('is_featured', true)->orderBy('sort_order')->limit(6)->get(),
             'doctor' => Doctor::query()->where('is_active', true)->orderBy('sort_order')->first(),
             'galleryItems' => $this->galleryItems(12),
-            'stats' => Stat::query()->where('is_active', true)->orderBy('sort_order')->get(),
-            'testimonials' => Testimonial::query()->where('is_active', true)->orderByDesc('is_featured')->orderBy('sort_order')->limit(8)->get(),
+            'testimonials' => Testimonial::query()->published()->orderByDesc('is_featured')->orderBy('sort_order')->limit(8)->get(),
         ];
 
         return view('home', $data + ['page' => HomePage::build($data)]);
@@ -54,7 +52,7 @@ class HomeController extends Controller
             'beforeAfter' => HomePage::beforeAfter($items, 24),
             'gallery' => HomePage::gallery($items, 24),
             'videos' => HomePage::videos($items, 12),
-            'testimonials' => Testimonial::query()->where('is_active', true)->orderByDesc('is_featured')->orderBy('sort_order')->get(),
+            'testimonials' => Testimonial::query()->published()->orderByDesc('is_featured')->orderBy('sort_order')->get(),
             'page' => ['texts' => HomePage::texts($settings)],
         ]);
     }

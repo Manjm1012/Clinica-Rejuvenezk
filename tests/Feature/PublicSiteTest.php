@@ -7,6 +7,7 @@ use App\Models\Doctor;
 use App\Models\Faq;
 use App\Models\Service;
 use App\Models\SiteSetting;
+use App\Models\Stat;
 use App\Models\Testimonial;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
@@ -75,6 +76,52 @@ class PublicSiteTest extends TestCase
                 ->assertDontSee('testimonials-pill', false)
                 ->assertDontSee('/5</strong>', false);
         }
+    }
+
+    public function test_las_resenas_sin_enlace_de_verificacion_no_se_muestran(): void
+    {
+        // La reseña de ejemplo que sembraban versiones antiguas del seeder.
+        $this->make(Testimonial::class, [
+            'patient_name' => 'Paciente Demo', 'rating' => 5, 'is_active' => true,
+            'content' => 'Excelente atención, seguimiento y resultados. Este bloque también es editable desde Filament.',
+        ]);
+        $this->make(Testimonial::class, ['patient_name' => 'Rosa', 'content' => 'Opinión real verificada', 'rating' => 5, 'is_active' => true, 'source_url' => 'https://g.page/r/rosa']);
+        $this->make(Testimonial::class, ['patient_name' => 'Oculta', 'content' => 'Opinión desactivada', 'rating' => 5, 'is_active' => false, 'source_url' => 'https://g.page/r/x']);
+
+        foreach (['/', route('results')] as $url) {
+            $this->get($url)->assertOk()
+                ->assertSee('Opinión real verificada')
+                ->assertSee('https://g.page/r/rosa', false)
+                ->assertDontSee('editable desde Filament')
+                ->assertDontSee('Paciente Demo')
+                ->assertDontSee('Experiencia en')
+                ->assertDontSee('Opinión desactivada');
+        }
+
+        $this->getJson('/api/home')->assertOk()->assertDontSee('editable desde Filament');
+    }
+
+    public function test_las_cifras_de_la_portada_salen_de_los_ajustes_y_vacias_no_se_muestran(): void
+    {
+        // Las cifras que sembraba el seeder en la tabla stats ya no se publican.
+        $this->make(Stat::class, ['label' => 'Años de Experiencia', 'value' => '+15', 'is_active' => true]);
+        $this->make(Stat::class, ['label' => 'Pacientes Satisfechos', 'value' => '98%', 'is_active' => true]);
+
+        $this->get('/')->assertOk()
+            ->assertDontSee('+15')
+            ->assertDontSee('98%')
+            ->assertDontSee('Años de Experiencia');
+
+        foreach ([['stat_1_value', '+10'], ['stat_1_label', 'años de experiencia'], ['stat_2_value', '+500'], ['stat_3_label', 'Sin valor']] as [$key, $value]) {
+            $this->make(SiteSetting::class, ['group' => 'branding', 'key' => $key, 'value' => $value, 'type' => 'string']);
+        }
+        Cache::flush();
+
+        $this->get('/')->assertOk()
+            ->assertSee('+10')
+            ->assertSee('años de experiencia')
+            ->assertDontSee('+500')      // cifra sin etiqueta
+            ->assertDontSee('Sin valor'); // etiqueta sin cifra
     }
 
     public function test_el_promedio_aparece_desde_diez_resenas_verificables(): void
@@ -177,5 +224,10 @@ class PublicSiteTest extends TestCase
             ->assertSee('Medicina estética y cirugía con enfoque médico')
             ->assertDontSee('enfoque premium')
             ->assertDontSee('comercializable');
+
+        // Tampoco en la meta descripción de las páginas sin descripción propia.
+        foreach ([route('patient.login'), route('patient.register'), route('legal.data-policy')] as $url) {
+            $this->get($url)->assertOk()->assertDontSee('comercializable');
+        }
     }
 }

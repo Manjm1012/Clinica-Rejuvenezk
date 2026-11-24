@@ -31,7 +31,7 @@ class PublicContentController extends Controller
             'doctor' => Doctor::query()->where('is_active', true)->first(),
             'stats' => Stat::query()->where('is_active', true)->orderBy('sort_order')->get(),
             'technologies' => Technology::query()->where('is_active', true)->orderBy('sort_order')->get(),
-            'testimonials' => Testimonial::query()->where('is_active', true)->orderByDesc('is_featured')->get(),
+            'testimonials' => Testimonial::query()->published()->orderByDesc('is_featured')->get(),
         ]);
     }
 

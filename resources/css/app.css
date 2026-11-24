@@ -5347,7 +5347,7 @@ p {
    DK · Encabezado: "Agenda ahora" como CTA principal dentro de la barra
    - Verde oscuro de marca (mismo de "Agendar" en las tarjetas), texto blanco.
    - "Ingresar"/"Mi cuenta" a su lado como botón secundario con borde.
-   - Móvil: CTA en la barra desde 560px; por debajo, en el menú desplegable.
+   - Móvil: CTA siempre visible en la barra (ver "Encabezado fijo" al final).
    ========================================================================== */
 .topbar-actions .topbar-cta {
     display: inline-flex;
@@ -5441,20 +5441,6 @@ p {
     }
 }
 
-@media (max-width: 559px) {
-    .topbar-actions .topbar-cta {
-        display: none;
-    }
-
-    /* La barra y su .container sumaban ~45px de relleno por lado: el nombre de la marca se partía letra a letra. */
-    .topbar {
-        padding: 4px;
-    }
-
-    .topbar > .topbar-inner {
-        width: 100%;
-    }
-}
 
 @media (prefers-reduced-motion: reduce) {
     .topbar-actions .topbar-cta { transition: none; }
@@ -5484,5 +5470,468 @@ p {
 @media (max-width: 820px) {
     .dk-home-contact .cta-actions > * {
         width: 100%;
+    }
+}
+
+/* ==========================================================================
+   DK · Encabezado fijo (sticky) que cabe entero en la barra
+   - html/body con overflow-x: clip: con "hidden" en ambos, <body> se volvía el
+     contenedor de scroll y position: sticky dejaba de funcionar.
+   - El contenido ocupa el ancho de la barra (1168px máx., como .site-shell) y las
+     fuentes ya no crecen sin límite: antes "Agenda ahora" sobresalía desde ~1440px.
+   - Al bajar (.is-scrolled, en app.js) la barra se compacta sin perder el CTA.
+   - Móvil: logo + nombre (máx. 2 líneas, sin partir palabras) + CTA + hamburguesa.
+   ========================================================================== */
+:root {
+    --dk-topbar-offset: 96px; /* alto de la barra + margen: lo usan los anclajes */
+}
+
+html,
+body {
+    overflow-x: clip;
+}
+
+/* Anclajes (#servicios, #formulario, #cat-facial...) no quedan debajo de la barra fija. */
+main [id],
+#inicio,
+#servicios,
+#resultados,
+#contacto {
+    scroll-margin-top: var(--dk-topbar-offset);
+}
+
+header.topbar {
+    position: sticky;
+    top: 10px;
+    z-index: 90;
+    display: block;
+    margin: 12px auto 0;
+    padding: 0;
+    transition: box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+header.topbar > .topbar-inner {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    min-height: 76px;
+    padding: 10px clamp(14px, 1.6vw, 24px);
+    gap: clamp(10px, 1.3vw, 24px);
+    transition: min-height 0.25s ease, padding 0.25s ease;
+}
+
+header.topbar .brand-lockup {
+    flex: 0 0 auto; /* el nombre nunca se monta sobre el menú */
+    min-width: 0;
+    gap: 10px;
+}
+
+header.topbar .brand-logo-shell {
+    width: 48px;
+    height: 48px;
+    min-width: 0; /* la regla base fija 64px mínimos */
+    min-height: 0;
+    margin-right: 0;
+    border-radius: 12px;
+    flex-shrink: 0;
+    transition: width 0.25s ease, height 0.25s ease;
+}
+
+header.topbar .brand-logo-mark {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+header.topbar .brand-copy {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 2px;
+}
+
+header.topbar .topbar-inner .brand-lockup .brand-clinic-name {
+    font-size: clamp(1.1rem, 1.2vw, 1.2rem); /* la barra no pasa de 1168px: tope fijo */
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+}
+
+/* Subtítulo (médico o especialidad): segunda línea pequeña; si no cabe, se acorta con "…". */
+header.topbar .topbar-inner .brand-lockup .brand-doctor-name {
+    display: block;
+    /* No ensancha la marca: ocupa como mucho el ancho del nombre y el resto se corta con "…". */
+    width: 0;
+    min-width: 100%;
+    font-size: 0.64rem;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (min-width: 1180px) {
+    header.topbar .nav-links {
+        flex: 0 1 auto;
+        min-width: max-content;
+        gap: clamp(12px, 1.25vw, 20px);
+        font-size: clamp(0.84rem, 0.8vw, 0.92rem);
+    }
+
+    header.topbar .topbar-actions {
+        gap: 8px;
+    }
+
+    header.topbar .topbar-actions .topbar-cta,
+    header.topbar .topbar-actions .dk-nav-account {
+        padding: 0 clamp(12px, 1.1vw, 18px);
+        font-size: clamp(0.84rem, 0.8vw, 0.9rem);
+    }
+}
+
+/* Compacta al desplazarse */
+header.topbar.is-scrolled {
+    box-shadow: 0 14px 34px rgba(35, 22, 22, 0.18), 0 1px 0 rgba(198, 160, 98, 0.22);
+}
+
+header.topbar.is-scrolled > .topbar-inner {
+    min-height: 60px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+header.topbar.is-scrolled .brand-logo-shell {
+    width: 40px;
+    height: 40px;
+}
+
+header.topbar.is-scrolled .topbar-inner .brand-lockup .brand-doctor-name {
+    display: none;
+}
+
+/* Tablet y móvil: menú en hamburguesa, CTA siempre visible */
+@media (max-width: 980px) {
+    :root {
+        --dk-topbar-offset: 84px;
+    }
+
+    header.topbar {
+        top: 8px;
+        width: calc(100% - 20px);
+        margin-top: 8px;
+    }
+
+    header.topbar > .topbar-inner {
+        min-height: 64px;
+        padding: 8px 10px;
+        gap: 8px;
+    }
+
+    header.topbar .brand-lockup {
+        flex: 1 1 auto;
+    }
+
+    header.topbar .brand-logo-shell {
+        width: 42px;
+        height: 42px;
+    }
+
+    header.topbar .topbar-actions {
+        gap: 6px;
+    }
+
+    header.topbar .topbar-actions .topbar-cta {
+        display: inline-flex;
+        min-height: 44px;
+        padding: 0 14px;
+        font-size: 0.84rem;
+    }
+
+    header.topbar .nav-toggle {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    header.topbar.is-scrolled > .topbar-inner {
+        min-height: 56px;
+    }
+}
+
+@media (max-width: 560px) {
+    header.topbar .topbar-inner .brand-lockup .brand-doctor-name,
+    header.topbar .nav-toggle-label {
+        display: none;
+    }
+
+    header.topbar .nav-toggle {
+        padding: 0;
+        width: 44px;
+    }
+
+    /* El nombre puede ir en dos líneas, pero solo entre palabras (nunca "Rejuvenez k"). */
+    header.topbar .topbar-inner .brand-lockup .brand-clinic-name {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        white-space: normal;
+        font-size: 0.95rem;
+        line-height: 1.15;
+    }
+
+    header.topbar .topbar-actions .topbar-cta {
+        padding: 0 12px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Teléfonos angostos: logo + CTA + hamburguesa. El nombre queda en el aria-label del logo. */
+@media (max-width: 419px) {
+    header.topbar .brand-copy {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    header.topbar,
+    header.topbar > .topbar-inner,
+    header.topbar .brand-logo-shell {
+        transition: none;
+    }
+}
+
+/* ==========================================================================
+   DK · Banners de la portada (carrusel)
+   - Las diapositivas se apilan en una celda de grid: el alto sale del contenido
+     (antes el texto móvil colgaba de un padding-bottom fijo y se desbordaba).
+   - Imagen en su propio bloque con object-fit: cover; en móvil aspect-ratio 16/9.
+   - Puntos de paginación siempre debajo, fuera del bloque de texto.
+   - Flechas de 44px semitransparentes en escritorio; en móvil se ocultan
+     (deslizar + puntos + teclado, ver app.js).
+   ========================================================================== */
+.banners-carousel-wrap.dk-promos {
+    padding-bottom: 0;
+}
+
+.dk-promos .banners-carousel {
+    height: auto;
+    overflow: visible;
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.dk-promos .banners-carousel:focus-visible {
+    outline: 3px solid var(--dk-cta);
+    outline-offset: 4px;
+    border-radius: 22px;
+}
+
+.dk-promos .banners-carousel-inner {
+    display: grid;
+    height: auto;
+}
+
+.dk-promos .banner-slide {
+    position: relative;
+    inset: auto;
+    grid-area: 1 / 1;
+    background: none;
+    visibility: hidden;
+    transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0.7s;
+}
+
+.dk-promos .banner-slide.active {
+    visibility: visible;
+    transition-delay: 0s;
+}
+
+.dk-promos .banner-slide::after {
+    display: none;
+}
+
+.dk-promos .banner-slide-media {
+    position: relative;
+    height: var(--banner-media-height);
+    overflow: hidden;
+    border-radius: 22px;
+    background: #e9dfd3;
+    box-shadow: 0 22px 50px rgba(41, 29, 24, 0.14);
+}
+
+.dk-promos .banner-slide-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(19, 15, 12, 0.04) 0%, rgba(19, 15, 12, 0.3) 100%);
+    pointer-events: none;
+}
+
+.dk-promos .banner-slide img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: none;
+}
+
+/* Escritorio: el texto va sobre la imagen, abajo a la izquierda */
+.dk-promos .banner-slide-overlay {
+    left: 20px;
+    right: auto;
+    bottom: 20px;
+    width: min(680px, calc(100% - 136px)); /* deja libres los lados para las flechas */
+    margin-left: 48px;
+}
+
+.dk-promos .banner-control {
+    top: calc(var(--banner-media-height) / 2);
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.72);
+    font-size: 1.6rem;
+}
+
+.dk-promos .banner-control:hover,
+.dk-promos .banner-control:focus-visible {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.dk-promos .banner-control:focus-visible,
+.dk-promos .banner-indicator:focus-visible {
+    outline: 3px solid var(--dk-cta);
+    outline-offset: 2px;
+}
+
+.dk-promos .banner-prev {
+    left: 12px;
+}
+
+.dk-promos .banner-next {
+    right: 12px;
+}
+
+.dk-promos .banner-indicators {
+    position: static;
+    transform: none;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 10px;
+}
+
+.dk-promos .banner-indicator {
+    width: 44px;
+    height: 44px;
+}
+
+.dk-promos .banner-indicator::before {
+    background: rgba(61, 86, 54, 0.28);
+}
+
+.dk-promos .banner-indicator.active::before {
+    background: var(--dk-cta);
+}
+
+@media (max-width: 820px) {
+    .dk-promos .banner-slide-media {
+        height: auto;
+        aspect-ratio: 16 / 9;
+        border-radius: 18px;
+    }
+
+    .dk-promos .banner-slide img {
+        object-position: center 30%;
+    }
+
+    /* Texto debajo de la imagen, en flujo normal (no se superpone ni se corta) */
+    .dk-promos .banner-slide-overlay {
+        position: static;
+        width: auto;
+        margin: 10px 0 0;
+    }
+
+    .dk-promos .banner-control {
+        display: none;
+    }
+
+    .dk-promos .banner-indicators {
+        margin-top: 4px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dk-promos .banner-slide {
+        transition: none;
+    }
+}
+
+/* ==========================================================================
+   DK · Revisión móvil: áreas táctiles de 44px y texto legible (>= 12px)
+   ========================================================================== */
+header.topbar .brand-lockup {
+    min-height: 44px;
+}
+
+.dk-svc-shortcuts a,
+.dk-btn-agendar,
+.service-card-copy .service-links a {
+    min-height: 44px;
+}
+
+.service-card-copy .service-links a {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Subtítulo de la marca y textos pequeños: mínimo 12px */
+header.topbar .topbar-inner .brand-lockup .brand-doctor-name {
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+    text-transform: none;
+}
+
+header.topbar .nav-toggle-label,
+.dk-promos .banner-slide-overlay span {
+    font-size: 0.75rem;
+}
+
+@media (max-width: 980px) {
+    /* Enlaces del pie apilados: cada uno con 44px de alto táctil */
+    .dk-footer-meta .dk-footer-legal {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* La barra inferior mide 64px + borde/sombra: el final de la página no queda debajo */
+    .dk-has-mobilebar {
+        padding-bottom: calc(var(--dk-mobilebar-h) + 12px + env(safe-area-inset-bottom, 0px));
+    }
+}
+
+/* Tabletas (769–980px, sin barra inferior): WhatsApp flotante solo con el ícono para
+   tapar menos campos y botones; el nombre sigue en su aria-label. */
+@media (min-width: 769px) and (max-width: 980px) {
+    .whatsapp-fab.dk-wa-fab {
+        padding: 6px;
+    }
+
+    .whatsapp-fab.dk-wa-fab strong {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+    }
+
+    .dk-has-mobilebar {
+        padding-bottom: 80px;
     }
 }

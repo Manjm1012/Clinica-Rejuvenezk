@@ -40,6 +40,11 @@ class PublicSettings
             'home_banner_1_image' => '',
             'home_banner_2_image' => '',
             'home_banner_3_image' => '',
+            // Cifras de la portada (p. ej. "+15" / "años de experiencia"). Vacías = no se muestran.
+            'stat_1_value' => '', 'stat_1_label' => '',
+            'stat_2_value' => '', 'stat_2_label' => '',
+            'stat_3_value' => '', 'stat_3_label' => '',
+            'stat_4_value' => '', 'stat_4_label' => '',
         ], SiteSetting::group('branding'));
 
         $contact = array_merge([

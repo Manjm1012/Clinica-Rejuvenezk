@@ -25,7 +25,8 @@ class HomePage
         'Atención presencial y seguimiento digital para una experiencia comercial ordenada.' => 'Atención presencial y seguimiento cercano después de cada tratamiento.',
     ];
 
-    private static function publicText(?string $value, string $default): string
+    /** Texto de ajustes listo para el público: vacío -> $default; texto demo conocido -> su reemplazo. */
+    public static function publicText(?string $value, string $default): string
     {
         $value = trim((string) $value);
 
@@ -56,7 +57,7 @@ class HomePage
                 'image' => $doctorPhotoUrl,
             ],
             'doctorPhotoUrl' => $doctorPhotoUrl,
-            'trustItems' => static::trustItems($settings, $data['stats']),
+            'trustItems' => static::trustItems($settings),
             'promoBanners' => static::promoBanners($settings, [$doctorPhotoUrl, $featuredImage, Media::resolve($settings['hero_banner_image'] ?? null), $clinicLogoUrl]),
             'beforeAfter' => static::beforeAfter($galleryItems, 4),
             'gallery' => static::gallery($galleryItems, 4),
@@ -85,13 +86,29 @@ class HomePage
         ];
     }
 
-    /** Franja de confianza: estadísticas reales; si no hay, textos editables (branding.trust_item_N). */
-    public static function trustItems(array $settings, Collection $stats): Collection
+    /** Cantidad de cifras configurables en la franja de confianza (branding.stat_N_value / stat_N_label). */
+    public const STAT_SLOTS = 4;
+
+    /**
+     * Franja de confianza. Cifras ("+15" / "años de experiencia") solo desde Ajustes del sitio
+     * (grupo branding, claves stat_N_value y stat_N_label): una cifra sin valor o sin etiqueta
+     * no se muestra y no hay valores por defecto. Ya no se lee la tabla `stats`, que el seeder
+     * llenaba con cifras de ejemplo. Sin cifras, textos editables (branding.trust_item_N).
+     */
+    public static function trustItems(array $settings): Collection
     {
         $icons = ['shield', 'doctor', 'spark', 'heart'];
 
+        $stats = collect(range(1, self::STAT_SLOTS))
+            ->map(fn (int $n) => [
+                'value' => trim((string) ($settings["stat_{$n}_value"] ?? '')),
+                'label' => trim((string) ($settings["stat_{$n}_label"] ?? '')),
+            ])
+            ->filter(fn (array $stat) => $stat['value'] !== '' && $stat['label'] !== '')
+            ->values();
+
         if ($stats->isNotEmpty()) {
-            return $stats->take(4)->values()->map(fn ($stat, $i) => ['value' => $stat->value, 'label' => $stat->label, 'icon' => $icons[$i % 4]]);
+            return $stats->map(fn (array $stat, int $i) => $stat + ['icon' => $icons[$i % 4]]);
         }
 
         return collect([

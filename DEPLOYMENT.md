@@ -526,3 +526,34 @@ docker rm -f rejuv-prueba               # limpiar al terminar
 3. Las tablas y columnas nuevas **se quedan en la base** y el código anterior las ignora. Son compatibles: `users.role` y las columnas nuevas de citas tienen valores por defecto o aceptan nulos. Los pacientes, solicitudes y la auditoría siguen guardados para cuando se vuelva a desplegar la versión nueva.
 4. El nombre de marca ya renombrado se queda; si hace falta, se cambia desde *Ajustes*.
 5. Solo si hubiera corrupción de datos: restaura el respaldo del paso 2 (pierdes lo creado después del deploy).
+
+## Contenido público: ajustes opcionales y datos de ejemplo
+
+### Cifras de la portada
+
+Las cifras de la franja de confianza ("+15 años de experiencia", etc.) ya **no** salen de la tabla `stats` (el seeder antiguo la llenaba con valores de ejemplo). Se crean en `/admin` → *Ajustes del sitio* → *Crear*, grupo `branding`, tipo *Texto corto*:
+
+| Clave | Ejemplo de valor |
+|---|---|
+| `stat_1_value` / `stat_1_label` | `+15` / `años de experiencia` |
+| `stat_2_value` / `stat_2_label` | … |
+| `stat_3_value` / `stat_3_label` | … |
+| `stat_4_value` / `stat_4_label` | … |
+
+Una cifra se muestra solo si tiene valor **y** etiqueta. Sin ninguna, la franja muestra los textos `trust_item_1` … `trust_item_4`. Usa solo cifras reales y comprobables.
+
+### Horarios en /contacto
+
+Clave `business_hours`, grupo `contact`, tipo *Texto largo* (un horario por línea). Vacía = no se muestra.
+
+### Reseñas
+
+Solo se publican reseñas **activas y con enlace a la opinión original** (`source_url`). Las demás quedan en el panel pero no salen en el sitio ni en `/api/home`.
+
+### Limpiar datos de ejemplo en producción (desde /admin, sin SQL)
+
+Versiones antiguas del seeder crearon datos de ejemplo. Revisa y borra o corrige en `/admin`:
+
+- *Testimonios*: "Paciente Demo" ("Este bloque también es editable desde Filament"). Ya no se muestra, pero conviene borrarlo.
+- *Ajustes del sitio*: `hero_subtitle` = "Una plataforma comercializable…". El sitio lo reemplaza, pero conviene corregirlo.
+- *Leads*: "Lead Demo".
