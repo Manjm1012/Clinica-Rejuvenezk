@@ -25,17 +25,8 @@
 
                 <div class="services-grid services-grid-catalog">
                     @foreach ($category->services as $service)
-                        @php($serviceImageUrl = \App\Support\Media::url($service->image_path))
                         <article class="landing-service-card">
-                            @if ($serviceImageUrl)
-                                <figure class="media-placeholder media-placeholder-service service-media">
-                                    <img src="{{ $serviceImageUrl }}" alt="{{ $service->name }}" loading="lazy" decoding="async">
-                                </figure>
-                            @else
-                                <figure class="media-placeholder media-placeholder-service service-media service-media-empty" aria-hidden="true">
-                                    <span>{{ mb_strtoupper(mb_substr($service->name, 0, 2)) }}</span>
-                                </figure>
-                            @endif
+                            @include('partials.service-media', ['service' => $service])
                             <div class="service-card-copy">
                                 <h3>{{ $service->name }}</h3>
                                 <p>{{ $service->short_description ?: 'Tratamiento personalizado con enfoque médico, seguridad y resultados naturales.' }}</p>
