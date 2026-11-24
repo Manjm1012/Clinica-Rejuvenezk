@@ -10,17 +10,16 @@
     :image="$beforeAfter->first()['after'] ?? $gallery->first()['url'] ?? null"
 >
     <main>
-        <header class="container dk-page-head">
-            <p class="kicker">Resultados</p>
-            <h1 class="section-title">Cambios reales, resultados naturales</h1>
-            <p class="section-intro">Casos de pacientes que autorizaron compartir sus resultados. Cada rostro es distinto: los resultados pueden variar según cada paciente.</p>
-        </header>
+        <x-page-header kicker="Resultados" title="Cambios reales, resultados naturales">
+            Casos de pacientes que autorizaron compartir sus resultados. Cada rostro es distinto: los resultados pueden variar según cada paciente.
+        </x-page-header>
 
-        @include('home.before-after', ['pairs' => $beforeAfter])
-        @include('home.results', ['testimonialsLimit' => 12])
+        {{-- El encabezado ya dice "Resultados": las secciones van sin kicker y con su propio subtítulo. --}}
+        @include('home.before-after', ['pairs' => $beforeAfter, 'showKicker' => false, 'sectionTitle' => 'Antes y después'])
+        @include('home.results', ['testimonialsLimit' => 12, 'showKicker' => false, 'sectionTitle' => 'Videos, galería y opiniones'])
 
         @unless ($hasContent)
-            <section class="container dk-page-head">
+            <section class="container dk-page-body">
                 <p>Pronto publicaremos aquí casos y opiniones de nuestros pacientes.</p>
                 <a href="{{ route('home') }}#formulario" class="dk-btn-primary">Reservar valoración</a>
             </section>

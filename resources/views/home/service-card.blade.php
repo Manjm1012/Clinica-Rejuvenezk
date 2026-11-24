@@ -1,14 +1,5 @@
-@php($imageUrl = \App\Support\Media::url($service->image_path))
 <article class="svc-card">
-    @if ($imageUrl)
-        <figure class="svc-card-media">
-            <img src="{{ $imageUrl }}" alt="{{ $service->name }}" loading="lazy" decoding="async">
-        </figure>
-    @else
-        <div class="svc-card-media svc-card-media-empty">
-            <span>{{ mb_strtoupper(mb_substr($service->name, 0, 2)) }}</span>
-        </div>
-    @endif
+    @include('partials.service-media', ['service' => $service])
     <div class="svc-card-copy">
         <h3>{{ $service->name }}</h3>
         <p>{{ \Illuminate\Support\Str::limit($service->short_description ?: 'Tratamiento personalizado con enfoque médico y resultados naturales.', 90) }}</p>

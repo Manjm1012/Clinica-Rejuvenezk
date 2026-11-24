@@ -1401,7 +1401,7 @@ a {
     .split-section,
     .contact-section,
     .detail-hero {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 20px;
     }
 
@@ -2053,34 +2053,6 @@ a {
     to { opacity: 1; transform: translateY(0); }
 }
 
-.svc-carousel-wrap {
-    margin-top: 10px;
-    overflow-x: clip;
-}
-
-.svc-carousel {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: clamp(240px, 28vw, 320px);
-    gap: 16px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 4px 2px 16px;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(201, 169, 110, 0.35) transparent;
-}
-
-.svc-carousel::-webkit-scrollbar {
-    height: 4px;
-}
-
-.svc-carousel::-webkit-scrollbar-thumb {
-    background: rgba(201, 169, 110, 0.45);
-    border-radius: 99px;
-}
-
 .svc-card {
     scroll-snap-align: start;
     display: flex;
@@ -2097,90 +2069,6 @@ a {
 .svc-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 20px 48px rgba(43, 43, 43, 0.12);
-}
-
-.svc-card-media {
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    min-height: 280px;
-    max-height: 360px;
-    overflow: hidden;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    box-sizing: border-box;
-    background: linear-gradient(180deg, #f2e9dc 0%, #e7d9c5 100%);
-    margin: 0;
-    border-bottom: 1px solid rgba(201, 169, 110, 0.18);
-}
-
-/* Per-image-type handling for service card images */
-.svc-card-media.is-vertical {
-    aspect-ratio: 4 / 5;
-    padding: 0;
-}
-.svc-card-media.is-vertical img {
-    object-fit: contain;
-    object-position: center 20%;
-    width: 100%;
-    height: 100%;
-}
-
-.svc-card-media.is-square {
-    aspect-ratio: 4 / 5;
-    padding: 0;
-}
-.svc-card-media.is-square img {
-    object-fit: contain;
-    object-position: center center;
-    width: 100%;
-    height: 100%;
-}
-
-.svc-card-media.is-horizontal {
-    aspect-ratio: 4 / 5;
-    padding: 0;
-}
-.svc-card-media.is-horizontal img {
-    object-fit: contain;
-    object-position: center 22%;
-    width: 100%;
-    height: 100%;
-}
-
-.svc-card-media img {
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    object-position: center 18%;
-    display: block;
-    border-radius: 0;
-    background: #efe4d3;
-    box-shadow: none;
-    padding: 0;
-    filter: saturate(1.02) contrast(0.98);
-    transition: transform 0.25s ease;
-}
-
-.svc-card:hover .svc-card-media img {
-    transform: scale(1.01);
-}
-
-.svc-card-media-empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.svc-card-media-empty span {
-    font-family: var(--font-serif);
-    font-size: 2.8rem;
-    font-weight: 600;
-    color: rgba(141, 116, 70, 0.35);
 }
 
 .svc-card-copy {
@@ -2231,7 +2119,6 @@ a {
 .svc-card.svc-card-cta {
     background: linear-gradient(160deg, #2b161a 0%, #3d2025 100%);
     border-color: transparent;
-    min-width: 230px;
     justify-content: center;
 }
 
@@ -2256,17 +2143,6 @@ a {
     color: rgba(245, 237, 224, 0.72);
     font-size: 0.88rem;
     line-height: 1.7;
-}
-
-.svc-carousel-hint {
-    margin-top: 6px;
-    font-size: 0.76rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #b09060;
-    text-align: right;
-    display: none;
 }
 
 .results-video-band {
@@ -3065,10 +2941,6 @@ a {
         min-height: 0;
     }
 
-    .svc-carousel {
-        grid-auto-columns: minmax(300px, 62vw);
-    }
-
     .mobile-nav-overlay,
     .mobile-nav-panel {
         display: block;
@@ -3126,26 +2998,6 @@ a {
     .hero-portrait-image {
         transform: scale(1.12);
         object-position: 34% 12%;
-    }
-
-    .svc-carousel {
-        grid-auto-columns: minmax(78vw, 78vw);
-    }
-
-    .svc-card-media {
-        aspect-ratio: 1 / 1;
-        min-height: 0;
-        max-height: none;
-        padding: 0;
-    }
-
-    .svc-card-media img {
-        object-fit: cover;
-        object-position: center center;
-    }
-
-    .svc-carousel-hint {
-        display: block;
     }
 
     .hero-copy-compact h1,
@@ -3501,19 +3353,6 @@ a {
 }
 
 /* Services Catalog Page */
-.services-catalog-page {
-    padding-top: 42px;
-}
-
-.services-catalog-hero {
-    margin-bottom: 10px;
-}
-
-.services-catalog-hero .detail-card {
-    display: grid;
-    align-content: center;
-}
-
 .services-catalog-head {
     display: grid;
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -3550,42 +3389,6 @@ a {
 .landing-service-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 20px 42px rgba(35, 22, 22, 0.11);
-}
-
-.service-media {
-    margin: 0;
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    min-height: 280px;
-    max-height: 360px;
-    background: linear-gradient(180deg, #f2e8d8 0%, #e7d8c3 100%);
-    border-bottom: 1px solid rgba(201, 169, 110, 0.2);
-    overflow: hidden;
-    display: grid;
-    place-items: center;
-    padding: 0;
-}
-
-.service-media img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center 18%;
-    display: block;
-    border-radius: 0;
-    transition: transform 0.25s ease;
-}
-
-.landing-service-card:hover .service-media img {
-    transform: scale(1.01);
-}
-
-.service-media-empty span {
-    font-family: var(--font-serif);
-    font-size: 2.2rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: rgba(141, 116, 70, 0.5);
 }
 
 .service-card-copy {
@@ -3646,12 +3449,6 @@ a {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .service-media {
-        aspect-ratio: 3 / 4;
-        min-height: 240px;
-        max-height: 320px;
-    }
-
     .services-catalog-head {
         grid-template-columns: 1fr;
         gap: 12px;
@@ -3659,24 +3456,8 @@ a {
 }
 
 @media (max-width: 760px) {
-    .services-catalog-page {
-        padding-top: 30px;
-    }
-
     .services-grid-catalog {
         grid-template-columns: 1fr;
-    }
-
-    .service-media {
-        aspect-ratio: 1 / 1;
-        min-height: 0;
-        max-height: none;
-        padding: 0;
-    }
-
-    .service-media img {
-        object-fit: cover;
-        object-position: center center;
     }
 
     .service-card-copy p {
@@ -5002,6 +4783,16 @@ p {
 	margin-bottom: 12px;
 }
 
+/* Bloques de contenido de las páginas internas (mismo .container que el encabezado). */
+.dk-page-body {
+	padding-bottom: 56px;
+}
+
+/* Correos y enlaces largos (p. ej. en "Contacto rápido") no deben ensanchar la columna. */
+.doctor-box a {
+	overflow-wrap: anywhere;
+}
+
 .dk-team-grid {
 	display: grid;
 	gap: 24px;
@@ -5222,4 +5013,203 @@ p {
     .social-dock {
         display: none;
     }
+}
+
+/* ==========================================================================
+   DK · Imagen de tratamientos (tarjetas de portada y catálogo)
+   Afiches verticales con texto grabado: marco 4:5 fijo, cover desde arriba,
+   sin padding ni fondo que deje márgenes. Mismo tamaño en todas las tarjetas.
+   ========================================================================== */
+.dk-svc-media {
+    position: relative;
+    margin: 0;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #2b161a; /* la tarjeta (overflow: hidden) ya redondea las esquinas */
+}
+
+.dk-svc-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transition: transform 0.35s ease;
+}
+
+.svc-card:hover .dk-svc-media img,
+.landing-service-card:hover .dk-svc-media img {
+    transform: scale(1.03);
+}
+
+.dk-svc-media-empty {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 24px;
+    text-align: center;
+    background:
+        radial-gradient(circle at 50% 38%, rgba(198, 160, 98, 0.28), transparent 58%),
+        linear-gradient(160deg, #3d2025 0%, #2b161a 100%);
+}
+
+.dk-svc-media-mono {
+    display: grid;
+    place-items: center;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    border: 1px solid rgba(198, 160, 98, 0.6);
+    font-family: var(--font-serif);
+    font-size: 2.2rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: #e6cf9f;
+}
+
+.dk-svc-media-name {
+    max-width: 22ch;
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    line-height: 1.3;
+    color: rgba(245, 237, 224, 0.85);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dk-svc-media img {
+        transition: none;
+    }
+}
+
+/* ==========================================================================
+   DK · Carrusel de tratamientos (portada)
+   Columnas exactas por ancho (nunca queda una tarjeta cortada), scroll-snap,
+   scrollbar nativa oculta, flechas circulares (desktop) y barra de progreso.
+   ========================================================================== */
+.svc-carousel-wrap {
+    --svc-per-view: 1;
+    --svc-gap: 16px;
+    position: relative;
+    margin-top: 10px;
+}
+
+.svc-carousel {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - (var(--svc-per-view) - 1) * var(--svc-gap)) / var(--svc-per-view));
+    gap: var(--svc-gap);
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 6px 0 18px; /* aire para la sombra y el leve "hover" de la tarjeta */
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    border-radius: 24px;
+}
+
+.svc-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.svc-carousel:focus-visible {
+    outline: 2px solid var(--secondary);
+    outline-offset: 4px;
+}
+
+.svc-carousel > * {
+    scroll-snap-align: start;
+}
+
+@media (min-width: 600px) {
+    .svc-carousel-wrap { --svc-per-view: 2; }
+}
+
+@media (min-width: 900px) {
+    .svc-carousel-wrap { --svc-per-view: 3; --svc-gap: 18px; }
+}
+
+@media (min-width: 1100px) {
+    .svc-carousel-wrap { --svc-per-view: 4; }
+}
+
+.dk-carousel-btn {
+    position: absolute;
+    top: 38%;
+    z-index: 2;
+    display: none;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(198, 160, 98, 0.55);
+    background: rgba(255, 253, 249, 0.95);
+    color: var(--dk-gold-ink);
+    box-shadow: 0 10px 26px rgba(35, 22, 22, 0.18);
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: background-color 0.2s ease, color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+}
+
+.dk-carousel-prev { left: 10px; }
+.dk-carousel-next { right: 10px; }
+
+.dk-carousel-btn:hover:not(:disabled) {
+    background: var(--secondary);
+    color: #fff;
+    transform: translateY(-50%) scale(1.05);
+}
+
+.dk-carousel-btn:focus-visible {
+    outline: 3px solid var(--dk-gold-ink);
+    outline-offset: 3px;
+}
+
+.dk-carousel-btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+    box-shadow: none;
+}
+
+@media (min-width: 768px) {
+    .dk-carousel-btn { display: grid; }
+}
+
+.dk-carousel-progress {
+    position: relative;
+    width: min(100%, 280px);
+    height: 4px;
+    margin: 6px auto 0;
+    border-radius: 99px;
+    background: rgba(198, 160, 98, 0.22);
+    overflow: hidden;
+}
+
+.dk-carousel-progress span {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 30%;
+    border-radius: inherit;
+    background: var(--secondary);
+    transition: transform 0.15s linear;
+}
+
+/* Sin desplazamiento posible (pocas tarjetas): fuera flechas y barra. */
+.svc-carousel-wrap.is-static .dk-carousel-btn,
+.svc-carousel-wrap.is-static .dk-carousel-progress {
+    display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .svc-carousel { scroll-behavior: auto; }
+    .dk-carousel-btn,
+    .dk-carousel-progress span { transition: none; }
 }

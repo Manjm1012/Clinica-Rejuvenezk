@@ -25,11 +25,9 @@
     @endif
 
     <main>
-        <header class="container dk-page-head">
-            <p class="kicker">Preguntas frecuentes</p>
-            <h1 class="section-title">Resolvemos tus dudas</h1>
-            <p class="section-intro">¿No encuentras tu pregunta? <a href="{{ $brand['bookingUrl'] }}" @if($brand['hasWhatsapp']) target="_blank" rel="noopener noreferrer" @endif>Escríbenos</a> y te respondemos.</p>
-        </header>
+        <x-page-header kicker="Preguntas frecuentes" title="Resolvemos tus dudas">
+            ¿No encuentras tu pregunta? <a href="{{ $brand['bookingUrl'] }}" @if($brand['hasWhatsapp']) target="_blank" rel="noopener noreferrer" @endif>Escríbenos</a> y te respondemos.
+        </x-page-header>
 
         <section class="container dk-faq-list">
             @forelse ($groups as $group => $faqs)

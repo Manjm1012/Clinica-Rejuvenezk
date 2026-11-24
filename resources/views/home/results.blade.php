@@ -1,12 +1,16 @@
 {{--
     Resultados: videos, galería y testimonios.
-    Solo se muestran testimonios reales cargados en el panel (nada inventado) y la valoración
-    promedio se calcula con ellos: en servicios de salud un testimonio ficticio es publicidad engañosa.
+    Solo se muestran testimonios reales cargados en el panel (nada inventado). El promedio solo
+    aparece con suficientes reseñas verificables (Testimonial::publicRating): en servicios de salud
+    un testimonio ficticio o un "5,0/5" con una sola opinión es publicidad engañosa.
+
+    Opcionales: $sectionTitle (h2 propio) y $showKicker (false en la página de Resultados,
+    donde el encabezado de la página ya dice "Resultados").
 --}}
 @php
     $texts = $page['texts'];
     $realTestimonials = $testimonials->take($testimonialsLimit ?? 3);
-    $average = $testimonials->isNotEmpty() ? number_format((float) $testimonials->avg('rating'), 1, ',', '') : null;
+    $rating = \App\Models\Testimonial::publicRating();
     $videos = $videos ?? $page['videos'];
     $gallery = $gallery ?? $page['gallery'];
 @endphp
@@ -14,13 +18,15 @@
 @if ($videos->isNotEmpty() || $gallery->isNotEmpty() || $realTestimonials->isNotEmpty())
 <section id="resultados" class="section section-white">
     <div class="container reveal reveal-2">
-        <p class="kicker">{{ $texts['testimonialsKicker'] }}</p>
-        <h2 class="section-title">{{ $texts['testimonialsTitle'] }}</h2>
-        @if ($average)
+        @if ($showKicker ?? true)
+            <p class="kicker">{{ $texts['testimonialsKicker'] }}</p>
+        @endif
+        <h2 class="section-title">{{ $sectionTitle ?? $texts['testimonialsTitle'] }}</h2>
+        @if ($rating)
             <div class="testimonials-overview">
                 <div class="testimonials-pill">
-                    <strong>Valoración {{ $average }}/5</strong>
-                    <span>{{ $testimonials->count() }} {{ $testimonials->count() === 1 ? 'opinión' : 'opiniones' }} de pacientes</span>
+                    <strong>Valoración {{ $rating['average'] }}/5</strong>
+                    <span>{{ $rating['count'] }} opiniones verificables de pacientes</span>
                 </div>
             </div>
         @endif

@@ -22,11 +22,9 @@
     @endpush
 
     <main>
-        <header class="container dk-page-head">
-            <p class="kicker">Equipo médico</p>
-            <h1 class="section-title">Médicos certificados, criterio y cercanía</h1>
-            <p class="section-intro">Cada valoración la realiza un médico. Conoce su formación antes de tu cita.</p>
-        </header>
+        <x-page-header kicker="Equipo médico" title="Médicos certificados, criterio y cercanía">
+            Cada valoración la realiza un médico. Conoce su formación antes de tu cita.
+        </x-page-header>
 
         <section class="container dk-team-grid" aria-label="Médicos de {{ $brand['clinicName'] }}">
             @forelse ($doctors as $doctor)

@@ -62,12 +62,39 @@ class PublicSiteTest extends TestCase
             ->assertDontSee('Me encantó porque respetaron mis facciones');
     }
 
-    public function test_la_valoracion_se_calcula_con_testimonios_reales(): void
+    public function test_con_pocas_resenas_se_muestran_las_opiniones_pero_no_el_promedio(): void
     {
-        $this->make(Testimonial::class, ['patient_name' => 'Laura', 'content' => 'Excelente atención', 'rating' => 5, 'is_active' => true]);
+        $this->make(Testimonial::class, ['patient_name' => 'Laura', 'content' => 'Excelente atención', 'rating' => 5, 'is_active' => true, 'source_url' => 'https://g.page/r/1']);
         $this->make(Testimonial::class, ['patient_name' => 'Marta', 'content' => 'Muy profesionales', 'rating' => 4, 'is_active' => true]);
 
-        $this->get('/')->assertOk()->assertSee('Valoración 4,5/5')->assertSee('Excelente atención')->assertSee('2 opiniones');
+        foreach (['/', route('results')] as $url) {
+            $this->get($url)->assertOk()
+                ->assertSee('Excelente atención')
+                ->assertDontSee('testimonials-pill', false)
+                ->assertDontSee('/5</strong>', false);
+        }
+    }
+
+    public function test_el_promedio_aparece_desde_diez_resenas_verificables(): void
+    {
+        $verificable = fn (int $i, int $rating) => $this->make(Testimonial::class, [
+            'patient_name' => "Paciente {$i}", 'content' => "Opinión {$i}", 'rating' => $rating,
+            'is_active' => true, 'source_url' => "https://g.page/r/{$i}",
+        ]);
+
+        foreach (range(1, 9) as $i) {
+            $verificable($i, $i % 2 ? 5 : 4);
+        }
+        // Sin enlace a la opinión original no cuenta como verificable.
+        $this->make(Testimonial::class, ['patient_name' => 'Sin enlace', 'content' => 'x', 'rating' => 5, 'is_active' => true]);
+
+        $this->get('/')->assertOk()->assertDontSee('testimonials-pill', false);
+
+        $verificable(10, 4); // 5 de 5 estrellas y 5 de 4 → 4,5
+
+        foreach (['/', route('results')] as $url) {
+            $this->get($url)->assertOk()->assertSee('Valoración 4,5/5')->assertSee('10 opiniones verificables');
+        }
     }
 
     public function test_el_formulario_conserva_las_utm_de_la_campana(): void
@@ -89,6 +116,23 @@ class PublicSiteTest extends TestCase
         $this->get(route('results'))->assertOk()->assertSee('Cambios reales');
         $this->get(route('about'))->assertOk()->assertSee('Misión');
         $this->get(route('services.index'))->assertOk();
+    }
+
+    public function test_las_paginas_publicas_tienen_un_solo_h1_y_encabezado_comun(): void
+    {
+        $this->make(Testimonial::class, ['patient_name' => 'Laura', 'content' => 'Excelente atención', 'rating' => 5, 'is_active' => true]);
+
+        foreach (['/', route('services.index'), route('results'), route('team'), route('faq'), route('about')] as $url) {
+            $html = $this->get($url)->assertOk()->getContent();
+            $this->assertSame(1, substr_count($html, '<h1'), "Debe haber un solo <h1> en {$url}");
+        }
+
+        foreach ([route('services.index'), route('results'), route('team'), route('faq')] as $url) {
+            $this->get($url)->assertSee('class="container dk-page-head"', false);
+        }
+
+        $results = $this->get(route('results'))->getContent();
+        $this->assertSame(1, substr_count($results, '<p class="kicker">Resultados</p>'), 'El kicker "Resultados" no debe repetirse');
     }
 
     public function test_sitemap_incluye_servicios_activos(): void
