@@ -679,3 +679,27 @@ document.addEventListener('DOMContentLoaded', () => {
 	// Formulario con errores de validación: se lleva a la vista.
 	document.querySelector('[data-scroll-into-view]')?.scrollIntoView({ block: 'center' });
 });
+
+// Encabezado fijo: se compacta al bajar (.is-scrolled) sin ocultar el CTA "Agenda ahora".
+document.addEventListener('DOMContentLoaded', () => {
+	const topbar = document.querySelector('header.topbar');
+
+	if (!topbar) {
+		return;
+	}
+
+	let ticking = false;
+	const update = () => {
+		topbar.classList.toggle('is-scrolled', window.scrollY > 24);
+		ticking = false;
+	};
+
+	window.addEventListener('scroll', () => {
+		if (!ticking) {
+			ticking = true;
+			requestAnimationFrame(update);
+		}
+	}, { passive: true });
+
+	update();
+});
