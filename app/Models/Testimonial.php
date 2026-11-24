@@ -21,6 +21,18 @@ class Testimonial extends Model
         'reviewed_at' => 'date',
     ];
 
+    /**
+     * Reseñas que se pueden mostrar al público: activas y con enlace a la opinión original
+     * (source_url). Sin enlace no se puede verificar, y así quedan fuera los textos de
+     * ejemplo que sembraban versiones antiguas del seeder ("Paciente Demo").
+     */
+    public function scopePublished($query)
+    {
+        return $query->where('is_active', true)
+            ->whereNotNull('source_url')
+            ->where('source_url', '!=', '');
+    }
+
     /** Mínimo de reseñas verificables para publicar un promedio (con 1 o 2 reseñas un "5,0/5" no dice nada). */
     public const MIN_REVIEWS_FOR_RATING = 10;
 
@@ -33,11 +45,7 @@ class Testimonial extends Model
      */
     public static function publicRating(): ?array
     {
-        $query = static::query()
-            ->where('is_active', true)
-            ->whereNotNull('rating')
-            ->whereNotNull('source_url')
-            ->where('source_url', '!=', '');
+        $query = static::query()->published()->whereNotNull('rating');
 
         $count = (clone $query)->count();
 

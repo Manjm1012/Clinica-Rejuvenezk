@@ -1,6 +1,6 @@
 {{--
     Resultados: videos, galería y testimonios.
-    Solo se muestran testimonios reales cargados en el panel (nada inventado). El promedio solo
+    Solo se muestran testimonios reales y verificables (con source_url) cargados en el panel (nada inventado). El promedio solo
     aparece con suficientes reseñas verificables (Testimonial::publicRating): en servicios de salud
     un testimonio ficticio o un "5,0/5" con una sola opinión es publicidad engañosa.
 
@@ -109,11 +109,8 @@
                     </div>
                     <div class="testimonial-rating" aria-label="{{ (int) $testimonial->rating }} de 5 estrellas">{{ str_repeat('★', max(1, min(5, (int) $testimonial->rating))) }}</div>
                     <p>“{{ $testimonial->content }}”</p>
-                    @if ($testimonial->source_url)
-                        <cite><a href="{{ $testimonial->source_url }}" target="_blank" rel="noopener nofollow">Ver opinión original{{ $testimonial->source ? ' en '.$testimonial->source : '' }}</a></cite>
-                    @else
-                        <cite>Experiencia en {{ $brand['clinicName'] }}</cite>
-                    @endif
+                    {{-- Solo llegan reseñas verificables (Testimonial::published): siempre con enlace a la original. --}}
+                    <cite><a href="{{ $testimonial->source_url }}" target="_blank" rel="noopener nofollow">Ver opinión original{{ $testimonial->source ? ' en '.$testimonial->source : '' }}</a></cite>
                 </blockquote>
             @endforeach
         </div>
