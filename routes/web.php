@@ -25,6 +25,7 @@ Route::get('/quienes-somos', [HomeController::class, 'about'])->name('about');
 Route::get('/resultados', [HomeController::class, 'results'])->name('results');
 Route::get('/equipo-medico', [HomeController::class, 'team'])->name('team');
 Route::get('/preguntas-frecuentes', [HomeController::class, 'faq'])->name('faq');
+Route::get('/contacto', [HomeController::class, 'contact'])->name('contact');
 Route::get('/sitemap.xml', [HomeController::class, 'sitemap'])->name('sitemap');
 Route::get('/servicios', [ServiceController::class, 'index'])->name('services.index');
 Route::get('/procedimientos/{service:slug}', [ServiceController::class, 'show'])->name('services.show');
