@@ -32,8 +32,15 @@
 
         @foreach ($panels as $i => $panel)
             <div class="services-panel {{ $i === 0 ? 'is-active' : '' }}" id="{{ $panel['id'] }}" role="tabpanel">
-                <div class="svc-carousel-wrap">
-                    <div class="svc-carousel" aria-label="Tratamientos de {{ $panel['name'] }}">
+                {{-- Carrusel: flechas (desktop), deslizamiento táctil, teclado y barra de progreso. JS en resources/js/app.js --}}
+                <div class="svc-carousel-wrap" data-carousel>
+                    <button type="button" class="dk-carousel-btn dk-carousel-prev" data-carousel-prev aria-controls="{{ $panel['id'] }}-track" aria-label="Ver tratamientos anteriores de {{ $panel['name'] }}">
+                        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <button type="button" class="dk-carousel-btn dk-carousel-next" data-carousel-next aria-controls="{{ $panel['id'] }}-track" aria-label="Ver más tratamientos de {{ $panel['name'] }}">
+                        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <div class="svc-carousel" id="{{ $panel['id'] }}-track" data-carousel-track tabindex="0" role="region" aria-roledescription="carrusel" aria-label="Tratamientos de {{ $panel['name'] }}. Usa las flechas del teclado para desplazarte.">
                         @foreach ($panel['services'] as $service)
                             @include('home.service-card', ['service' => $service])
                         @endforeach
@@ -47,7 +54,7 @@
                             </div>
                         </article>
                     </div>
-                    <div class="svc-carousel-hint" aria-hidden="true">Desliza para ver todos los tratamientos →</div>
+                    <div class="dk-carousel-progress" aria-hidden="true"><span data-carousel-thumb></span></div>
                 </div>
             </div>
         @endforeach

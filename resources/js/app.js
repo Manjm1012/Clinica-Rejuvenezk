@@ -121,6 +121,74 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 });
 
+// Carrusel de tratamientos: flechas, teclado y barra de progreso.
+// El deslizamiento táctil y el ajuste a cada tarjeta los da el CSS (scroll-snap).
+document.addEventListener('DOMContentLoaded', () => {
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	document.querySelectorAll('[data-carousel]').forEach((wrap) => {
+		const track = wrap.querySelector('[data-carousel-track]');
+		const prev = wrap.querySelector('[data-carousel-prev]');
+		const next = wrap.querySelector('[data-carousel-next]');
+		const thumb = wrap.querySelector('[data-carousel-thumb]');
+
+		if (!track) return;
+
+		// Un "paso" = una tarjeta + el espacio entre tarjetas.
+		const step = () => {
+			const card = track.firstElementChild;
+			const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+			return card ? card.getBoundingClientRect().width + gap : track.clientWidth;
+		};
+
+		const go = (direction) => {
+			track.scrollBy({ left: direction * step(), behavior: reduceMotion ? 'auto' : 'smooth' });
+		};
+
+		const update = () => {
+			const max = track.scrollWidth - track.clientWidth;
+			const isStatic = max <= 1;
+
+			wrap.classList.toggle('is-static', isStatic);
+			if (prev) prev.disabled = isStatic || track.scrollLeft <= 1;
+			if (next) next.disabled = isStatic || track.scrollLeft >= max - 1;
+
+			if (thumb && !isStatic) {
+				const ratio = track.clientWidth / track.scrollWidth;
+				const progress = track.scrollLeft / max;
+				thumb.style.width = `${ratio * 100}%`;
+				thumb.style.transform = `translateX(${progress * ((1 / ratio) - 1) * 100}%)`;
+			}
+		};
+
+		prev?.addEventListener('click', () => go(-1));
+		next?.addEventListener('click', () => go(1));
+
+		track.addEventListener('keydown', (event) => {
+			const keys = { ArrowLeft: -1, ArrowRight: 1 };
+
+			if (event.key in keys) {
+				event.preventDefault();
+				go(keys[event.key]);
+			} else if (event.key === 'Home' || event.key === 'End') {
+				event.preventDefault();
+				track.scrollTo({ left: event.key === 'Home' ? 0 : track.scrollWidth, behavior: reduceMotion ? 'auto' : 'smooth' });
+			}
+		});
+
+		track.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+
+		// También cubre el cambio de pestaña: un panel oculto mide 0 hasta que se muestra.
+		if ('ResizeObserver' in window) {
+			new ResizeObserver(update).observe(track);
+		} else {
+			window.addEventListener('resize', update);
+		}
+
+		update();
+	});
+});
+
 document.addEventListener('DOMContentLoaded', () => {
 	const toggle = document.querySelector('.nav-toggle');
 	const panel = document.querySelector('.mobile-nav-panel');
