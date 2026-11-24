@@ -5868,3 +5868,70 @@ header.topbar.is-scrolled .topbar-inner .brand-lockup .brand-doctor-name {
         transition: none;
     }
 }
+
+/* ==========================================================================
+   DK · Revisión móvil: áreas táctiles de 44px y texto legible (>= 12px)
+   ========================================================================== */
+header.topbar .brand-lockup {
+    min-height: 44px;
+}
+
+.dk-svc-shortcuts a,
+.dk-btn-agendar,
+.service-card-copy .service-links a {
+    min-height: 44px;
+}
+
+.service-card-copy .service-links a {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Subtítulo de la marca y textos pequeños: mínimo 12px */
+header.topbar .topbar-inner .brand-lockup .brand-doctor-name {
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+    text-transform: none;
+}
+
+header.topbar .nav-toggle-label,
+.dk-promos .banner-slide-overlay span {
+    font-size: 0.75rem;
+}
+
+@media (max-width: 980px) {
+    /* Enlaces del pie apilados: cada uno con 44px de alto táctil */
+    .dk-footer-meta .dk-footer-legal {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* La barra inferior mide 64px + borde/sombra: el final de la página no queda debajo */
+    .dk-has-mobilebar {
+        padding-bottom: calc(var(--dk-mobilebar-h) + 12px + env(safe-area-inset-bottom, 0px));
+    }
+}
+
+/* Tabletas (769–980px, sin barra inferior): WhatsApp flotante solo con el ícono para
+   tapar menos campos y botones; el nombre sigue en su aria-label. */
+@media (min-width: 769px) and (max-width: 980px) {
+    .whatsapp-fab.dk-wa-fab {
+        padding: 6px;
+    }
+
+    .whatsapp-fab.dk-wa-fab strong {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+    }
+
+    .dk-has-mobilebar {
+        padding-bottom: 80px;
+    }
+}
